@@ -1,0 +1,11 @@
+program test;
+
+{$APPTYPE CONSOLE}
+
+uses
+  SysUtils;
+
+begin
+  writeln('!!!');
+  readln
+end.

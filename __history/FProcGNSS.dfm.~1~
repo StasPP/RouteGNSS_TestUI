@@ -1,0 +1,116 @@
+object ProcGNSS: TProcGNSS
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'GNSS Processor'
+  ClientHeight = 213
+  ClientWidth = 457
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 328
+    Height = 40
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 0
+    ExplicitLeft = 225
+    ExplicitTop = -5
+    ExplicitWidth = 113
+    ExplicitHeight = 170
+    object StatusLabel: TLabel
+      Left = 9
+      Top = 6
+      Width = 3
+      Height = 13
+    end
+    object Progress: TProgressBar
+      Left = 0
+      Top = 24
+      Width = 328
+      Height = 16
+      Margins.Left = 30
+      Margins.Bottom = 30
+      Align = alBottom
+      Smooth = True
+      TabOrder = 0
+      ExplicitTop = 211
+      ExplicitWidth = 457
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 40
+    Width = 457
+    Height = 173
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 1
+    object Panel4: TPanel
+      Left = 0
+      Top = 17
+      Width = 457
+      Height = 156
+      Align = alClient
+      BevelOuter = bvNone
+      TabOrder = 0
+      ExplicitLeft = 120
+      ExplicitTop = 40
+      ExplicitWidth = 185
+      ExplicitHeight = 41
+      object Memo: TMemo
+        Left = 0
+        Top = 0
+        Width = 457
+        Height = 156
+        Align = alClient
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 0
+        OnChange = MemoChange
+        ExplicitHeight = 0
+      end
+    end
+    object Panel5: TPanel
+      Left = 0
+      Top = 0
+      Width = 457
+      Height = 17
+      Align = alTop
+      BevelOuter = bvNone
+      TabOrder = 1
+    end
+  end
+  object Panel3: TPanel
+    Left = 328
+    Top = 0
+    Width = 129
+    Height = 40
+    Align = alRight
+    BevelOuter = bvNone
+    TabOrder = 2
+    ExplicitHeight = 42
+    object SpeedButton3: TSpeedButton
+      Left = 11
+      Top = 15
+      Width = 81
+      Height = 25
+      Caption = 'STOP'
+      OnClick = SpeedButton3Click
+    end
+    object SpeedButton4: TSpeedButton
+      Left = 95
+      Top = 15
+      Width = 25
+      Height = 25
+    end
+  end
+end

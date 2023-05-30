@@ -1,0 +1,46 @@
+///---
+EGM08_1Deg.gdf
+    EGM2008
+    EGM2008 1 град.
+90
+-90
+-180
+180
+generating_institute     gfz-potsdam
+     generating_date     2019/06/19
+        product_type     gravity_field
+                body     earth
+           modelname     EGM2008
+             caption     EGM2008 1 град.
+     max_used_degree          2190
+         tide_system     tide_free
+          functional     height_anomaly_ell
+    zero_degree_term     included
+                unit     meter
+          refsysname     WGS84
+            gmrefpot      3.98600441800E+14 m**3/s**2
+        radiusrefpot     6378137.000 m
+          flatrefpot      3.352810664747480E-03   (1/298.25722356300)
+         omegarefpot      7.29211500000E-05 1/s
+    normal_potential      6.263685171456948E+07 m**2/s**2
+       long_lat_unit     degree
+      latlimit_north       90.000000000000    
+      latlimit_south      -90.000000000000    
+      longlimit_west      -180.00000000000    
+      longlimit_east       180.00000000000    
+            gridstep       1.0000000000000    
+     height_over_ell          0.0000 m
+  latitude_parallels           181
+ longitude_parallels           361
+number_of_gridpoints         65341
+            gapvalue            999.0000
+       weighted_mean      2.0012183E-02 meter
+            maxvalue      8.6277659E+01 meter
+            minvalue     -1.0610187E+02 meter
+         signal_wrms      3.0570528E+01 meter
+         grid_format     long_lat_value
+ 
+          longitude    latitude    height_anomaly_ell
+            [deg.]      [deg.]         [meter]
+end_of_head ============================================
+

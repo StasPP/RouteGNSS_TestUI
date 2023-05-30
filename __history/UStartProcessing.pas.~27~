@@ -1,0 +1,270 @@
+unit UStartProcessing;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Spin, ExtCtrls, Buttons, ComCtrls, GNSSObjects,
+  RTKLibExecutor;
+
+type
+  TFStartProcessing = class(TForm)
+    Gb_GNSSSystems: TGroupBox;
+    GN1: TCheckBox;
+    GN3: TCheckBox;
+    GN4: TCheckBox;
+    GN6: TCheckBox;
+    GN5: TCheckBox;
+    GN7: TCheckBox;
+    GN2: TCheckBox;
+    Cb_GNSSSystems: TComboBox;
+    Label7: TLabel;
+    Label8: TLabel;
+    CB_Freq: TComboBox;
+    SE_ElevMask: TSpinEdit;
+    Label9: TLabel;
+    Label10: TLabel;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    CheckBox6: TCheckBox;
+    TabSheet3: TTabSheet;
+    SessionLabel: TLabel;
+    Image3: TImage;
+    Image1: TImage;
+    Image2: TImage;
+    LProcKind: TLabel;
+    Button1: TButton;
+    Button2: TButton;
+    Image4: TImage;
+    procedure Cb_GNSSSystemsChange(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+     procedure ShowProcOptions(Method: Byte; // 1 - Single, 2 - BaseLine, 3 - PPP
+        Rover, Base :TGNSSSession);
+
+     procedure ShowMultiProcOptions(Method: Array of Byte; // 1 - Single, 2 - BaseLine, 3 - PPP
+        Rover, Base :Array of TGNSSSession);
+    { Public declarations }
+  end;
+
+var
+  FStartProcessing: TFStartProcessing;
+  ProcMethod: Byte;  ProcMethods: Array of Byte;
+  pRover, pBase :TGNSSSession;
+  mRover, mBase :Array of TGNSSSession;
+implementation
+
+uses FProcGNSS;
+
+{$R *.dfm}
+
+procedure PrepareProc;
+var I  :integer;
+    Cb :TCheckBox;
+    ES :String;
+    A  :Array [0..6] of Boolean;
+begin
+  ES := '';
+  for i := 0 to 6 do
+  begin
+    Cb := FStartProcessing.FindComponent('GN'+IntToStr(i+1)) as TCheckBox;
+    A[I] := Cb.Checked;
+  end;
+  SetRTKSetings(FStartProcessing.SE_ElevMask.Value, A,
+      FStartProcessing.CB_Freq.ItemIndex, ES);
+end;
+
+procedure TFStartProcessing.ShowProcOptions(Method: Byte;
+                  Rover, Base:TGNSSSession);
+begin
+
+  ProcMethod := Method;
+  PageControl1.ActivePageIndex := Method - 1;
+  pRover := Rover;
+  pBase := Base;
+  with FStartProcessing do
+  case Method of
+     1:
+     begin
+       SessionLabel.Caption := Rover.Station;
+       LProcKind.Caption := 'Single processing'; /// ToDo: Translate
+     end;
+
+     2:
+     begin
+       SessionLabel.Caption := Base.Station +'-'+Rover.Station;
+       LProcKind.Caption := 'Baseline processing'; /// ToDo: Translate
+     end;
+
+     3: begin
+       SessionLabel.Caption := Rover.Station;
+       LProcKind.Caption := 'Precise Point Positioning';
+     end;
+  end;
+
+  Image1.Visible := ProcMethod = 1;
+  Image2.Visible := ProcMethod = 2;
+  Image3.Visible := ProcMethod = 3;
+  Image4.Visible := False;
+  ShowModal;
+end;
+
+procedure TFStartProcessing.ShowMultiProcOptions(Method: Array of Byte;
+        Rover, Base :Array of TGNSSSession);
+var I:Integer;
+    commonM:byte;
+begin
+  ProcMethod := 10; /// MULTI
+  commonM := 0;
+
+  PageControl1.ActivePageIndex := ProcMethod - 1;
+
+  SetLength(ProcMethods, Length(Method));
+  for I := 0 to Length(Method) do
+    ProcMethods[I] := Method[I];
+
+  CommonM := Method[0];
+  for I := 0 to Length(Method)-1 do
+    if CommonM <> ProcMethods[I] then
+    begin
+       CommonM := 0;
+       break;
+    end;
+
+
+  SetLength(mBase, Length(Base));
+  for I := 0 to Length(mBase)-1 do
+    mBase[I] := Base[I];
+
+  SetLength(mRover, Length(Rover));
+  for I := 0 to Length(Rover)-1 do
+    mRover[I] := Rover[I];
+
+
+  with FStartProcessing do
+  case CommonM of
+     1:
+     begin
+       SessionLabel.Caption := mRover[0].MaskName;
+
+       if Length(mRover) >= 2 then
+          SessionLabel.Caption := SessionLabel.Caption+', '+ mRover[1].MaskName;
+
+       LProcKind.Caption := 'Single processing'; /// ToDo: Translate
+     end;
+
+     2:
+     begin
+       SessionLabel.Caption := mBase[0].MaskName + '-' + mRover[0].MaskName;
+       if Length(mRover) >= 2 then
+          SessionLabel.Caption := SessionLabel.Caption + ', ' +
+                mBase[1].MaskName +'-'+mRover[1].MaskName;
+
+       LProcKind.Caption := 'Baseline processing'; /// ToDo: Translate
+     end;
+
+     3: begin
+       SessionLabel.Caption := mRover[0].MaskName;
+
+       if Length(mRover) >= 2 then
+          SessionLabel.Caption := SessionLabel.Caption+', '+ mRover[1].MaskName;
+
+       LProcKind.Caption := 'Precise Point Positioning';
+     end;
+
+     0: begin
+       SessionLabel.Caption := '(Multiply selection)' ;    /// ToDo: Translate
+
+       if Length(mRover) = 2 then
+          SessionLabel.Caption := SessionLabel.Caption+', '+ mRover[1].MaskName;
+
+       LProcKind.Caption := 'Different methods';  /// ToDo: Translate
+
+     end;
+  end;
+
+  if (Length(mRover) > 2 ) and (CommonM <> 0) then
+     SessionLabel.Caption := SessionLabel.Caption+', ...';
+
+  Image1.Visible := commonM = 1;
+  Image2.Visible := commonM = 2;
+  Image3.Visible := commonM = 3;
+  Image4.Visible := commonM = 0;
+
+  FStartProcessing.ShowModal;
+end;
+
+procedure TFStartProcessing.Button1Click(Sender: TObject);
+var I:Integer;
+begin
+    PrepareProc;
+
+    case ProcMethod of
+      1:  if SingleRTKProcess(pRover, ProcGNSS.Progress, ProcGNSS.Memo)
+       then  ProcGNSS.ShowModal2(pRover.MaskName, 0);
+      2:  if BaseLineRTKProcess(pRover, pBase, ProcGNSS.Progress, ProcGNSS.Memo)
+       then ProcGNSS.ShowModal2(pRover.MaskName+'-'+pBase.MaskName, 0);
+      3:  if PPPRTKProcess(pRover, ProcGNSS.Progress, ProcGNSS.Memo)
+       then  ProcGNSS.ShowModal2(pRover.MaskName, 0);
+
+      10:
+      begin
+
+         for I := 0 to Length(ProcMethods) - 1 do
+         begin
+           case ProcMethods[I] of
+             1:  if SingleRTKProcess(mRover[I], ProcGNSS.Progress, ProcGNSS.Memo)
+               then  ProcGNSS.ShowModal2(mRover[I].MaskName, Length(ProcMethods)-1 - I);
+             2:  if BaseLineRTKProcess(mRover[I], mBase[I], ProcGNSS.Progress, ProcGNSS.Memo)
+               then ProcGNSS.ShowModal2(mRover[I].MaskName+'-'+mBase[I].MaskName,
+                    Length(ProcMethods)-1 - I);
+             3:  if PPPRTKProcess(mRover[I], ProcGNSS.Progress, ProcGNSS.Memo)
+               then  ProcGNSS.ShowModal2(mRover[I].MaskName, Length(ProcMethods)-1 - I);
+           end;
+         
+           if ProcGNSS.Cancelled then break;
+         end;
+
+      end;
+    end;
+    close;
+end;
+
+procedure TFStartProcessing.Button2Click(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TFStartProcessing.Cb_GNSSSystemsChange(Sender: TObject);
+begin
+  case Cb_GNSSSystems.ItemIndex of
+     0: begin
+       gn1.Checked := true;    gn2.Checked := true;  gn3.Checked := true;
+       gn4.Checked := true;    gn5.Checked := true;  gn6.Checked := true;
+       gn7.Checked := true;
+     end;
+     1:  begin
+       gn1.Checked := true;     gn2.Checked := false;  gn3.Checked := false;
+       gn4.Checked := false;    gn5.Checked := false;  gn6.Checked := false;
+       gn7.Checked := false;
+     end;
+     2:  begin
+       gn1.Checked := true;     gn3.Checked := true;   gn2.Checked := false;
+       gn4.Checked := false;    gn5.Checked := false;  gn6.Checked := false;
+       gn7.Checked := false;
+     end;
+  end;
+    Gb_GNSSSystems.Enabled := Cb_GNSSSystems.ItemIndex = 3;
+end;
+
+procedure TFStartProcessing.FormShow(Sender: TObject);
+begin
+//  Cb_GNSSSystems.OnClick(nil);
+end;
+
+end.

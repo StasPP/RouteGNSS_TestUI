@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/04/21 12:05:15.713.pas,C:\Users\Satellite\Documents\RAD Studio\Projects\Unit1.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit1.pas</Transaction>
+    <Transaction>2023/04/21 12:05:15.715.dfm,C:\Users\Satellite\Documents\RAD Studio\Projects\Unit1.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit1.dfm</Transaction>
+    <Transaction>2023/04/21 12:05:33.565.dproj,C:\Users\Satellite\Documents\RAD Studio\Projects\Project2.dproj=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\RinexToLib.dproj</Transaction>
+    <Transaction>2023/04/22 13:02:45.118.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\RTKLibExecutor.pas</Transaction>
+    <Transaction>2023/04/24 11:30:16.076.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\FProcGNSS.pas</Transaction>
+    <Transaction>2023/04/24 11:30:16.076.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\FProcGNSS.dfm</Transaction>
+    <Transaction>2023/04/25 11:07:12.086.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\GNSSObjects.pas</Transaction>
+    <Transaction>2023/04/28 17:54:04.853.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UGNSSSessionOptions.pas</Transaction>
+    <Transaction>2023/04/28 17:54:04.853.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UGNSSSessionOptions.dfm</Transaction>
+    <Transaction>2023/04/29 01:56:34.046.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\TextListBox.pas</Transaction>
+    <Transaction>2023/04/29 01:57:25.017.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\TextListBox.pas=</Transaction>
+    <Transaction>2023/04/29 14:47:42.484.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\LoadData.pas=</Transaction>
+    <Transaction>2023/04/29 14:47:42.484.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\LoadData.dfm=</Transaction>
+    <Transaction>2023/04/30 20:25:53.454.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UStartProcessing.pas</Transaction>
+    <Transaction>2023/04/30 20:25:53.455.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UStartProcessing.dfm</Transaction>
+    <Transaction>2023/05/07 20:47:21.663.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UGNSSPointSettings.pas</Transaction>
+    <Transaction>2023/05/07 20:47:21.663.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UGNSSPointSettings.dfm</Transaction>
+    <Transaction>2023/05/22 11:13:22.876.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UVectSettings.pas</Transaction>
+    <Transaction>2023/05/22 11:13:22.877.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UVectSettings.dfm</Transaction>
+    <Transaction>2023/05/26 19:52:22.096.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UAntProp.pas</Transaction>
+    <Transaction>2023/05/26 19:52:22.096.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UAntProp.dfm</Transaction>
+  </Transactions>
+</BorlandProject>
