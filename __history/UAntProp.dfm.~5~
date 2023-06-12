@@ -32,7 +32,7 @@ object FAntProp: TFAntProp
   object NameEd: TEdit
     Left = 8
     Top = 23
-    Width = 153
+    Width = 136
     Height = 21
     MaxLength = 21
     TabOrder = 0
@@ -277,7 +277,7 @@ object FAntProp: TFAntProp
     object Label7: TLabel
       Left = 16
       Top = 17
-      Width = 113
+      Width = 130
       Height = 13
       Alignment = taRightJustify
       AutoSize = False
@@ -286,7 +286,7 @@ object FAntProp: TFAntProp
     object Label9: TLabel
       Left = 10
       Top = 42
-      Width = 119
+      Width = 136
       Height = 13
       Alignment = taRightJustify
       AutoSize = False
@@ -300,17 +300,17 @@ object FAntProp: TFAntProp
       Caption = '*from the Antenna Refference Point'
     end
     object EdRad: TEdit
-      Left = 135
+      Left = 152
       Top = 14
-      Width = 63
+      Width = 46
       Height = 21
       TabOrder = 0
       Text = '0'
     end
     object EGrPl: TEdit
-      Left = 135
+      Left = 152
       Top = 39
-      Width = 63
+      Width = 46
       Height = 21
       TabOrder = 1
       Text = '0'

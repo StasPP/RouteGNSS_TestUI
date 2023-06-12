@@ -839,12 +839,9 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  try
-    if GNSSDebug <> nil then
-      if directoryexists(MyDir+'Logs\') then
-        GNSSDebug.SaveToFile(MyDir+'Logs\GNSSLog.txt');
-  except
-  end;
+  if GNSSDebug <> nil then
+    if directoryexists(MyDir+'Logs\') then
+      GNSSDebug.SaveToFile(MyDir+'Logs\GNSSLog.txt');
   DestroyGNSSObjs;
 end;
 

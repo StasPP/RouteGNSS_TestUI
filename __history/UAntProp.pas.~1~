@@ -37,7 +37,6 @@ type
     EdRad: TEdit;
     Label9: TLabel;
     EGrPl: TEdit;
-    Label10: TLabel;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure ShowAntProp(AntName:string);
@@ -129,22 +128,6 @@ end;
 procedure TFAntProp.Button1Click(Sender: TObject);
 var I:Integer;
 begin
-  if ANTPCV.LineN > -1 then
-    if isHasChanges then
-    begin
-      if MessageDlg('Change the existing Antenna "'+ANTPCV.AntName+'" ?',    /// ToDo: Translate!
-          mtConfirmation, [mbYes, mbNo], 0) <> 6 then
-        exit
-      else
-        if ANTPCV.AntName = PCVFile[ANTPCV.LineN] then
-          MessageDlg(ANTPCV.AntName+' is Already exists.'+#13+
-              'Type the new unique name for the Antenna to save it.',   /// ToDo: Translate!
-              mtError, [mbOK], 0)
-        else
-          ANTPCV.LineN := -1;
-
-    end;
-      
 
   if (isHasChanges) or (ANTPCV.LineN = -1) then
   begin

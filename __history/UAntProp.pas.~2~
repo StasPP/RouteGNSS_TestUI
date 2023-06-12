@@ -37,7 +37,6 @@ type
     EdRad: TEdit;
     Label9: TLabel;
     EGrPl: TEdit;
-    Label10: TLabel;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure ShowAntProp(AntName:string);

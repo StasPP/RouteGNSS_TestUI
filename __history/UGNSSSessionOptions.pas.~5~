@@ -166,8 +166,6 @@ var I, j, SolN, SessionN: integer;
 begin
     isChanged := false;
 
-    TODO!
-
     for I := 0 to Length(ActiveGNSSSessions) - 1 do
     if GNSSSessions[ActiveGNSSSessions[I]].Antenna.AntName <>
        FGNSSSessionOptions.AntNameBox.Text  then

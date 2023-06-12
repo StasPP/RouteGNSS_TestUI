@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, GNSSObjects, StdCtrls, ComCtrls, ExtCtrls, Buttons, jpeg,
-  RTKLibExecutor, GeoFunctions, GeoString;
+  RTKLibExecutor, GeoFunctions;
 
 type
   TFGNSSSessionOptions = class(TForm)
@@ -161,12 +161,10 @@ uses FLoader, UStartProcessing, UGNSSPointSettings, UAntProp;
 
 procedure CheckAntennaPOSChange;
 var I, j, SolN, SessionN: integer;
-    dE, dN, dH, realH: Double;
+    dE, dN, dH: Double;
     WarnMe, isChanged: boolean;
 begin
     isChanged := false;
-
-    TODO!
 
     for I := 0 to Length(ActiveGNSSSessions) - 1 do
     if GNSSSessions[ActiveGNSSSessions[I]].Antenna.AntName <>
@@ -176,22 +174,13 @@ begin
      // 1) Analyse is N - E equal
 
      dN := StrToFloat2(FGNSSSessionOptions.EAntdN.Text) -
-           GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN;
-     dE := StrToFloat2(FGNSSSessionOptions.EAntdE.Text) -
-           GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE;
+     dE :=
+
+     dH :=
 
 
-     // 2) Recompute AntH ftom AntH_u
 
-     realH := StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
-     realH := GetAntH(realH,
-                      FGNSSSessionOptions.AntNameBox.Text,
-                      FGNSSSessionOptions.AntMethodBox.ItemIndex);
-
-     dH := realH -
-           GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant;
-
-
+     // 2) Recompute AntH ftom AntH_u, check if it is the same
 
      // 2.5) Ask user!
 

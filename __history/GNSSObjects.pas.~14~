@@ -2301,8 +2301,7 @@ begin
   if (isAdd) then
     ARFile.Insert(LineN, NewAnt.AntName + #$9 + FloatToStr(NewAnt.Radius)
           + #$9 + FloatToStr(NewAnt.GroundPlaneH));
-          
-  ARFile.SaveToFile(ARFilePath);
+
 end;
 
 procedure GetAntList;
@@ -2347,15 +2346,12 @@ end;
 
 procedure DestroyGNSSObjs;
 begin
-  try
-    if PCVFile <> nil then
-      PCVFile.Destroy;
-    if ARFile <> nil then
-      ARFile.Destroy;
-    if GNSSDebug <> nil then
-      GNSSDebug.Destroy
-  except
-  end;
+  if PCVFile <> nil then
+    PCVFile.Destroy;
+  if ARFile <> nil then
+    PCVFile.Destroy;
+  if GNSSDebug <> nil then
+    GNSSDebug.Destroy
 end;
 
 

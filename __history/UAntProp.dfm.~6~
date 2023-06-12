@@ -32,7 +32,7 @@ object FAntProp: TFAntProp
   object NameEd: TEdit
     Left = 8
     Top = 23
-    Width = 153
+    Width = 136
     Height = 21
     MaxLength = 21
     TabOrder = 0
