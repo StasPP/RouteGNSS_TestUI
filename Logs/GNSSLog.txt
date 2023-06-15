@@ -1,8 +1,8 @@
-4:10:14 PM Loaded session: karg219e20
-4:10:14 PM Added new Point: KARG for Session: karg219e20
-4:10:14 PM Adding Session: karg219e20_4404918 to Point: KARG
-4:10:14 PM Refreshing Point: KARG
-4:10:14 PM Setting Coordinates for Point: KARG  from RINEX headers
-4:10:14 PM Assigned:  from RINEX headers
-4:10:14 PM Checking Points... 
-4:10:14 PM Checking Points is DONE! 
+9:26:41 PM Loaded session: karg219e20
+9:26:41 PM Added new Point: KARG for Session: karg219e20
+9:26:41 PM Adding Session: karg219e20_4404918 to Point: KARG
+9:26:41 PM Refreshing Point: KARG
+9:26:41 PM Setting Coordinates for Point: KARG  from RINEX headers
+9:26:41 PM Assigned:  from RINEX headers
+9:26:41 PM Checking Points... 
+9:26:41 PM Checking Points is DONE! 

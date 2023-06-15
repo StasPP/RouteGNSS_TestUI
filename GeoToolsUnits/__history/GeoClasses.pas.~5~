@@ -10,9 +10,6 @@ type
     BLH, XYZ :Tcoord3D;
   end;
 
-  TXYZ = record
-    X, Y, Z :Double;
-  end;
 
   TEllipsoid = record
     FileName : String;
@@ -23,7 +20,7 @@ type
   end;
 
   TConvertData = record
-    FileName : String;
+    FileName : String; 
     InputDatumName : String;
     ConvertDatumName : String;
     // Пониженный приоритет
@@ -99,8 +96,7 @@ type
 
   procedure AddProjection(DatumNumber: integer; ProjectionName: String);
 
-  function Coord3D(X, Y, Z :Double): TCoord3D; overload;
-  function Coord3D(XYZ: TXYZ): TCoord3D; overload;
+  function Coord3D(X, Y, Z :Double): TCoord3D;
 
   var EllipsoidList: array of TEllipsoid;
       DatumList: array of TDatum;
@@ -609,10 +605,6 @@ begin
   Result[1] := X;       Result[2] := Y;     Result[3] := Z;
 end;
 
-function Coord3D(XYZ: TXYZ): TCoord3D; overload;
-begin
-  Result[1] := XYZ.X;   Result[2] := XYZ.Y;   Result[3] := XYZ.Z;
-end;
 
 end.
  

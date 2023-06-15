@@ -124,7 +124,7 @@ begin
   end;
 
   GetConsts;
-
+  
   B := B * pi / 180;
   L := L * pi / 180;
 
@@ -2052,7 +2052,7 @@ var N, e2, a : Double;
  var al : Double;
  begin
    a  := El.a;
-   al := El.alpha; //(El.a - El.a*El.alpha) / El.a;
+   al := (El.a - El.a*El.alpha) / El.a;
    e2 := 2*al - al*al;
  end;
 
@@ -2083,7 +2083,7 @@ var La, e2, a, D, r, p, c, s1, s2, b : Double;
  var al : Double;
  begin
    a  := El.a;
-   al := El.alpha;  //(El.a - El.a*El.alpha) / El.a;
+   al := (El.a - El.a*El.alpha) / El.a;
    e2 := 2*al - al*al;
  end;
 
@@ -2212,7 +2212,8 @@ begin
     Result.BLH[3] := 0;
 
   { H = BLH[3] - высота топоцентрической плоскости над эллипсоидом в точке B, L.
-    Если H = 0, то начало топоцентрической СК проецируется на эллипсоид}
+    Если H = 0, то начало топоцентрической СК проецируется на эллипсоид
+    Здесь и далее - понятие топоцентрической плоскости применяется к Луне}
 end;
 
 // входные:  начало ТЦСК в виде  X, Y, Z (м);

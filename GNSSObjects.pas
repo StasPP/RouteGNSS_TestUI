@@ -3,16 +3,12 @@ unit GNSSObjects;
 interface
 
 uses GeoString, GeoTime, Classes, SysUtils, TabFunctions, DateUtils, Dialogs,
-    ComCtrls, Math;
+    ComCtrls, Math, GeoClasses;
 
 type
   TGNSSSatSystems = record
     isGPS, isGLO, isBDS, isGAL,
     isSBAS, isQZSS, isNAVIC :boolean;
-  end;
-
-  TXYZ = record
-    X, Y, Z :Double;
   end;
 
   TGNSSAntHgt = record

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, GNSSObjects, StdCtrls, ComCtrls, ExtCtrls, Buttons, jpeg,
-  RTKLibExecutor, GeoFunctions;
+  RTKLibExecutor, GeoFunctions, GeoString;
 
 type
   TFGNSSSessionOptions = class(TForm)
@@ -161,26 +161,96 @@ uses FLoader, UStartProcessing, UGNSSPointSettings, UAntProp;
 
 procedure CheckAntennaPOSChange;
 var I, j, SolN, SessionN: integer;
+    dE, dN, dH, realH: Double;
     WarnMe, isChanged: boolean;
 begin
-    isChanged := false;
+  isChanged := false;
 
-    for I := 0 to Length(ActiveGNSSSessions) - 1 do
-    if GNSSSessions[ActiveGNSSSessions[I]].Antenna.AntName <>
-       FGNSSSessionOptions.AntNameBox.Text  then
-      isChanged := true;
+  for I := 0 to Length(ActiveGNSSSessions) - 1 do
+  begin
+     // 1) Compare dE, dN
 
-     TODO:
+     dN := StrToFloat2(FGNSSSessionOptions.EAntdN.Text) -
+           GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN;
+     dE := StrToFloat2(FGNSSSessionOptions.EAntdE.Text) -
+           GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE;
 
-     // 1) Analyse is N - E equal
+     isChanged := (abs(dN) > 0.001) or (abs(dE) > 0.001);
+     if isChanged then
+       break;
 
-     // 2) Recompute AntH ftom AntH_u, check if it is the same
+     // 2) Recompute AntH from AntH_u and compare
 
-     // 2.5) Ask user!
+     realH := StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
+     realH := GetAntH(realH,
+                      FGNSSSessionOptions.AntNameBox.Text,
+                      FGNSSSessionOptions.AntMethodBox.ItemIndex);
+     dH := realH -
+           GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant;
 
-     // 3) if not the same - go to solutions - recompute XYZ + d(XYZ) by ENU
+     isChanged := (abs(dH) > 0.001);
+     if isChanged then
+       break
+  end;
 
-     // 4) refresh station
+  // 2.5) Ask user!
+  if not isChanged then
+    exit
+  else
+    if MessageDLG('The Antenna position hase been cahnged. Apply?',
+      mtConfirmarion, [mbYes, mbNo]) <> 6 then
+      exit;
+
+  // 3) Apply
+  for I := 0 to Length(ActiveGNSSSessions) - 1 do
+  begin
+     // 3.1 Calculate Deltas
+     dN := StrToFloat2(FGNSSSessionOptions.EAntdN.Text) -
+           GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN;
+     dE := StrToFloat2(FGNSSSessionOptions.EAntdE.Text) -
+           GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE;
+     realH := StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
+     realH := GetAntH(realH,
+                      FGNSSSessionOptions.AntNameBox.Text,
+                      FGNSSSessionOptions.AntMethodBox.ItemIndex);
+     dH := realH -
+           GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant;
+
+     // 3.2 Assign
+
+     GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN     :=
+        StrToFloat2(FGNSSSessionOptions.EAntdN.Text);
+     GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE     :=
+        StrToFloat2(FGNSSSessionOptions.EAntdE.Text);
+     GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant    :=
+        realH;
+     GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant_u  :=
+        StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
+     GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hkind   :=
+        FGNSSSessionOptions.AntMethodBox.ItemIndex;
+
+
+
+     // 3.5) if not the same - go to solutions - recompute XYZ + d(XYZ) by ENU
+     if (abs(dN) > 0.001) or (abs(dE) > 0.001) or (abs(dE) > 0.001) then
+     begin
+        // TODO!
+        for j := 1 to Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) - 1 do
+        with GNSSSessions[ActiveGNSSSessions[I]].Solutions[j] do
+        begin
+          PointPos.X := PointPos.X - dX;
+          PointPos.Y := PointPos.Y - dY;
+          PointPos.Z := PointPos.Z - dZ;
+        end;  
+        // 4) refresh station
+     end;
+  end;
+
+
+
+
+
+     
 
 end;
 

@@ -223,7 +223,7 @@ var GN:Integer;
 begin
   if Length(GeoidList) < N then
     SetLength(GeoidList, N);
-  GN := FindGeoidMeta(GID);
+  GN := FindGeoid(GID);
   if GN <> -1 then
     if GeoidList[N].NameID <> GeoidsMetaData[GN].NameID then
         ReloadGeoid(GeoidDir + GeoidsMetaData[GN].FileName, N);
@@ -404,10 +404,10 @@ begin
         end;
 
         if Pos(NameIDS, AnsiLowerCase(Str)) > 0 then
-            GeoidsMetaData[j].NameID := Trim(GetCols(Str,1,GetColCount(Str,' '),' ',false));
+            GeoidsMetaData[j].NameID := GetCols(Str,1,GetColCount(Str,' '),' ',false);
 
         if Pos(CaptionS, AnsiLowerCase(Str)) > 0 then
-            GeoidsMetaData[j].Caption := Trim(GetCols(Str,1,GetColCount(Str,' '),' ',false));
+            GeoidsMetaData[j].Caption := GetCols(Str,1,GetColCount(Str,' '),' ',false);
 
         if K < 50 then
             GeoidsMetaData[j].Discription := GeoidsMetaData[j].Discription + Str + #13#10;

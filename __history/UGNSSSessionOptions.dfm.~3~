@@ -751,7 +751,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     Top = 59
     Width = 441
     Height = 182
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Main'
@@ -2160,7 +2160,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
             Left = 11
             Top = 23
             Width = 190
-            Height = 83
+            Height = 84
             ReadOnly = True
             ScrollBars = ssVertical
             TabOrder = 0

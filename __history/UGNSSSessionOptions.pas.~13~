@@ -821,7 +821,7 @@ begin
         Zone := 0;
         GeoToUTM(FindDatum('WGS84'), B, L, B < 0, N, E, Zone, true);
         dH   := GetGeoidH(0, B, L);  /// WGS ONLY!
-        H    := H - dH;
+        H    := H + dH;
 
         SolInfo.Lines.Add('UTM WGS84, Zone ' + IntToStr(Zone) +':');
         SolInfo.Lines.Add('N: '+ FormatFloat('### ### ### ##0.000', N));
