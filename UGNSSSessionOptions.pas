@@ -124,6 +124,7 @@ type
     procedure AvProcDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
       State: TOwnerDrawState);
     procedure AntNameBoxChange(Sender: TObject);
+    procedure PageControlChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -199,9 +200,7 @@ begin
   if not isChanged then
     exit
   else
-  if Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) <= 1 then
-    exit
-  else
+  if Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) > 1 then
   if MessageDLG('The Antenna position hase been cahnged. Apply?',
         mtConfirmation, [mbYes, mbNo], 0) <> 6 then
     exit;
@@ -234,25 +233,29 @@ begin
         FGNSSSessionOptions.AntMethodBox.ItemIndex;
 
      // 3.3 if not the same - go to solutions - recompute XYZ + d(XYZ) by ENU
-     if (abs(dN) >= 0.001) or (abs(dE) >= 0.001) or (abs(dE) >= 0.001) then
+     if (abs(dN) >= 0.001) or (abs(dE) >= 0.001) or (abs(dH) >= 0.001) then
      begin
         // TODO!
         for j := 1 to Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) - 1 do
         with GNSSSessions[ActiveGNSSSessions[I]].Solutions[j] do
+        if SolutionKind > 1 then
         begin
           El := EllipsoidList[FindEllipsoid('WGS84')];
           TOrg := GetTopoOriginFromXYZ(Coord3D(PointPos), false, El);
-          newXYZ := NEHToXYZ(Coord3D(dN, dE, dH), El, TOrg);
+          newXYZ := NEHToXYZ(Coord3D(-dN, -dE, -dH), El, TOrg);
 
-          showmessage(FloatToStr(newXYZ[1] - PointPos.X)+' '+
-                      FloatToStr(newXYZ[2] - PointPos.Y)+' '+
-                      FloatToStr(newXYZ[3] - PointPos.Z));
+//          showmessage(FloatToStr(newXYZ[1] - PointPos.X)+' '+
+//                      FloatToStr(newXYZ[2] - PointPos.Y)+' '+
+//                      FloatToStr(newXYZ[3] - PointPos.Z));
 //          showmessage(TOrg.BLH.B+' '+TOrg.BLH.L+' '+TOrg.BLH.H+' ')
           PointPos.X := newXYZ[1];
           PointPos.Y := newXYZ[2];
           PointPos.Z := newXYZ[3];
         end;
         // 4) refresh station
+        j := GetGNSSPointNumber(GNSSSessions[ActiveGNSSSessions[I]].Station);
+        if j > -1 then
+          RefreshGNSSPoint(j);
      end;
   end;
 
@@ -882,6 +885,14 @@ begin
   end;
 end;
 
+procedure TFGNSSSessionOptions.PageControlChange(Sender: TObject);
+begin
+  if not ( (AntNameBox.Font.Color = clRed) or (AntNameBox.Text='') )  then
+    CheckAntennaChange;
+  ///  ToDo: ApplyAntenna dN dE dH!!!
+  CheckAntennaPOSChange;
+end;
+
 procedure TFGNSSSessionOptions.PointPropBtnClick(Sender: TObject);
 var I:Integer;
 begin
@@ -1312,6 +1323,7 @@ end;
 
 procedure TFGNSSSessionOptions.TabSheet3Show(Sender: TObject);
 begin
+  PageControl.OnChange(nil);
   RefreshSettings;
   AvSol.OnClick(nil);
 end;

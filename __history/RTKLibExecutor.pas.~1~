@@ -197,7 +197,7 @@ begin
     if WaitForStart then
     begin
      // showmessage(S[I][1]);
-      if (s[I][1] <> '%') and (s[I][1] <> ' ') then
+      if s[I][1] <> '%' then
       begin
          WaitForStart := false;
          SetLength(A, S.Count - I)
@@ -506,7 +506,7 @@ begin
       j := j*2;
     end else
       RTKSettings.AvailableGNSS[I] := true;
-
+      
    for I := 0 to S.Count - 1 do
    begin
      if Pos('pos1-posmode', S[I]) =1 then

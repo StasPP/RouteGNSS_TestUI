@@ -1,8 +1,31 @@
-9:26:41 PM Loaded session: karg219e20
-9:26:41 PM Added new Point: KARG for Session: karg219e20
-9:26:41 PM Adding Session: karg219e20_4404918 to Point: KARG
-9:26:41 PM Refreshing Point: KARG
-9:26:41 PM Setting Coordinates for Point: KARG  from RINEX headers
-9:26:41 PM Assigned:  from RINEX headers
-9:26:41 PM Checking Points... 
-9:26:41 PM Checking Points is DONE! 
+1:44:09 AM Loaded session: karg219e20
+1:44:09 AM Added new Point: KARG for Session: karg219e20
+1:44:09 AM Adding Session: karg219e20_4404918 to Point: KARG
+1:44:09 AM Refreshing Point: KARG
+1:44:09 AM Setting Coordinates for Point: KARG  from RINEX headers
+1:44:09 AM Assigned:  from RINEX headers
+1:44:09 AM Checking Points... 
+1:44:09 AM Checking Points is DONE! 
+1:44:23 AM Loaded session: ubin219e20
+1:44:23 AM Added new Point: UBIN for Session: ubin219e20
+1:44:23 AM Adding Session: ubin219e20_4404918 to Point: UBIN
+1:44:23 AM Refreshing Point: UBIN
+1:44:23 AM Setting Coordinates for Point: UBIN  from RINEX headers
+1:44:23 AM Assigned:  from RINEX headers
+1:44:23 AM Checking Points... 
+1:44:23 AM Checking Points is DONE! 
+1:44:23 AM Added Vector: karg219e20 -> ubin219e20
+1:44:26 AM Started baseline processing: karg219e20 -> ubin219e20
+1:44:32 AM Applying Solution to the Vector: karg219e20 -> ubin219e20
+1:44:32 AM Assigning status for Session : ubin219e20 to [Fixed]
+1:44:32 AM Refreshing Point: UBIN
+1:44:32 AM Setting Coordinates for Point: UBIN  from Baselines Adjustment
+1:44:32 AM Assigned:  from Solution #1 of Session: ubin219e20
+1:44:32 AM Applying new coordinates for Session: ubin219e20 - Stack level: 1
+1:44:32 AM Refreshing Point: UBIN
+1:44:32 AM Setting Coordinates for Point: UBIN  from Baselines Adjustment
+1:44:32 AM Assigned:  from Solution #1 of Session: ubin219e20
+1:44:52 AM Refreshing Point: UBIN
+1:44:52 AM Setting Coordinates for Point: UBIN  from Baselines Adjustment
+1:44:52 AM Assigned:  from Solution #1 of Session: ubin219e20
+1:44:52 AM Applying new coordinates for Session: ubin219e20 - Stack level: 1

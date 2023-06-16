@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, GNSSObjects, StdCtrls, ComCtrls, ExtCtrls, Buttons, jpeg,
-  RTKLibExecutor, GeoFunctions, GeoString;
+  RTKLibExecutor, GeoFunctions, GeoString, Geoid;
 
 type
   TFGNSSSessionOptions = class(TForm)
@@ -155,47 +155,112 @@ var
 
 implementation
 
-uses FLoader, UStartProcessing, UGNSSPointSettings, UAntProp;
+uses FLoader, UStartProcessing, UGNSSPointSettings, UAntProp, GeoClasses;
 
 {$R *.dfm}
 
 procedure CheckAntennaPOSChange;
 var I, j, SolN, SessionN: integer;
     dE, dN, dH, realH: Double;
+    newXYZ :TCoord3D;
+    TOrg: TTopoOrigin;  El:TEllipsoid;
     WarnMe, isChanged: boolean;
 begin
-    isChanged := false;
+  isChanged := false;
 
-    for I := 0 to Length(ActiveGNSSSessions) - 1 do
-    if GNSSSessions[ActiveGNSSSessions[I]].Antenna.AntName <>
-       FGNSSSessionOptions.AntNameBox.Text  then
-      isChanged := true;
-
-     // 1) Analyse is N - E equal
+  for I := 0 to Length(ActiveGNSSSessions) - 1 do
+  begin
+     // 1) Compare dE, dN
 
      dN := StrToFloat2(FGNSSSessionOptions.EAntdN.Text) -
            GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN;
      dE := StrToFloat2(FGNSSSessionOptions.EAntdE.Text) -
            GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE;
 
+     isChanged := (abs(dN) >= 0.001) or (abs(dE) >= 0.001);
+     if isChanged then
+       break;
 
-     // 2) Recompute AntH ftom AntH_u
+     // 2) Recompute AntH from AntH_u and compare
 
      realH := StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
      realH := GetAntH(realH,
                       FGNSSSessionOptions.AntNameBox.Text,
                       FGNSSSessionOptions.AntMethodBox.ItemIndex);
-
      dH := realH -
            GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant;
 
+     isChanged := (abs(dH) >= 0.001);
+     if isChanged then
+       break
+  end;
+
+  // 2.5) Ask user!
+  if not isChanged then
+    exit
+  else
+  if Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) <= 1 then
+    exit
+  else
+  if MessageDLG('The Antenna position hase been cahnged. Apply?',
+        mtConfirmation, [mbYes, mbNo], 0) <> 6 then
+    exit;
+
+  // 3) Apply
+  for I := 0 to Length(ActiveGNSSSessions) - 1 do
+  begin
+     // 3.1 Calculate Deltas
+     dN := StrToFloat2(FGNSSSessionOptions.EAntdN.Text) -
+           GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN;
+     dE := StrToFloat2(FGNSSSessionOptions.EAntdE.Text) -
+           GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE;
+     realH := StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
+     realH := GetAntH(realH,
+                      FGNSSSessionOptions.AntNameBox.Text,
+                      FGNSSSessionOptions.AntMethodBox.ItemIndex);
+     dH := realH -
+           GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant;
+
+     // 3.2 Assign
+     GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN     :=
+        StrToFloat2(FGNSSSessionOptions.EAntdN.Text);
+     GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE     :=
+        StrToFloat2(FGNSSSessionOptions.EAntdE.Text);
+     GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant    :=
+        realH;
+     GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant_u  :=
+        StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
+     GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hkind   :=
+        FGNSSSessionOptions.AntMethodBox.ItemIndex;
+
+     // 3.3 if not the same - go to solutions - recompute XYZ + d(XYZ) by ENU
+     if (abs(dN) >= 0.001) or (abs(dE) >= 0.001) or (abs(dE) >= 0.001) then
+     begin
+        // TODO!
+        for j := 1 to Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) - 1 do
+        with GNSSSessions[ActiveGNSSSessions[I]].Solutions[j] do
+        begin
+          El := EllipsoidList[FindEllipsoid('WGS84')];
+          TOrg := GetTopoOriginFromXYZ(Coord3D(PointPos), false, El);
+          newXYZ := NEHToXYZ(Coord3D(dN, dE, dH), El, TOrg);
+
+          showmessage(FloatToStr(newXYZ[1] - PointPos.X)+' '+
+                      FloatToStr(newXYZ[2] - PointPos.Y)+' '+
+                      FloatToStr(newXYZ[3] - PointPos.Z));
+//          showmessage(TOrg.BLH.B+' '+TOrg.BLH.L+' '+TOrg.BLH.H+' ')
+          PointPos.X := newXYZ[1];
+          PointPos.Y := newXYZ[2];
+          PointPos.Z := newXYZ[3];
+        end;
+        // 4) refresh station
+     end;
+  end;
 
 
-     // 2.5) Ask user!
 
-     // 3) if not the same - go to solutions - recompute XYZ + d(XYZ) by ENU
 
-     // 4) refresh station
+
+
 
 end;
 
@@ -708,7 +773,8 @@ begin
 end;
 
 procedure TFGNSSSessionOptions.AvSolClick(Sender: TObject);
-var I:integer;
+var I, Zone:integer;
+    B, L, H, E, N, dH :Double;
 begin
   if AvSol.ItemIndex > -1 then
   begin
@@ -740,9 +806,28 @@ begin
         SolInfo.Lines.Add('Result coordinates: ');
 
         // ToDo: Thanslate into user's system
+        SolInfo.Lines.Add('ECEF WGS84:');
         SolInfo.Lines.Add('X: '+ FormatFloat('### ### ### ##0.000',Solutions[AvSol.ItemIndex].PointPos.X));
         SolInfo.Lines.Add('Y: '+ FormatFloat('### ### ### ##0.000',Solutions[AvSol.ItemIndex].PointPos.Y));
         SolInfo.Lines.Add('Z: '+ FormatFloat('### ### ### ##0.000',Solutions[AvSol.ItemIndex].PointPos.Z));
+
+        SolInfo.Lines.Add('Lat-Long WGS84:');
+        with Solutions[AvSol.ItemIndex].PointPos do
+          ECEFToGeo(FindDatum('WGS84'), X, Y, Z, B, L, H);
+        SolInfo.Lines.Add('B: '+ DegToDMS(B, true,  5));
+        SolInfo.Lines.Add('L: '+ DegToDMS(L, false, 5));
+        SolInfo.Lines.Add('H: '+ FormatFloat('0.000', H));
+
+        Zone := 0;
+        GeoToUTM(FindDatum('WGS84'), B, L, B < 0, N, E, Zone, true);
+        dH   := GetGeoidH(0, B, L);  /// WGS ONLY!
+        H    := H - dH;
+
+        SolInfo.Lines.Add('UTM WGS84, Zone ' + IntToStr(Zone) +':');
+        SolInfo.Lines.Add('N: '+ FormatFloat('### ### ### ##0.000', N));
+        SolInfo.Lines.Add('E: '+ FormatFloat('### ### ### ##0.000', E));
+        SolInfo.Lines.Add('H: '+ FormatFloat('0.000', H));
+
 
         if Solutions[AvSol.ItemIndex].SolutionKind > 0 then
         begin
