@@ -883,7 +883,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Height = 13
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'dN, m:'
+        Caption = 'dE, m:'
       end
       object Label17: TLabel
         Left = 51
@@ -892,7 +892,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Height = 13
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'dE, m:'
+        Caption = 'dN, m:'
       end
       object Label18: TLabel
         Left = 3

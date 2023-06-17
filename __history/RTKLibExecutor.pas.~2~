@@ -557,16 +557,16 @@ begin
        S[I] := 'ant1-anttype       =' +  Ant1;
 
      if Pos('ant1-antdele', S[I]) =1 then
-       S[I] := 'ant1-antdele       =' +  FormatFloat('0.000', A1N);
+       S[I] := 'ant1-antdele       =' +  FormatFloat('0.000', A1E);
      if Pos('ant1-antdeln', S[I]) =1 then
-       S[I] := 'ant1-antdeln       =' +  FormatFloat('0.000', A1E);
+       S[I] := 'ant1-antdeln       =' +  FormatFloat('0.000', A1N);
      if Pos('ant1-antdelu', S[I]) =1 then
        S[I] := 'ant1-antdelu       =' +  FormatFloat('0.000', A1H);
 
      if Pos('ant2-antdele', S[I]) =1 then
-       S[I] := 'ant2-antdele       =' +  FormatFloat('0.000', A2N);
+       S[I] := 'ant2-antdele       =' +  FormatFloat('0.000', A2E);
      if Pos('ant2-antdeln', S[I]) =1 then
-       S[I] := 'ant2-antdeln       =' +  FormatFloat('0.000', A2E);
+       S[I] := 'ant2-antdeln       =' +  FormatFloat('0.000', A2N);
      if Pos('ant2-antdelu', S[I]) =1 then
        S[I] := 'ant2-antdelu       =' +  FormatFloat('0.000', A2H);
 

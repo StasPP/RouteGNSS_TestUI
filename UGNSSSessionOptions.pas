@@ -201,7 +201,7 @@ begin
     exit
   else
   if Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) > 1 then
-  if MessageDLG('The Antenna position hase been cahnged. Apply?',
+  if MessageDLG('The Antenna position has been changed. Apply?',
         mtConfirmation, [mbYes, mbNo], 0) <> 6 then
     exit;
 
@@ -238,16 +238,12 @@ begin
         // TODO!
         for j := 1 to Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) - 1 do
         with GNSSSessions[ActiveGNSSSessions[I]].Solutions[j] do
-        if SolutionKind > 1 then
+        if SolutionKind >= 1 then
         begin
           El := EllipsoidList[FindEllipsoid('WGS84')];
           TOrg := GetTopoOriginFromXYZ(Coord3D(PointPos), false, El);
           newXYZ := NEHToXYZ(Coord3D(-dN, -dE, -dH), El, TOrg);
 
-//          showmessage(FloatToStr(newXYZ[1] - PointPos.X)+' '+
-//                      FloatToStr(newXYZ[2] - PointPos.Y)+' '+
-//                      FloatToStr(newXYZ[3] - PointPos.Z));
-//          showmessage(TOrg.BLH.B+' '+TOrg.BLH.L+' '+TOrg.BLH.H+' ')
           PointPos.X := newXYZ[1];
           PointPos.Y := newXYZ[2];
           PointPos.Z := newXYZ[3];
@@ -255,7 +251,20 @@ begin
         // 4) refresh station
         j := GetGNSSPointNumber(GNSSSessions[ActiveGNSSSessions[I]].Station);
         if j > -1 then
+        begin
+          {if GNSSPoints[j].CoordSource = 4 then
+          begin
+             El     := EllipsoidList[FindEllipsoid('WGS84')];
+             TOrg   := GetTopoOriginFromXYZ(Coord3D(GNSSPoints[j].Position),
+                 false, El);
+             newXYZ := NEHToXYZ(Coord3D(-dN, -dE, -dH), El, TOrg);
+             GNSSPoints[j].Position.X :=  newXYZ[1];
+             GNSSPoints[j].Position.Y :=  newXYZ[2];
+             GNSSPoints[j].Position.Z :=  newXYZ[3];
+          end
+          else}
           RefreshGNSSPoint(j);
+        end;
      end;
   end;
 
