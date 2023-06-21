@@ -455,7 +455,6 @@ object FVectSettings: TFVectSettings
           0000FCFFCCCCFFFF0000FCFCFFFFCFFF0000FCCFFFFFFCFF0000FCCCCFFFFFFF
           0000FFFFFFFFFFFF0000FFFFFFFCCCCF0000FFCFFFFFFCCF0000FFFCFFFFCFCF
           0000FFFFCCCCFFCF0000FFFFFFFFFFFF0000}
-        OnClick = SpeedButton2Click
       end
       object BaselinesBox: TListBox
         Left = 6
@@ -475,7 +474,6 @@ object FVectSettings: TFVectSettings
         Height = 25
         Caption = 'Process All'
         TabOrder = 1
-        OnClick = Button3Click
       end
       object Button2: TButton
         Left = 145
@@ -492,7 +490,6 @@ object FVectSettings: TFVectSettings
         Height = 25
         Caption = 'Close'
         TabOrder = 3
-        OnClick = Button1Click
       end
       object PageControl2: TPageControl
         Left = 184
@@ -505,6 +502,7 @@ object FVectSettings: TFVectSettings
         object TabSheet3: TTabSheet
           Caption = 'TabSheet3'
           TabVisible = False
+          ExplicitHeight = 122
           object Label4: TLabel
             Left = 56
             Top = 55
@@ -517,6 +515,7 @@ object FVectSettings: TFVectSettings
           Caption = 'TabSheet4'
           ImageIndex = 1
           TabVisible = False
+          ExplicitHeight = 122
           object SpeedButton3: TSpeedButton
             Left = 96
             Top = 100
@@ -525,14 +524,14 @@ object FVectSettings: TFVectSettings
             Caption = 'Process the Vector'
             OnClick = SpeedButton3Click
           end
-          object isItmAc: TCheckBox
+          object CheckBox1: TCheckBox
             Left = 3
             Top = 3
             Width = 70
             Height = 17
             Caption = 'Turned on'
             TabOrder = 0
-            OnClick = isItmAcClick
+            OnClick = CheckBox1Click
           end
           object Memo2: TMemo
             Left = 0

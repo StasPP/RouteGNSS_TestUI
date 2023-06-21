@@ -68,9 +68,9 @@ const
                                       'Adjusted Baselines (poor)',
                                       'Adjusted PPP',
                                       'User-Defined (Reference)');
-//  PointStatusColors: array [0..13] of TColor = (clGray, $0000FF80,
-//          $0002EAFD, clFuchsia, clPurple, $006000FF, clTeal,clGray,
-//          clRed, clOlive, $000080FF, clOlive, clYellow, clBlue);
+  PointStatusColors: array [0..13] of TColor = (clGray, $0000FF80,
+          $0002EAFD, clFuchsia, clPurple, $006000FF, clTeal,clGray,
+          clRed, clOlive, $000080FF, clOlive, clYellow, clBlue);
 implementation
 
 {$R *.dfm}

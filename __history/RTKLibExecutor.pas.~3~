@@ -221,7 +221,7 @@ begin
     A[j].sdX  := StrToFloat2(GetCols(S[I], 7, 1, ' ', false));
     A[j].sdY  := StrToFloat2(GetCols(S[I], 8, 1, ' ', false));
     A[j].sdZ  := StrToFloat2(GetCols(S[I], 9, 1, ' ', false));
-    A[j].sdXY := StrToFloat2(GetCols(S[I], 10,1, ' ', false));
+    A[j].sdXY := StrToFloat2(GetCols(S[I], 10, 1, ' ', false));
     A[j].sdYZ := StrToFloat2(GetCols(S[I], 11,1, ' ', false));
     A[j].sdZX := StrToFloat2(GetCols(S[I], 12,1, ' ', false));
 

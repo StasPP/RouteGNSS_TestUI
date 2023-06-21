@@ -1238,7 +1238,7 @@ begin
 end;
 
 procedure TForm1.VectorProcClick(Sender: TObject);
-var I, j:Integer; A :Array of byte; B, C :Array of Integer;
+var I, j:Integer; A :Array of byte; B, C :Array of TGNSSSession;
 begin
   SetLength(A, 0);  SetLength(B, 0);  SetLength(C, 0);
   For I := 0 To BaseLinesBox.Items.Count-1 Do
@@ -1251,8 +1251,8 @@ begin
         j := Length(A);
         SetLength(A, j+1); SetLength(B, j+1);   SetLength(C, j+1);
         A[j] := 2;
-        B[j] := GetGNSSSessionNumber(GNSSVectors[I].RoverId);
-        C[j] := GetGNSSSessionNumber(GNSSVectors[I].BaseId);
+        B[j] := GNSSSessions[GetGNSSSessionNumber(GNSSVectors[I].RoverId)];
+        C[j] := GNSSSessions[GetGNSSSessionNumber(GNSSVectors[I].BaseId)];
      end;
   end;
 

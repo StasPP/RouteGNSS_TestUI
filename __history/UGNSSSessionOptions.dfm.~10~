@@ -757,10 +757,6 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     object TabSheet1: TTabSheet
       Caption = 'Main'
       OnShow = TabSheet1Show
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 11
         Top = 5
@@ -864,7 +860,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
           Top = 19
           Width = 166
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 1
           OnChange = StationBoxChange
         end
@@ -2088,10 +2084,6 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         object TabSheet7: TTabSheet
           Caption = 'ChoosedReady'
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object ChoosedSol: TLabel
             Left = 30
             Top = 4
@@ -2179,10 +2171,6 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
           Caption = 'NoChoosed'
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label6: TLabel
             Left = 63
             Top = 52
@@ -2195,10 +2183,6 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
           Caption = 'ChoosedAvailable'
           ImageIndex = 2
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object SpeedButton3: TSpeedButton
             Left = 16
             Top = 106
@@ -2236,10 +2220,6 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     object TabSheet4: TTabSheet
       Caption = 'Session Info'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label2: TLabel
         Left = -1
         Top = 7
@@ -2330,10 +2310,6 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       Caption = 'Additional data'
       ImageIndex = 4
       OnShow = TabSheet5Show
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label13: TLabel
         Left = 11
         Top = 5
@@ -2442,10 +2418,6 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     object TabSheet6: TTabSheet
       Caption = 'Stops'
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label9: TLabel
         Left = 11
         Top = 6

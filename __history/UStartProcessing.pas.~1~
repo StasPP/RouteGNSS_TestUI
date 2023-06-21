@@ -51,18 +51,18 @@ type
     { Private declarations }
   public
      procedure ShowProcOptions(Method: Byte; // 1 - Single, 2 - BaseLine, 3 - PPP
-        Rover, Base :Integer);
+        Rover, Base :TGNSSSession);
 
      procedure ShowMultiProcOptions(Method: Array of Byte; // 1 - Single, 2 - BaseLine, 3 - PPP
-        Rover, Base :Array of Integer);
+        Rover, Base :Array of TGNSSSession);
     { Public declarations }
   end;
 
 var
   FStartProcessing: TFStartProcessing;
   ProcMethod: Byte;  ProcMethods: Array of Byte;
-  pRover, pBase :Integer;
-  mRover, mBase :Array of Integer;
+  pRover, pBase :TGNSSSession;
+  mRover, mBase :Array of TGNSSSession;
 
 implementation
 
@@ -87,7 +87,7 @@ begin
 end;
 
 procedure TFStartProcessing.ShowProcOptions(Method: Byte;
-                  Rover, Base:Integer);
+                  Rover, Base:TGNSSSession);
 begin
 
   ProcMethod := Method;
@@ -98,19 +98,19 @@ begin
   case Method of
      1:
      begin
-       SessionLabel.Caption := GNSSSessions[Rover].Station;
+       SessionLabel.Caption := Rover.Station;
        LProcKind.Caption := 'Single processing'; /// ToDo: Translate
      end;
 
      2:
      begin
-       SessionLabel.Caption := GNSSSessions[Base].Station +'-'+GNSSSessions[Rover].Station;
+       SessionLabel.Caption := Base.Station +'-'+Rover.Station;
        LProcKind.Caption := 'Baseline processing'; /// ToDo: Translate
        TabSheet2Show(nil);
      end;
 
      3: begin
-       SessionLabel.Caption := GNSSSessions[Rover].Station;
+       SessionLabel.Caption := Rover.Station;
        LProcKind.Caption := 'Precise Point Positioning';
      end;
   end;
@@ -128,12 +128,12 @@ begin
   HasKinematicOnly := true;
 
   if ProcMethod = 2 then
-    HasKinematicOnly := GNSSSessions[pRover].isKinematic
+    HasKinematicOnly := pRover.isKinematic
   else
   if ProcMethod = 10 then
     for I := 0 to length(mRover) - 1 do
     begin
-       if not GNSSSessions[mRover[I]].isKinematic then
+       if not mRover[I].isKinematic then
        begin
           HasKinematicOnly := false;
           break;
@@ -148,7 +148,7 @@ begin
 end;
 
 procedure TFStartProcessing.ShowMultiProcOptions(Method: Array of Byte;
-        Rover, Base :Array of Integer);
+        Rover, Base :Array of TGNSSSession);
 var I:Integer;
     commonM:byte;
 begin
@@ -156,7 +156,7 @@ begin
   commonM := 0;
 
   SetLength(ProcMethods, Length(Method));
-  for I := 0 to Length(Method)-1 do
+  for I := 0 to Length(Method) do
     ProcMethods[I] := Method[I];
 
   CommonM := Method[0];
@@ -173,42 +173,38 @@ begin
     mBase[I] := Base[I];
 
   SetLength(mRover, Length(Rover));
-  for I := 0 to Length(mRover)-1 do
+  for I := 0 to Length(Rover)-1 do
     mRover[I] := Rover[I];
 
- 
+
   with FStartProcessing do
   case CommonM of
      1:
      begin
-       SessionLabel.Caption := GNSSSessions[mRover[0]].MaskName;
+       SessionLabel.Caption := mRover[0].MaskName;
 
        if Length(mRover) >= 2 then
-          SessionLabel.Caption := SessionLabel.Caption+', '+
-                        GNSSSessions[mRover[1]].MaskName;
+          SessionLabel.Caption := SessionLabel.Caption+', '+ mRover[1].MaskName;
 
        LProcKind.Caption := 'Single processing'; /// ToDo: Translate
      end;
 
      2:
      begin
-       SessionLabel.Caption := GNSSSessions[mBase[0]].MaskName + '-' +
-                                GNSSSessions[mRover[0]].MaskName;
+       SessionLabel.Caption := mBase[0].MaskName + '-' + mRover[0].MaskName;
        if Length(mRover) >= 2 then
           SessionLabel.Caption := SessionLabel.Caption + ', ' +
-                GNSSSessions[mBase[1]].MaskName + '-' +
-                GNSSSessions[mRover[1]].MaskName;
+                mBase[1].MaskName +'-'+mRover[1].MaskName;
 
        LProcKind.Caption := 'Baseline processing'; /// ToDo: Translate
        TabSheet2Show(nil);
      end;
 
      3: begin
-       SessionLabel.Caption := GNSSSessions[mRover[0]].MaskName;
+       SessionLabel.Caption := mRover[0].MaskName;
 
        if Length(mRover) >= 2 then
-          SessionLabel.Caption := SessionLabel.Caption+', '+
-             GNSSSessions[mRover[1]].MaskName;
+          SessionLabel.Caption := SessionLabel.Caption+', '+ mRover[1].MaskName;
 
        LProcKind.Caption := 'Precise Point Positioning';
      end;
@@ -217,8 +213,7 @@ begin
        SessionLabel.Caption := '(Multiplied selection)' ;    /// ToDo: Translate
 
        if Length(mRover) = 2 then
-          SessionLabel.Caption := SessionLabel.Caption+', '+
-                      GNSSSessions[mRover[1]].MaskName;
+          SessionLabel.Caption := SessionLabel.Caption+', '+ mRover[1].MaskName;
 
        LProcKind.Caption := '(Different methods)';  /// ToDo: Translate
 
@@ -248,15 +243,13 @@ begin
     PrepareProc;
 
     case ProcMethod of
-      1:  if SingleRTKProcess(GNSSSessions[pRover], ProcGNSS.Progress, ProcGNSS.Memo)
-       then  ProcGNSS.ShowModal2(GNSSSessions[pRover].MaskName, 0);
-      2:  if BaseLineRTKProcess(GNSSSessions[pRover], GNSSSessions[pBase],
-            ProcGNSS.Progress, ProcGNSS.Memo,
+      1:  if SingleRTKProcess(pRover, ProcGNSS.Progress, ProcGNSS.Memo)
+       then  ProcGNSS.ShowModal2(pRover.MaskName, 0);
+      2:  if BaseLineRTKProcess(pRover, pBase, ProcGNSS.Progress, ProcGNSS.Memo,
             isFixedMode.Checked, isDGNSS.Checked)
-       then ProcGNSS.ShowModal2(GNSSSessions[pRover].MaskName + '-' +
-            GNSSSessions[pBase].MaskName, 0);
-      3:  if PPPRTKProcess(GNSSSessions[pRover], ProcGNSS.Progress, ProcGNSS.Memo)
-       then  ProcGNSS.ShowModal2(GNSSSessions[pRover].MaskName, 0);
+       then ProcGNSS.ShowModal2(pRover.MaskName+'-'+pBase.MaskName, 0);
+      3:  if PPPRTKProcess(pRover, ProcGNSS.Progress, ProcGNSS.Memo)
+       then  ProcGNSS.ShowModal2(pRover.MaskName, 0);
 
       10:
       begin
@@ -264,22 +257,16 @@ begin
          for I := 0 to Length(ProcMethods) - 1 do
          begin
            case ProcMethods[I] of
-             1:  if SingleRTKProcess(GNSSSessions[mRover[I]],
-                      ProcGNSS.Progress, ProcGNSS.Memo)
-               then  ProcGNSS.ShowModal2(GNSSSessions[mRover[I]].MaskName,
-                      Length(ProcMethods)-1 - I);
-             2:  if BaseLineRTKProcess(GNSSSessions[mRover[I]],
-                      GNSSSessions[mBase[I]], ProcGNSS.Progress, ProcGNSS.Memo,
-                      isFixedMode.Checked, isDGNSS.Checked)
-               then ProcGNSS.ShowModal2(GNSSSessions[mRover[I]].MaskName+'-'+
-                      GNSSSessions[mBase[I]].MaskName,
-                      Length(ProcMethods)-1 - I);
-             3:  if PPPRTKProcess(GNSSSessions[mRover[I]],
-                      ProcGNSS.Progress, ProcGNSS.Memo)
-               then  ProcGNSS.ShowModal2(GNSSSessions[mRover[I]].MaskName,
-                      Length(ProcMethods)-1 - I);
+             1:  if SingleRTKProcess(mRover[I], ProcGNSS.Progress, ProcGNSS.Memo)
+               then  ProcGNSS.ShowModal2(mRover[I].MaskName, Length(ProcMethods)-1 - I);
+             2:  if BaseLineRTKProcess(mRover[I], mBase[I], ProcGNSS.Progress, ProcGNSS.Memo,
+                    isFixedMode.Checked, isDGNSS.Checked)
+               then ProcGNSS.ShowModal2(mRover[I].MaskName+'-'+mBase[I].MaskName,
+                    Length(ProcMethods)-1 - I);
+             3:  if PPPRTKProcess(mRover[I], ProcGNSS.Progress, ProcGNSS.Memo)
+               then  ProcGNSS.ShowModal2(mRover[I].MaskName, Length(ProcMethods)-1 - I);
            end;
-
+         
            if ProcGNSS.Cancelled then break;
          end;
 

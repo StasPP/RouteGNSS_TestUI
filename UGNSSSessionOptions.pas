@@ -459,8 +459,8 @@ begin
        2: begin
          N := GetGNSSSessionNumber(Solutions[AvSol.ItemIndex].BaseID);
          if N<> -1 then
-            FStartProcessing.ShowProcOptions(2, GNSSSessions[ActiveGNSSSessions[0]],
-                GNSSSessions[N]);
+            FStartProcessing.ShowProcOptions(2,ActiveGNSSSessions[0],
+                N);
        end;
      end;
      RefreshSettings;
@@ -1027,11 +1027,11 @@ end;
 procedure TFGNSSSessionOptions.GetPPPClick(Sender: TObject);
 var I :Integer;
     A :Array of Byte;
-    B :Array of TGNSSSession;
+    B :Array of Integer;
 begin
    if length(ActiveGNSSSessions)= 1 then
-     FStartProcessing.ShowProcOptions(3, GNSSSessions[ActiveGNSSSessions[0]],
-                  GNSSSessions[ActiveGNSSSessions[0]])
+     FStartProcessing.ShowProcOptions(3, ActiveGNSSSessions[0],
+                 ActiveGNSSSessions[0])
    else
    begin
       SetLength(A, Length(ActiveGNSSSessions));
@@ -1039,7 +1039,7 @@ begin
       for I := 0 to Length(ActiveGNSSSessions) - 1 do
       begin
          A[I] := 3;
-         B[I] := GNSSSessions[ActiveGNSSSessions[I]];
+         B[I] := ActiveGNSSSessions[I];
       end;
 
       FStartProcessing.ShowMultiProcOptions(A,B,B);
@@ -1050,11 +1050,11 @@ end;
 procedure TFGNSSSessionOptions.GetSingleClick(Sender: TObject);
 var I :Integer;
     A :Array of Byte;
-    B :Array of TGNSSSession;
+    B :Array of Integer;
 begin
    if length(ActiveGNSSSessions)= 1 then
-     FStartProcessing.ShowProcOptions(1, GNSSSessions[ActiveGNSSSessions[0]],
-                  GNSSSessions[ActiveGNSSSessions[0]])
+     FStartProcessing.ShowProcOptions(1, ActiveGNSSSessions[0],
+                  ActiveGNSSSessions[0])
    else
    begin
       SetLength(A, Length(ActiveGNSSSessions));
@@ -1062,7 +1062,7 @@ begin
       for I := 0 to Length(ActiveGNSSSessions) - 1 do
       begin
          A[I] := 1;
-         B[I] := GNSSSessions[ActiveGNSSSessions[I]];
+         B[I] := ActiveGNSSSessions[I];
       end;
 
       FStartProcessing.ShowMultiProcOptions(A,B,B);
@@ -1172,7 +1172,7 @@ begin
 end;
 
 procedure TFGNSSSessionOptions.ProcBLClick(Sender: TObject);
-var I, j:Integer; A :Array of byte; B, C :Array of TGNSSSession;
+var I, j:Integer; A :Array of byte; B, C :Array of Integer;
 begin
   SetLength(A, 0); SetLength(B, 0); SetLength(C, 0);
   j := 0;
@@ -1184,8 +1184,8 @@ begin
       SetLength(B, j+1);
       SetLength(C, j+1);
       A[j] := 2;
-      B[j] := GNSSSessions[GetGNSSSessionNumber(AvProcArr[I].RoverId)];
-      C[j] := GNSSSessions[GetGNSSSessionNumber(AvProcArr[I].BaseId)];
+      B[j] := GetGNSSSessionNumber(AvProcArr[I].RoverId);
+      C[j] := GetGNSSSessionNumber(AvProcArr[I].BaseId);
   end;
   if length(A) > 0 then
     FStartProcessing.ShowMultiProcOptions(A,B,C);
@@ -1231,8 +1231,7 @@ begin
       2: begin
          N := GetGNSSSessionNumber(AvProcArr[AvProc.ItemIndex].BaseId);
          if N<> -1 then
-            FStartProcessing.ShowProcOptions(2, GNSSSessions[ActiveGNSSSessions[0]],
-              GNSSSessions[N]);
+            FStartProcessing.ShowProcOptions(2, ActiveGNSSSessions[0], N);
       end;
     end;
   end;

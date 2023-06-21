@@ -525,14 +525,14 @@ object FVectSettings: TFVectSettings
             Caption = 'Process the Vector'
             OnClick = SpeedButton3Click
           end
-          object isItmAc: TCheckBox
+          object CheckBox1: TCheckBox
             Left = 3
             Top = 3
             Width = 70
             Height = 17
             Caption = 'Turned on'
             TabOrder = 0
-            OnClick = isItmAcClick
+            OnClick = CheckBox1Click
           end
           object Memo2: TMemo
             Left = 0

@@ -374,7 +374,7 @@ object FVectSettings: TFVectSettings
         Top = 3
         Width = 118
         Height = 17
-        Caption = 'Turned on'
+        Caption = 'Turn on'
         TabOrder = 0
         OnClick = isAcClick
       end
@@ -445,7 +445,7 @@ object FVectSettings: TFVectSettings
         Left = 82
         Top = 111
         Width = 87
-        Height = 23
+        Height = 21
         Caption = 'Reverse All'
         Glyph.Data = {
           CE000000424DCE0000000000000076000000280000000C0000000B0000000100
@@ -455,7 +455,6 @@ object FVectSettings: TFVectSettings
           0000FCFFCCCCFFFF0000FCFCFFFFCFFF0000FCCFFFFFFCFF0000FCCCCFFFFFFF
           0000FFFFFFFFFFFF0000FFFFFFFCCCCF0000FFCFFFFFFCCF0000FFFCFFFFCFCF
           0000FFFFCCCCFFCF0000FFFFFFFFFFFF0000}
-        OnClick = SpeedButton2Click
       end
       object BaselinesBox: TListBox
         Left = 6
@@ -464,9 +463,8 @@ object FVectSettings: TFVectSettings
         Height = 81
         Style = lbOwnerDrawFixed
         ItemHeight = 16
+        MultiSelect = True
         TabOrder = 0
-        OnClick = BaselinesBoxClick
-        OnDrawItem = BaselinesBoxDrawItem
       end
       object Button3: TButton
         Left = 6
@@ -475,7 +473,6 @@ object FVectSettings: TFVectSettings
         Height = 25
         Caption = 'Process All'
         TabOrder = 1
-        OnClick = Button3Click
       end
       object Button2: TButton
         Left = 145
@@ -492,22 +489,19 @@ object FVectSettings: TFVectSettings
         Height = 25
         Caption = 'Close'
         TabOrder = 3
-        OnClick = Button1Click
       end
       object PageControl2: TPageControl
         Left = 184
         Top = 5
         Width = 249
-        Height = 147
-        ActivePage = TabSheet4
-        Style = tsButtons
+        Height = 132
+        ActivePage = TabSheet3
         TabOrder = 4
         object TabSheet3: TTabSheet
           Caption = 'TabSheet3'
-          TabVisible = False
           object Label4: TLabel
             Left = 56
-            Top = 55
+            Top = 48
             Width = 120
             Height = 13
             Caption = 'Select the Vector for info'
@@ -516,42 +510,24 @@ object FVectSettings: TFVectSettings
         object TabSheet4: TTabSheet
           Caption = 'TabSheet4'
           ImageIndex = 1
-          TabVisible = False
-          object SpeedButton3: TSpeedButton
-            Left = 96
-            Top = 100
-            Width = 145
-            Height = 23
-            Caption = 'Process the Vector'
-            OnClick = SpeedButton3Click
-          end
-          object isItmAc: TCheckBox
+          object CheckBox1: TCheckBox
             Left = 3
             Top = 3
             Width = 70
             Height = 17
-            Caption = 'Turned on'
+            Caption = 'Turn on'
             TabOrder = 0
-            OnClick = isItmAcClick
           end
           object Memo2: TMemo
             Left = 0
             Top = 26
             Width = 241
-            Height = 68
+            Height = 78
+            Align = alBottom
             ReadOnly = True
-            ScrollBars = ssVertical
             TabOrder = 1
           end
         end
-      end
-      object Button7: TButton
-        Left = 320
-        Top = 10
-        Width = 109
-        Height = 22
-        Caption = 'Single Vector report'
-        TabOrder = 5
       end
     end
   end

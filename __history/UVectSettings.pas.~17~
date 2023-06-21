@@ -35,7 +35,7 @@ type
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
     Label4: TLabel;
-    isItmAc: TCheckBox;
+    CheckBox1: TCheckBox;
     Memo2: TMemo;
     Button7: TButton;
     SpeedButton3: TSpeedButton;
@@ -47,7 +47,7 @@ type
       Rect: TRect; State: TOwnerDrawState);
     procedure BaselinesBoxClick(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
-    procedure isItmAcClick(Sender: TObject);
+    procedure CheckBox1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -92,7 +92,7 @@ uses UStartProcessing;
 { TFVectSettings }
 
 procedure RefreshVectorSettings;
-var I, j, N:integer;
+var I, j:integer;
    BS, RS :string;
    StatI :integer;
 begin
@@ -112,8 +112,7 @@ begin
   End;
 
   with FVectSettings do
-  Begin 
-    N := BaseLinesBox.ItemIndex;
+  Begin
     if Length(VectorsN) > 1 then
     begin
       VPC.ActivePageIndex := 1;
@@ -132,7 +131,7 @@ begin
         BaseLinesBox.Items.Add( BS + ' -> ' + RS );
       end;
 
-      BaseLinesBox.ItemIndex := N;
+      BaseLinesBox.ItemIndex := 0;
       StatI := 0;
     end
     else
@@ -206,7 +205,6 @@ begin
   if StatI < 0 then
     StatI := -1;
   
-  isItmAc.Checked := GNSSVectors[VectorsN[I]].StatusQ >= 0;
   
   Memo2.Clear;
   Memo2.Lines.Add(BaselinesBox.Items[I]);
@@ -313,7 +311,7 @@ begin
   close;
 end;
 
-procedure TFVectSettings.isItmAcClick(Sender: TObject);
+procedure TFVectSettings.CheckBox1Click(Sender: TObject);
 var I:Integer;
 begin
   I := BaselinesBox.ItemIndex;
@@ -323,7 +321,7 @@ begin
   if isInit then
    exit;
    
-  case isItmAc.Checked of
+  case isAc.Checked of
     true:  EnableGNSSVector(VectorsN[I]);
     false:
     begin
@@ -331,7 +329,7 @@ begin
          if MessageDlg('The action can change the other data. Proceed?',
             mtConfirmation, [mbYes, mbNo], 0) <> 6 then 
             begin
-              isItmAc.Checked := true;
+              isAc.Checked := true;
               exit;
             end;
 
@@ -379,9 +377,6 @@ begin
     ImgList := Img;
 
     RefreshVectorSettings;
-    if VPC.ActivePageIndex = 1 then
-      BaseLinesBox.ItemIndex := 0;
-    
   finally
     Showmodal;
   end;

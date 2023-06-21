@@ -124,7 +124,6 @@ type
       Rect: TRect; State: TOwnerDrawState);
     procedure SessionBoxDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
-    procedure BaselinesBoxDblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -995,28 +994,6 @@ begin
   VectorProc.Enabled := EnCount >= 1;
 end;
 
-procedure TForm1.BaselinesBoxDblClick(Sender: TObject);
-var I, j:Integer;
-    isNotProcessed: boolean;
-begin
-
-  j := 0;
-  For I := 0 To BaseLinesBox.Items.Count-1 Do
-  begin
-     if BaseLinesBox.Selected[I] then
-     begin
-        inc(j);
-        if j = 1 then
-          isNotProcessed := GNSSVectors[I].StatusQ = 0;
-     end;
-  end;
-
-  if (j = 1) and (not isNotProcessed) then
-    VectorProp.Click
-  else
-    VectorProc.Click;
-end;
-
 procedure TForm1.BaselinesBoxDrawItem(Control: TWinControl; Index: Integer;
   Rect: TRect; State: TOwnerDrawState);
 var IcoN:integer;
@@ -1222,7 +1199,7 @@ begin
      if BaseLinesBox.Selected[I] then
      begin
        /// ToDo: Window of Vector's settings
-       FVectSettings.ShowVectorProp(I, IcoList);
+       ShowVectorProp(BaseLinesBox[I]);
        RefreshSessionList;
        break;
      end;
@@ -1238,7 +1215,7 @@ begin
 end;
 
 procedure TForm1.VectorProcClick(Sender: TObject);
-var I, j:Integer; A :Array of byte; B, C :Array of Integer;
+var I, j:Integer; A :Array of byte; B, C :Array of TGNSSSession;
 begin
   SetLength(A, 0);  SetLength(B, 0);  SetLength(C, 0);
   For I := 0 To BaseLinesBox.Items.Count-1 Do
@@ -1251,8 +1228,8 @@ begin
         j := Length(A);
         SetLength(A, j+1); SetLength(B, j+1);   SetLength(C, j+1);
         A[j] := 2;
-        B[j] := GetGNSSSessionNumber(GNSSVectors[I].RoverId);
-        C[j] := GetGNSSSessionNumber(GNSSVectors[I].BaseId);
+        B[j] := GNSSSessions[GetGNSSSessionNumber(GNSSVectors[I].RoverId)];
+        C[j] := GNSSSessions[GetGNSSSessionNumber(GNSSVectors[I].BaseId)];
      end;
   end;
 

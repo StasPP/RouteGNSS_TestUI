@@ -185,6 +185,7 @@ type
   procedure CheckGNSSVectorsForSession(SessionN:integer);  overload
 
   function GetGNSSVector(RoverId, BaseId:String):integer;
+  function GetGNSSVectorPoint(VectN: Integer; isBase: boolean):String;
   procedure EnableGNSSVector(VectorN:integer);
   procedure DisableGNSSVector(VectorN:integer);
   procedure InvertGNSSVector(VectorN:integer; GroupInv:Boolean = true);
@@ -1822,6 +1823,19 @@ begin
        result := I;
        break;
      end;
+end;
+
+function GetGNSSVectorPoint(VectN: Integer; isBase: boolean):String;
+var j :Integer;
+begin
+  result := '';
+  case isBase of
+     true:  j := GetGNSSSessionNumber(GNSSVectors[VectN].BaseID);
+     false: j := GetGNSSSessionNumber(GNSSVectors[VectN].RoverID);
+  end;
+
+  if j >= 0 then
+  result := GNSSSessions[j].Station;
 end;
 
 procedure AddSolutionFromVector(VectorN:integer);

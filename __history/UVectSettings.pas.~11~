@@ -35,10 +35,9 @@ type
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
     Label4: TLabel;
-    isItmAc: TCheckBox;
+    CheckBox1: TCheckBox;
     Memo2: TMemo;
     Button7: TButton;
-    SpeedButton3: TSpeedButton;
     procedure Button6Click(Sender: TObject);
     procedure isAcClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
@@ -46,11 +45,6 @@ type
     procedure BaselinesBoxDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
     procedure BaselinesBoxClick(Sender: TObject);
-    procedure SpeedButton3Click(Sender: TObject);
-    procedure isItmAcClick(Sender: TObject);
-    procedure SpeedButton2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     
   private
     { Private declarations }
@@ -92,7 +86,7 @@ uses UStartProcessing;
 { TFVectSettings }
 
 procedure RefreshVectorSettings;
-var I, j, N:integer;
+var I, j:integer;
    BS, RS :string;
    StatI :integer;
 begin
@@ -112,8 +106,7 @@ begin
   End;
 
   with FVectSettings do
-  Begin 
-    N := BaseLinesBox.ItemIndex;
+  Begin
     if Length(VectorsN) > 1 then
     begin
       VPC.ActivePageIndex := 1;
@@ -131,8 +124,6 @@ begin
         
         BaseLinesBox.Items.Add( BS + ' -> ' + RS );
       end;
-
-      BaseLinesBox.ItemIndex := N;
       StatI := 0;
     end
     else
@@ -170,7 +161,7 @@ begin
                         'mZX: '+ FormatFloat('0.0000', StDevs[6]) + ' m.');
       end
       else
-        Memo1.Lines.Add('No processing info yet');
+        Memo1.Lines.Add('No info yet');
     end;
 
     VectLabel.Caption := BaseId + ' -> ' + RoverId;
@@ -195,44 +186,12 @@ begin
 end;
 
 procedure TFVectSettings.BaselinesBoxClick(Sender: TObject);
-var I, StatI, j :integer;
+var I, j :integer;
 begin
   if BaselinesBox.ItemIndex = -1 then
     exit;
-
-  isInit := true;
-  I := BaselinesBox.ItemIndex;
-  StatI := GNSSVectors[VectorsN[I]].StatusQ;
-  if StatI < 0 then
-    StatI := -1;
-  
-  isItmAc.Checked := GNSSVectors[VectorsN[I]].StatusQ >= 0;
-  
-  Memo2.Clear;
-  Memo2.Lines.Add(BaselinesBox.Items[I]);
-  Memo2.Lines.Add(StatList[StatI]);
-  if (StatI > 0) and (StatI <> 8) then
-  with GNSSVectors[VectorsN[I]] do
-  begin
-    Memo2.Lines.Add('Vector length: '+FormatFloat('### ### ##0.000',
-                        SQRT(sqr(dX) + sqr(dY) + sqr(dZ)) ) + ' m;');
-
-    Memo2.Lines.Add('dX: '+ FormatFloat('### ### ##0.000', dX)  + ' m;');
-    Memo2.Lines.Add('dY: '+ FormatFloat('### ### ##0.000', dY)  + ' m;');
-    Memo2.Lines.Add('dZ: '+ FormatFloat('### ### ##0.000', dZ)  + ' m.');
-
-    Memo2.Lines.Add('StDevs / Covariation matrix elements:');
-    Memo2.Lines.Add('mX: '+ FormatFloat('0.0000', StDevs[1])  + ' m; ' +
-                    'mY: '+ FormatFloat('0.0000', StDevs[2])  + ' m; ' + 
-                    'mZ: '+ FormatFloat('0.0000', StDevs[3])  + ' m;');
-    Memo2.Lines.Add('mXY: '+ FormatFloat('0.0000', StDevs[4]) + ' m; ' +
-                    'mYZ: '+ FormatFloat('0.0000', StDevs[5]) + ' m; ' + 
-                    'mZX: '+ FormatFloat('0.0000', StDevs[6]) + ' m.');
-  end
-  else
-    Memo1.Lines.Add('No processing info yet');
-
-  isInit := false;   
+  zz
+    
 end;
 
 procedure TFVectSettings.BaselinesBoxDrawItem(Control: TWinControl;
@@ -272,74 +231,37 @@ inherited;
   end;
 end;
 
-procedure TFVectSettings.Button1Click(Sender: TObject);
-begin
-  Close;
-end;
-
-procedure TFVectSettings.Button3Click(Sender: TObject);
-var I, j:Integer; A :Array of byte; B, C :Array of Integer;
-begin
-  SetLength(A, 0);  SetLength(B, 0);  SetLength(C, 0);
-  For I := 0 To BaseLinesBox.Items.Count-1 Do
-  begin
-    if GNSSVectors[VectorsN[I]].StatusQ < 0 then
-      continue; 
-      
-    j := Length(A);
-    SetLength(A, j+1); SetLength(B, j+1);   SetLength(C, j+1);
-    A[j] := 2;
-    B[j] := GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].RoverId);
-    C[j] := GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].BaseId);
-  end;
-
-  if Length(A) = 0 then
-    exit
-  else
-    FStartProcessing.ShowMultiProcOptions(A, B, C); 
-  RefreshVectorSettings;
-end;
-
 procedure TFVectSettings.Button4Click(Sender: TObject);
+var I, j:Integer; A :Array of byte; B, C :Array of TGNSSSession;
 begin
-  FStartProcessing.ShowProcOptions(2,      
-     GetGNSSSessionNumber(GNSSVectors[VectorN].RoverId),
-     GetGNSSSessionNumber(GNSSVectors[VectorN].BaseId));
+//  SetLength(A, 0);  SetLength(B, 0);  SetLength(C, 0);
+//  For I := 0 To BaseLinesBox.Items.Count-1 Do
+//  begin
+//     if BaseLinesBox.Selected[I] then
+//     begin
+//        if GNSSVectors[I].StatusQ < 0 then
+//          continue;  // disabled vector
+//
+//        j := Length(A);
+//        SetLength(A, j+1); SetLength(B, j+1);   SetLength(C, j+1);
+//        A[j] := 2;
+//        B[j] := GNSSSessions[GetGNSSSessionNumber(GNSSVectors[I].RoverId)];
+//        C[j] := GNSSSessions[GetGNSSSessionNumber(GNSSVectors[I].BaseId)];
+//     end;
+//  end;
+//
+//  if Length(A) = 0 then
+//    exit
+//  else 
+  FStartProcessing.ShowProcOptions(2,
+     GNSSSessions[GetGNSSSessionNumber(GNSSVectors[VectorN].RoverId)],
+     GNSSSessions[GetGNSSSessionNumber(GNSSVectors[VectorN].BaseId)]);
   RefreshVectorSettings;   
 end;
 
 procedure TFVectSettings.Button6Click(Sender: TObject);
 begin
   close;
-end;
-
-procedure TFVectSettings.isItmAcClick(Sender: TObject);
-var I:Integer;
-begin
-  I := BaselinesBox.ItemIndex;
-  if I = -1 then
-    exit;
-    
-  if isInit then
-   exit;
-   
-  case isItmAc.Checked of
-    true:  EnableGNSSVector(VectorsN[I]);
-    false:
-    begin
-       if GNSSVectors[VectorsN[I]].StatusQ > 0 then
-         if MessageDlg('The action can change the other data. Proceed?',
-            mtConfirmation, [mbYes, mbNo], 0) <> 6 then 
-            begin
-              isItmAc.Checked := true;
-              exit;
-            end;
-
-       DisableGNSSVector(VectorsN[I]);
-    end;
-  end;    
-  
-  RefreshVectorSettings;  
 end;
 
 procedure TFVectSettings.isAcClick(Sender: TObject);
@@ -379,9 +301,6 @@ begin
     ImgList := Img;
 
     RefreshVectorSettings;
-    if VPC.ActivePageIndex = 1 then
-      BaseLinesBox.ItemIndex := 0;
-    
   finally
     Showmodal;
   end;
@@ -396,39 +315,6 @@ begin
             mtConfirmation, [mbYes, mbNo], 0) <> 6 then  exit;
   InvertGNSSVector(VectorN);
   RefreshVectorSettings;
-end;
-
-procedure TFVectSettings.SpeedButton2Click(Sender: TObject);
-var I:Integer;
-    needAsk: boolean;
-begin
-  needAsk := false;
-  for I := 0 to Length(VectorsN) - 1 do
-    if GNSSVectors[VectorN].StatusQ > 0 then
-    begin
-      needAsk := true; 
-      break;
-    end;
-    
-  if needAsk then
-    if MessageDlg('The action can change the other data. Proceed?',
-            mtConfirmation, [mbYes, mbNo], 0) <> 6 then  exit;
-            
-  InvertGNSSVector(VectorN, true);
-  RefreshVectorSettings;
-
-end;
-
-procedure TFVectSettings.SpeedButton3Click(Sender: TObject);
-var I:Integer;
-begin
-  I := BaselinesBox.ItemIndex;
-  if I = -1 then
-    exit;
-  FStartProcessing.ShowProcOptions(2,
-     GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].RoverId),
-     GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].BaseId));
-  RefreshVectorSettings;   
 end;
 
 end.
