@@ -1528,8 +1528,8 @@ begin
     begin
 
        if ( (SolSource = 0) and (Solutions[j].SolutionKind = 0) ) or
-          ( (SolSource = 1) and (Solutions[j].SolutionKind = 1)
-            or (Solutions[j].SolutionKind = 3) )                  or
+          ( (SolSource = 1) and ( (Solutions[j].SolutionKind = 1)
+            or (Solutions[j].SolutionKind = 3) ) )                  or
           ( (SolSource = 2) and (Solutions[j].SolutionKind = 2) )
        then
        begin
