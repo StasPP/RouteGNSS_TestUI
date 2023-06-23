@@ -526,9 +526,9 @@ object FVectSettings: TFVectSettings
             OnClick = SpeedButton3Click
           end
           object isItmAc: TCheckBox
-            Left = 3
+            Left = 0
             Top = 3
-            Width = 70
+            Width = 73
             Height = 17
             Caption = 'Turned on'
             TabOrder = 0

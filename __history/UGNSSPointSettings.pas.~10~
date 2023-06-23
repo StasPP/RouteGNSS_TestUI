@@ -147,16 +147,11 @@ begin
 
          case SolutionKind of
             1: Str := 'Single Code Solution';  //// ToDo: Translate
-            2:  try
-               Str := GNSSSessions[GetGNSSSessionNumber(BaseID)].MaskName
-                    + ' -> ' +  GNSSSessions[SessI].MaskName
-             except
-               Str := '[Error]'
-             end;
+            2: Str := 'Single Code Solution';
             3: Str := 'PPP Solution';
          end;
 
-         Node3 := TW.Items.AddChild(Node2, Str);
+         Node3 := TreeView1.Items.AddChild(Node2, Str);
          with Node3 do
          begin
            ImageIndex := ImgN +30;

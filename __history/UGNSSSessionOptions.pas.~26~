@@ -125,6 +125,9 @@ type
       State: TOwnerDrawState);
     procedure AntNameBoxChange(Sender: TObject);
     procedure PageControlChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure NavFilesDrawItem(Control: TWinControl; Index: Integer;
+      Rect: TRect; State: TOwnerDrawState);
   private
     { Private declarations }
   public
@@ -201,7 +204,7 @@ begin
     exit
   else
   if Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) > 1 then
-  if MessageDLG('The Antenna position hase been cahnged. Apply?',
+  if MessageDLG('The Antenna position has been changed. Apply?',
         mtConfirmation, [mbYes, mbNo], 0) <> 6 then
     exit;
 
@@ -238,16 +241,12 @@ begin
         // TODO!
         for j := 1 to Length(GNSSSessions[ActiveGNSSSessions[I]].Solutions) - 1 do
         with GNSSSessions[ActiveGNSSSessions[I]].Solutions[j] do
-        if SolutionKind > 1 then
+        if SolutionKind >= 1 then
         begin
           El := EllipsoidList[FindEllipsoid('WGS84')];
           TOrg := GetTopoOriginFromXYZ(Coord3D(PointPos), false, El);
           newXYZ := NEHToXYZ(Coord3D(-dN, -dE, -dH), El, TOrg);
 
-//          showmessage(FloatToStr(newXYZ[1] - PointPos.X)+' '+
-//                      FloatToStr(newXYZ[2] - PointPos.Y)+' '+
-//                      FloatToStr(newXYZ[3] - PointPos.Z));
-//          showmessage(TOrg.BLH.B+' '+TOrg.BLH.L+' '+TOrg.BLH.H+' ')
           PointPos.X := newXYZ[1];
           PointPos.Y := newXYZ[2];
           PointPos.Z := newXYZ[3];
@@ -255,7 +254,20 @@ begin
         // 4) refresh station
         j := GetGNSSPointNumber(GNSSSessions[ActiveGNSSSessions[I]].Station);
         if j > -1 then
+        begin
+          {if GNSSPoints[j].CoordSource = 4 then
+          begin
+             El     := EllipsoidList[FindEllipsoid('WGS84')];
+             TOrg   := GetTopoOriginFromXYZ(Coord3D(GNSSPoints[j].Position),
+                 false, El);
+             newXYZ := NEHToXYZ(Coord3D(-dN, -dE, -dH), El, TOrg);
+             GNSSPoints[j].Position.X :=  newXYZ[1];
+             GNSSPoints[j].Position.Y :=  newXYZ[2];
+             GNSSPoints[j].Position.Z :=  newXYZ[3];
+          end
+          else}
           RefreshGNSSPoint(j);
+        end;
      end;
   end;
 
@@ -450,8 +462,8 @@ begin
        2: begin
          N := GetGNSSSessionNumber(Solutions[AvSol.ItemIndex].BaseID);
          if N<> -1 then
-            FStartProcessing.ShowProcOptions(2, GNSSSessions[ActiveGNSSSessions[0]],
-                GNSSSessions[N]);
+            FStartProcessing.ShowProcOptions(2,ActiveGNSSSessions[0],
+                N);
        end;
      end;
      RefreshSettings;
@@ -545,7 +557,7 @@ begin
      for I := 0 to length(AdditionalFiles) - 1 do
      begin
        s := AnsiLowerCase(copy(AdditionalFiles[i], length(AdditionalFiles[i])-2,3));
-       if (s = 'sp3') or (s = 'clk')  then
+       if (s = 'sp3') or (s = 'clk') or (s = 'ion') then
          PPPFiles.Items.Add(AdditionalFiles[i])
        else
          NavFiles.Items.Add(AdditionalFiles[i]);
@@ -1010,6 +1022,11 @@ begin
   AvSol.OnClick(nil);
 end;
 
+procedure TFGNSSSessionOptions.FormCreate(Sender: TObject);
+begin
+ ModeBox.Enabled := not isStaticOnly;
+end;
+
 procedure TFGNSSSessionOptions.FormShow(Sender: TObject);
 begin
   Reloaded := false;
@@ -1018,11 +1035,11 @@ end;
 procedure TFGNSSSessionOptions.GetPPPClick(Sender: TObject);
 var I :Integer;
     A :Array of Byte;
-    B :Array of TGNSSSession;
+    B :Array of Integer;
 begin
    if length(ActiveGNSSSessions)= 1 then
-     FStartProcessing.ShowProcOptions(3, GNSSSessions[ActiveGNSSSessions[0]],
-                  GNSSSessions[ActiveGNSSSessions[0]])
+     FStartProcessing.ShowProcOptions(3, ActiveGNSSSessions[0],
+                 ActiveGNSSSessions[0])
    else
    begin
       SetLength(A, Length(ActiveGNSSSessions));
@@ -1030,7 +1047,7 @@ begin
       for I := 0 to Length(ActiveGNSSSessions) - 1 do
       begin
          A[I] := 3;
-         B[I] := GNSSSessions[ActiveGNSSSessions[I]];
+         B[I] := ActiveGNSSSessions[I];
       end;
 
       FStartProcessing.ShowMultiProcOptions(A,B,B);
@@ -1041,11 +1058,11 @@ end;
 procedure TFGNSSSessionOptions.GetSingleClick(Sender: TObject);
 var I :Integer;
     A :Array of Byte;
-    B :Array of TGNSSSession;
+    B :Array of Integer;
 begin
    if length(ActiveGNSSSessions)= 1 then
-     FStartProcessing.ShowProcOptions(1, GNSSSessions[ActiveGNSSSessions[0]],
-                  GNSSSessions[ActiveGNSSSessions[0]])
+     FStartProcessing.ShowProcOptions(1, ActiveGNSSSessions[0],
+                  ActiveGNSSSessions[0])
    else
    begin
       SetLength(A, Length(ActiveGNSSSessions));
@@ -1053,7 +1070,7 @@ begin
       for I := 0 to Length(ActiveGNSSSessions) - 1 do
       begin
          A[I] := 1;
-         B[I] := GNSSSessions[ActiveGNSSSessions[I]];
+         B[I] := ActiveGNSSSessions[I];
       end;
 
       FStartProcessing.ShowMultiProcOptions(A,B,B);
@@ -1157,13 +1174,49 @@ begin
   DelNav.Enabled := NavFiles.ItemIndex >= 0;
 end;
 
+procedure TFGNSSSessionOptions.NavFilesDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+var s:string; c:char; I:integer;
+begin
+  with (Control as TListBox).Canvas do
+  begin
+
+    try
+        s := AnsiLowerCase(NavFiles.Items[Index]);
+        s := s[length(s)];
+        c := s[1];
+        case c of
+           'n' : I := 52;
+           'g' : I := 53;
+           'l' : I := 54;
+           'c' : I := 55;
+           'j' : I := 56;
+           'i' : I := 57;
+           else I:= 51;
+        end;
+    except
+       I:= 51;
+    end;
+
+    ImgList.Draw((Control as TListBox).Canvas, Rect.Left, Rect.Top-1, I);
+
+    TextOut(Rect.Left + 20, Rect.Top, (Control as TListBox).Items[Index]);
+
+    if odFocused In State then begin
+      Brush.Color := (Control as TListBox).Color;
+      DrawFocusRect(Rect);
+    end;
+
+  end;
+end;
+
 procedure TFGNSSSessionOptions.PPPFilesClick(Sender: TObject);
 begin
   DelPPP.Enabled := PPPFiles.ItemIndex >= 0;
 end;
 
 procedure TFGNSSSessionOptions.ProcBLClick(Sender: TObject);
-var I, j:Integer; A :Array of byte; B, C :Array of TGNSSSession;
+var I, j:Integer; A :Array of byte; B, C :Array of Integer;
 begin
   SetLength(A, 0); SetLength(B, 0); SetLength(C, 0);
   j := 0;
@@ -1175,8 +1228,8 @@ begin
       SetLength(B, j+1);
       SetLength(C, j+1);
       A[j] := 2;
-      B[j] := GNSSSessions[GetGNSSSessionNumber(AvProcArr[I].RoverId)];
-      C[j] := GNSSSessions[GetGNSSSessionNumber(AvProcArr[I].BaseId)];
+      B[j] := GetGNSSSessionNumber(AvProcArr[I].RoverId);
+      C[j] := GetGNSSSessionNumber(AvProcArr[I].BaseId);
   end;
   if length(A) > 0 then
     FStartProcessing.ShowMultiProcOptions(A,B,C);
@@ -1222,8 +1275,7 @@ begin
       2: begin
          N := GetGNSSSessionNumber(AvProcArr[AvProc.ItemIndex].BaseId);
          if N<> -1 then
-            FStartProcessing.ShowProcOptions(2, GNSSSessions[ActiveGNSSSessions[0]],
-              GNSSSessions[N]);
+            FStartProcessing.ShowProcOptions(2, ActiveGNSSSessions[0], N);
       end;
     end;
   end;

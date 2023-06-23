@@ -73,211 +73,9 @@ const
 //  PointStatusColors: array [0..13] of TColor = (clGray, $0000FF80,
 //          $0002EAFD, clFuchsia, clPurple, $006000FF, clTeal,clGray,
 //          clRed, clOlive, $000080FF, clOlive, clYellow, clBlue);
-var
-   RNode, FNode : TTreeNode;
 implementation
 
 {$R *.dfm}
-
-procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
-var I, j, k, imgN, SolI, SessI :integer;
-    Str : string;
-    Node1, Node2, Node3, Node4, Node5 : TTreeNode;
-begin
-  // TreeInd := TW.ItemIndex
-  TW.Items.Clear;                               StatN := -1; //DEL!
-  RNode := nil;
-  FNode := nil;
-  for I := Length(GNSSPoints) -1 downto 0 do
-  begin
-    if (StatN > 0) and (I <> StatN) then
-      continue;
-
-    Node1 := TW.Items.AddFirst(nil, GNSSPoints[I].PointName);
-    RNode := Node1;
-
-    try
-        ImgN := GNSSPoints[I].Status;
-        if GNSSPoints[I].Active = false then
-          ImgN := 7;
-    except
-        ImgN := 8;
-    end;
-
-    with Node1 do
-    begin
-       ImageIndex := ImgN;
-       SelectedIndex := ImgN;
-    end;
-
-    for j := 0 to Length(GNSSPoints[I].Sessions) - 1 do
-    begin
-      Str := '[Error]';
-      imgN := 0;
-      Try
-        SessI := GetGNSSSessionNumber(GNSSPoints[I].Sessions[j]);
-        if SessI <> -1 then
-        begin
-          Str   := GNSSSessions[SessI].MaskName;
-          ImgN  := GNSSSessions[SessI].StatusQ;
-        end
-      Except
-        Str := '[Error]';
-        SessI := -1;
-        imgN := 0;
-      End;
-
-      Node2 := TW.Items.AddChild(Node1, Str);
-      with Node2 do
-      begin
-         ImageIndex := ImgN +22;
-         SelectedIndex := ImgN +22;
-      end;
-
-
-      for k := 1 to Length(GNSSSessions[SessI].Solutions)-1 do
-      with GNSSSessions[SessI].Solutions[k] do
-      begin
-         SolI := GetSolutionSubStatus(SessI, k);
-         try
-           ImgN := SolI*7 + SolutionQ
-         except
-           ImgN := 0;
-         end;
-
-         case SolutionKind of
-            1: Str := 'Single Code Solution';  //// ToDo: Translate
-            2:  try
-               Str := GNSSSessions[GetGNSSSessionNumber(BaseID)].MaskName
-                    + ' -> ' +  GNSSSessions[SessI].MaskName
-             except
-               Str := '[Error]'
-             end;
-            3: Str := 'PPP Solution';
-         end;
-
-         Node3 := TW.Items.AddChild(Node2, Str);
-         with Node3 do
-         begin
-           ImageIndex := ImgN +30;
-           SelectedIndex := ImgN + 30;
-         end;
-      end;
-
-    end;
-  end;
-
-
-end;
-
-{
-
-  if RouteCount > 0 then
-  Begin
-    Node1 := TreeView1.Items.AddFirst(nil, Inf[24]);
-    RNode := Node1;
-    
-    for I := 0 to RouteCount - 1 do
-    Begin
-      Node2 := TreeView1.Items.AddChild(Node1,Route[I].Name);
-      with Node2 do
-      begin
-         ImageIndex := 3;
-         SelectedIndex := 8;
-      end;
-      for J := 0 to Length(Route[I].WPT)-1 do
-      begin
-         Node3 := TreeView1.Items.AddChild(Node2,Inf[25]+IntToStr(J+1));
-         with Node3 do
-         begin
-           ImageIndex := 4;
-           SelectedIndex := 9;
-         end;
-      end;
-    End;
-  End;
-
-  if Frame then
-  Begin
-    Node5 := TreeView1.Items.AddFirst(nil, Inf[23]);
-    FNode := Node5;
-    with Node5 do
-    begin
-       ImageIndex := 0;
-       SelectedIndex := 5;
-    end;
-
-    for I := 0 to FrameCount - 2 do
-    Begin
-      Node4 := TreeView1.Items.AddChild(Node5,Inf[25]+IntToStr(i+1));
-      with Node4 do
-      begin
-         ImageIndex := 1;
-         SelectedIndex := 6;
-      end;
-    End;
-  End;
-
-   
-  case ClickMode of
-    21,22,25,27: if FNode <> nil then
-    begin
-
-
-      if FNode.Count > 0 then
-         FNode.Expand(true);
-
-      FNode.Selected := true;
-
-      if ClickMode<>25 then
-        for I := 0 to FNode.Count - 1 do
-        try
-           Node4 := FNode[I];
-           if SelectedFramePoints[I] then
-             TreeView1.Select(Node4, [ssCtrl]);
-
-        except
-        end;
-    end;
-
-    23,24,26,28: if RNode <> nil then
-    if RNode.Count > 0 then
-    begin
-
-       RNode.Expand(false);
-       RNode.Selected := true;
-
-       if ClickMode=26 then
-       begin
-         if  RNode[ RNode.Count - 1 ].Count > 0 then
-             RNode[ RNode.Count - 1 ].Expand(true)
-       end
-       else
-       for I := 0 to RNode.Count - 1 do
-         if RNode.Count > 0 then
-           for J := 0 to RNode[I].Count - 1 do
-           try
-              Node4 := RNode[I][J];
-
-              if (I = MapFm.RouteBox.ItemIndex-1) or
-                 (ClickMode = 28)and ( PointToAddRouteNum = I) then
-                if  RNode[I].Expanded = false then
-                    RNode[I].Expand(true);
-
-              if SelectedRoutePoints[I][J] then
-              Begin
-                if  RNode[I].Expanded = false then
-                    RNode[I].Expand(true);
-
-                   TreeView1.Select(Node4, [ssCtrl]);
-              End;
-
-           except
-           end;
-
-    end;
-  end;
-}
 
 procedure RefreshPointSettings;
 var I, j:integer;
@@ -358,7 +156,11 @@ begin
       ImgList.Draw(StatImg.Canvas, 0, 0, I);
     end;
 
-    OutputGNSSObjTree(TreeView, StationN);
+
+    TreeView.Items.Clear;
+
+
+
  End;
 
  IsInit := false;
@@ -522,7 +324,6 @@ var I, j :Integer;
 begin
  StationN := StatN;
  ImgList := Img;
- TreeView.Images := Img;
  RefreshPointSettings;
  ShowModal;
 end;

@@ -80,7 +80,7 @@ implementation
 {$R *.dfm}
 
 procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
-var I, j, k, imgN, SolI, SessI :integer;
+var I, j, imgN, SolI, SessI :integer;
     Str : string;
     Node1, Node2, Node3, Node4, Node5 : TTreeNode;
 begin
@@ -112,58 +112,21 @@ begin
 
     for j := 0 to Length(GNSSPoints[I].Sessions) - 1 do
     begin
-      Str := '[Error]';
-      imgN := 0;
       Try
         SessI := GetGNSSSessionNumber(GNSSPoints[I].Sessions[j]);
-        if SessI <> -1 then
-        begin
-          Str   := GNSSSessions[SessI].MaskName;
-          ImgN  := GNSSSessions[SessI].StatusQ;
-        end
+        Str   := GNSSSessions[SessI].MaskName;
+        ImgN  := GNSSSessions[SessI].StatusQ;
       Except
         Str := '[Error]';
-        SessI := -1;
         imgN := 0;
       End;
 
       Node2 := TW.Items.AddChild(Node1, Str);
       with Node2 do
       begin
-         ImageIndex := ImgN +22;
-         SelectedIndex := ImgN +22;
+         ImageIndex := ImgN;
+         SelectedIndex := ImgN;
       end;
-
-
-      for k := 1 to Length(GNSSSessions[SessI].Solutions)-1 do
-      with GNSSSessions[SessI].Solutions[k] do
-      begin
-         SolI := GetSolutionSubStatus(SessI, k);
-         try
-           ImgN := SolI*7 + SolutionQ
-         except
-           ImgN := 0;
-         end;
-
-         case SolutionKind of
-            1: Str := 'Single Code Solution';  //// ToDo: Translate
-            2:  try
-               Str := GNSSSessions[GetGNSSSessionNumber(BaseID)].MaskName
-                    + ' -> ' +  GNSSSessions[SessI].MaskName
-             except
-               Str := '[Error]'
-             end;
-            3: Str := 'PPP Solution';
-         end;
-
-         Node3 := TW.Items.AddChild(Node2, Str);
-         with Node3 do
-         begin
-           ImageIndex := ImgN +30;
-           SelectedIndex := ImgN + 30;
-         end;
-      end;
-
     end;
   end;
 

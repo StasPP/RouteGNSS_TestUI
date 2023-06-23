@@ -316,28 +316,28 @@ end;
 procedure TFVectSettings.isItmAcClick(Sender: TObject);
 var I:Integer;
 begin
+  if isInit then
+   exit;
+
   I := BaselinesBox.ItemIndex;
   if I = -1 then
     exit;
-    
-  if isInit then
-   exit;
-   
+
+  if (GNSSVectors[VectorsN[I]].StatusQ <> 0) and
+     (GNSSVectors[VectorsN[I]].StatusQ <> -100) then
+     if MessageDlg('The action can change the other data. Proceed?',
+        mtConfirmation, [mbYes, mbNo], 0) <> 6 then
+     begin
+        isInit := true;
+        isItmAc.Checked := not (isItmAc.Checked);
+        isInit := false;
+        exit;
+     end;
+
   case isItmAc.Checked of
     true:  EnableGNSSVector(VectorsN[I]);
-    false:
-    begin
-       if GNSSVectors[VectorsN[I]].StatusQ > 0 then
-         if MessageDlg('The action can change the other data. Proceed?',
-            mtConfirmation, [mbYes, mbNo], 0) <> 6 then 
-            begin
-              isItmAc.Checked := true;
-              exit;
-            end;
-
-       DisableGNSSVector(VectorsN[I]);
-    end;
-  end;    
+    false: DisableGNSSVector(VectorsN[I]);
+  end;
   
   RefreshVectorSettings;  
 end;

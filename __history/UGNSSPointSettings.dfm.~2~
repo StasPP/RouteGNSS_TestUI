@@ -955,7 +955,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
       'Custom Solution'
       'User defined')
   end
-  object TreeView: TTreeView
+  object TreeView1: TTreeView
     Left = 301
     Top = 59
     Width = 228

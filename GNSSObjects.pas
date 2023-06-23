@@ -224,6 +224,10 @@ var
 /// Anti-loop cratch!
 const
   GNSSMaxUpdateStack = 10000;
+
+/// Disable Kinematic and Stop-and-Go
+const
+  isStaticOnly = true;
 var
   GNSSPointsUpdateStack: array [0..GNSSMaxUpdateStack] of integer;
 
@@ -605,6 +609,9 @@ begin
   except
      MessageDlg(GNSSMessages[1], mtError, [mbOk], 0);
   end;
+
+  if isStaticOnly then
+    Session.isKinematic := False;  
 end;
 
 function CheckAntName(s:string):string;

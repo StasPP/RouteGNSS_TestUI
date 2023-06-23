@@ -3,16 +3,12 @@ unit GNSSObjects;
 interface
 
 uses GeoString, GeoTime, Classes, SysUtils, TabFunctions, DateUtils, Dialogs,
-    ComCtrls, Math;
+    ComCtrls, Math, GeoClasses;
 
 type
   TGNSSSatSystems = record
     isGPS, isGLO, isBDS, isGAL,
     isSBAS, isQZSS, isNAVIC :boolean;
-  end;
-
-  TXYZ = record
-    X, Y, Z :Double;
   end;
 
   TGNSSAntHgt = record
@@ -189,6 +185,7 @@ type
   procedure CheckGNSSVectorsForSession(SessionN:integer);  overload
 
   function GetGNSSVector(RoverId, BaseId:String):integer;
+  function GetGNSSVectorPoint(VectN: Integer; isBase: boolean):String;
   procedure EnableGNSSVector(VectorN:integer);
   procedure DisableGNSSVector(VectorN:integer);
   procedure InvertGNSSVector(VectorN:integer; GroupInv:Boolean = true);
@@ -1828,6 +1825,19 @@ begin
      end;
 end;
 
+function GetGNSSVectorPoint(VectN: Integer; isBase: boolean):String;
+var j :Integer;
+begin
+  result := '';
+  case isBase of
+     true:  j := GetGNSSSessionNumber(GNSSVectors[VectN].BaseID);
+     false: j := GetGNSSSessionNumber(GNSSVectors[VectN].RoverID);
+  end;
+
+  if j >= 0 then
+  result := GNSSSessions[j].Station;
+end;
+
 procedure AddSolutionFromVector(VectorN:integer);
 var I, j, SessN, SessBaseN :Integer;
 begin
@@ -2059,9 +2069,26 @@ begin
 end;
 
 function GetAntParams(AntName:string):TGNSSAntennaPCV;
-var I, j :Integer;
-    IAntName: string;
-const StartN = 11;
+
+  function isTheSame(name1, name2: string): boolean;
+  var s11, s12, s21, s22:string;
+  begin
+    s11 := trim(GetCols(name1,0,1,' ',false));
+    s12 := trim(GetCols(name1,1,1,' ',false));
+    s21 := trim(GetCols(name2,0,1,' ',false));
+    s22 := trim(GetCols(name2,1,1,' ',false));
+
+    result := s11 = s21;
+
+    if result then
+      result := (s22 = s12) or
+                ((s22 = '') and (LowerCase(s12) ='none')) or
+                ((s12 = '') and (LowerCase(s22) ='none'));
+  end;
+
+  var I, j :Integer;
+      IAntName: string;
+  const StartN = 11;
 begin
   AntName := trim(AntName);
 
@@ -2119,10 +2146,10 @@ begin
   for I := 0 to ARFile.Count - 1 do
   begin
     IAntName := GetCols(ARFile[I],0,1,#$9,false);
-    if AntName = IAntName then
+    if isTheSame(IAntName, AntName) then
     begin
-      result.Radius :=  GetCols(ARFile[I],1,1,#$9,false);
-      result.GroundPlaneH :=  GetCols(ARFile[I],2,1,#$9,false);
+      result.Radius       :=  StrToFloat2(GetCols(ARFile[I], 1, 1, #$9, false));
+      result.GroundPlaneH :=  StrToFloat2(GetCols(ARFile[I], 2, 1, #$9, false));
       break;
     end
     else
@@ -2176,9 +2203,25 @@ begin
 end;
 
 procedure AddAntennaToPCV(NewAnt:TGNSSAntennaPCV);
-var I, j, LineN:Integer;
-    OldAnt:TGNSSAntennaPCV;
-    isAdd :boolean;
+  function isTheSame(name1, name2: string): boolean;
+    var s11, s12, s21, s22:string;
+  begin
+    s11 := trim(GetCols(name1, 0, 1, ' ', false));
+    s12 := trim(GetCols(name1, 1, 1, ' ', false));
+    s21 := trim(GetCols(name2, 0, 1, ' ', false));
+    s22 := trim(GetCols(name2, 1, 1, ' ', false));
+
+    result := s11 = s21;
+
+    if result then
+      result := (s22 = s12) or
+                ((s22 = '') and (LowerCase(s12) ='none')) or
+                ((s12 = '') and (LowerCase(s22) ='none'));
+  end;
+
+  var I, j, LineN:Integer;
+      OldAnt:TGNSSAntennaPCV;
+      isAdd :boolean;
 begin
    OldAnt := GetAntParams(NewAnt.AntName);
    LineN := OldAnt.LineN;
@@ -2246,6 +2289,30 @@ begin
 
   PCVFile.SaveToFile(PCVFilePath);
 
+  isAdd:= false;
+  LineN := 0;
+  for I := 0 to ARFile.Count - 1 do
+  begin
+    if isTheSame(GetCols(ARFile[I], 0, 1, #$9, false), NewAnt.AntName) then
+    begin
+      ARFile[I] := NewAnt.AntName + #$9 + FloatToStr(NewAnt.Radius)
+          + #$9 + FloatToStr(NewAnt.GroundPlaneH);
+      break;
+    end
+    else
+      if GetCols(ARFile[I], 0, 1, #$9, false) > NewAnt.AntName then
+      begin
+        isAdd := true;
+        LineN := I;
+        break;
+      end;
+  end;
+
+  if (isAdd) then
+    ARFile.Insert(LineN, NewAnt.AntName + #$9 + FloatToStr(NewAnt.Radius)
+          + #$9 + FloatToStr(NewAnt.GroundPlaneH));
+          
+  ARFile.SaveToFile(ARFilePath);
 end;
 
 procedure GetAntList;
@@ -2290,12 +2357,15 @@ end;
 
 procedure DestroyGNSSObjs;
 begin
-  if PCVFile <> nil then
-    PCVFile.Destroy;
-  if ARFile <> nil then
-    PCVFile.Destroy;
-  if GNSSDebug <> nil then
-    GNSSDebug.Destroy
+  try
+    if PCVFile <> nil then
+      PCVFile.Destroy;
+    if ARFile <> nil then
+      ARFile.Destroy;
+    if GNSSDebug <> nil then
+      GNSSDebug.Destroy
+  except
+  end;
 end;
 
 

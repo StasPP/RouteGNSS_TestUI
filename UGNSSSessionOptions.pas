@@ -125,6 +125,11 @@ type
       State: TOwnerDrawState);
     procedure AntNameBoxChange(Sender: TObject);
     procedure PageControlChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure NavFilesDrawItem(Control: TWinControl; Index: Integer;
+      Rect: TRect; State: TOwnerDrawState);
+    procedure PPPFilesDrawItem(Control: TWinControl; Index: Integer;
+      Rect: TRect; State: TOwnerDrawState);
   private
     { Private declarations }
   public
@@ -554,7 +559,7 @@ begin
      for I := 0 to length(AdditionalFiles) - 1 do
      begin
        s := AnsiLowerCase(copy(AdditionalFiles[i], length(AdditionalFiles[i])-2,3));
-       if (s = 'sp3') or (s = 'clk')  then
+       if (s = 'sp3') or (s = 'clk') or (s = 'ion') then
          PPPFiles.Items.Add(AdditionalFiles[i])
        else
          NavFiles.Items.Add(AdditionalFiles[i]);
@@ -867,7 +872,7 @@ inherited;
 
     I := GetSolutionSubStatus(ActiveGNSSSessions[0], Index);
     try
-    I := I*7 + GNSSSessions[ActiveGNSSSessions[0]].Solutions[Index].SolutionQ
+       I := I*7 + GNSSSessions[ActiveGNSSSessions[0]].Solutions[Index].SolutionQ
     except
        I := 0;
     end;
@@ -1019,6 +1024,11 @@ begin
   AvSol.OnClick(nil);
 end;
 
+procedure TFGNSSSessionOptions.FormCreate(Sender: TObject);
+begin
+ ModeBox.Enabled := not isStaticOnly;
+end;
+
 procedure TFGNSSSessionOptions.FormShow(Sender: TObject);
 begin
   Reloaded := false;
@@ -1166,9 +1176,77 @@ begin
   DelNav.Enabled := NavFiles.ItemIndex >= 0;
 end;
 
+procedure TFGNSSSessionOptions.NavFilesDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+var s:string; c:char; I:integer;
+begin
+  with (Control as TListBox).Canvas do
+  begin
+
+    try
+        s := AnsiLowerCase(NavFiles.Items[Index]);
+        s := s[length(s)];
+        c := s[1];
+        case c of
+           'n' : I := 52;
+           'g' : I := 53;
+           'l' : I := 54;
+           'c' : I := 55;
+           'j' : I := 56;
+           'i' : I := 57;
+           else I:= 51;
+        end;
+    except
+       I:= 51;
+    end;
+
+    ImgList.Draw((Control as TListBox).Canvas, Rect.Left, Rect.Top-1, I);
+
+    TextOut(Rect.Left + 20, Rect.Top, (Control as TListBox).Items[Index]);
+
+    if odFocused In State then begin
+      Brush.Color := (Control as TListBox).Color;
+      DrawFocusRect(Rect);
+    end;
+
+  end;
+end;
+
 procedure TFGNSSSessionOptions.PPPFilesClick(Sender: TObject);
 begin
   DelPPP.Enabled := PPPFiles.ItemIndex >= 0;
+end;
+
+procedure TFGNSSSessionOptions.PPPFilesDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+var s:string; I:integer;
+begin
+  with (Control as TListBox).Canvas do
+  begin
+    I:= 51;
+    try
+        s := PPPFiles.Items[Index];
+        s := AnsiLowerCase(ExtractFileExt(s));
+        if s = '.sp3' then
+          I := 58;
+        if s = '.clk' then
+          I := 59;
+        if s = '.ion' then
+          I := 60;
+    except
+       I:= 51;
+    end;
+
+    ImgList.Draw((Control as TListBox).Canvas, Rect.Left, Rect.Top-1, I);
+
+    TextOut(Rect.Left + 20, Rect.Top, (Control as TListBox).Items[Index]);
+
+    if odFocused In State then begin
+      Brush.Color := (Control as TListBox).Color;
+      DrawFocusRect(Rect);
+    end;
+
+  end;
 end;
 
 procedure TFGNSSSessionOptions.ProcBLClick(Sender: TObject);
