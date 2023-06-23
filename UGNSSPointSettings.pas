@@ -145,6 +145,14 @@ begin
            ImgN := 0;
          end;
 
+         if SolI > 0 then
+         with Node2 do
+         if ImageIndex < 60 then
+         begin
+            ImageIndex := ImgN +30;
+            SelectedIndex := ImageIndex;
+         end;
+
          case SolutionKind of
             1: Str := 'Single Code Solution';  //// ToDo: Translate
             2:  try

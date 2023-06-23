@@ -1030,8 +1030,8 @@ begin
        (GNSSSessions[SessionN].Solutions[SolutionN].SolutionKind = 2) )
      or
      ( (GNSSPoints[PointN].CoordSource = 3) and
-       (GNSSSessions[SessionN].Solutions[SolutionN].SolutionKind = 1)
-       or (GNSSSessions[SessionN].Solutions[SolutionN].SolutionKind = 3) )
+       ((GNSSSessions[SessionN].Solutions[SolutionN].SolutionKind = 1)
+       or (GNSSSessions[SessionN].Solutions[SolutionN].SolutionKind = 3)) )
   then
     result := 2;
 
