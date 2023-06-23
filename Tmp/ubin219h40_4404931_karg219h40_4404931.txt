@@ -3,6 +3,8 @@
 % inp file  : C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\TestData\ubin219h40.20o
 % inp file  : C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\TestData\karg219h40.20n
 % inp file  : C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\TestData\karg219h40.20g
+% inp file  : C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\TestData\cod21174.clk
+% inp file  : C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\TestData\emr21174.sp3
 % obs start : 2020/08/06 07:39:42.0 UTC (week2117 373200.0s)
 % obs end   : 2020/08/06 08:39:32.0 UTC (week2117 376790.0s)
 % pos mode  : Static

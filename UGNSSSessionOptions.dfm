@@ -752,7 +752,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     Top = 59
     Width = 441
     Height = 208
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     TabOrder = 0
     OnChange = PageControlChange
     object TabSheet1: TTabSheet
@@ -1982,7 +1982,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Top = 24
         Width = 211
         Height = 21
-        ItemHeight = 13
+        ItemHeight = 0
         TabOrder = 0
         OnChange = AntNameBoxChange
       end

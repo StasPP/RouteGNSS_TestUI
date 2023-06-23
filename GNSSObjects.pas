@@ -611,7 +611,7 @@ begin
   end;
 
   if isStaticOnly then
-    Session.isKinematic := False;  
+    Session.isKinematic := False;
 end;
 
 function CheckAntName(s:string):string;
@@ -1029,7 +1029,7 @@ begin
   if ( (GNSSPoints[PointN].CoordSource = 2) and
        (GNSSSessions[SessionN].Solutions[SolutionN].SolutionKind = 2) )
      or
-     ( (GNSSPoints[PointN].CoordSource = 3) and
+     ( (GNSSPoints[PointN].CoordSource = 1) and
        ((GNSSSessions[SessionN].Solutions[SolutionN].SolutionKind = 1)
        or (GNSSSessions[SessionN].Solutions[SolutionN].SolutionKind = 3)) )
   then
@@ -1788,11 +1788,13 @@ begin
   if SessionN > -1 then
   for I := 0 to Length(GNSSSessions[SessionN].Solutions) - 1 do
   begin
+     if GNSSSessions[SessionN].Solutions[I].BaseID =
+        GNSSVectors[VectorN].BaseID then
      DeleteGNSSSolution(SessionN, I);
   end;
 
-  DebugMSG('Deleting Vector: '+ BareId(GNSSVectors[VectorN].RoverID) +' -> '+
-            BareId(GNSSVectors[VectorN].BaseID));
+  DebugMSG('Deleting Vector: '+ BareId(GNSSVectors[VectorN].BaseID) +' -> '+
+            BareId(GNSSVectors[VectorN].RoverID));
 
   /// 2. Delete Vector
   for I := VectorN to Length(GNSSVectors) - 2 do

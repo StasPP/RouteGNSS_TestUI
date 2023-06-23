@@ -73,24 +73,120 @@ const
 //  PointStatusColors: array [0..13] of TColor = (clGray, $0000FF80,
 //          $0002EAFD, clFuchsia, clPurple, $006000FF, clTeal,clGray,
 //          clRed, clOlive, $000080FF, clOlive, clYellow, clBlue);
+var
+   RNode, FNode : TTreeNode;
 implementation
 
 {$R *.dfm}
 
 procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
-var I, j :integer;
+var I, j, k, imgN, SolI, SessI :integer;
+    Str : string;
+    Node1, Node2, Node3, Node4, Node5 : TTreeNode;
 begin
   // TreeInd := TW.ItemIndex
-  TW.Items.Clear;
-  for I := 0 to Length(GNSSPoints) -1 do
+  TW.Items.Clear;                               
+  RNode := nil;
+  FNode := nil;
+  for I := Length(GNSSPoints) -1 downto 0 do
   begin
-    if (StatN > 0) and (I <> StatN) then
+    if (StatN >= 0) and (I <> StatN) then
       continue;
 
+    Node1 := TW.Items.AddFirst(nil, GNSSPoints[I].PointName);
+    RNode := Node1;
+
+    try
+        ImgN := GNSSPoints[I].Status;
+        if GNSSPoints[I].Active = false then
+          ImgN := 7;
+    except
+        ImgN := 8;
+    end;
+
+    with Node1 do
+    begin
+       ImageIndex := ImgN;
+       SelectedIndex := ImgN;
+    end;
+
+    for j := 0 to Length(GNSSPoints[I].Sessions)-1 do
+    begin
+      Str := '[Error]';
+      imgN := 0;
+      Try
+        SessI := GetGNSSSessionNumber(GNSSPoints[I].Sessions[j]);
+        if SessI <> -1 then
+        begin
+          Str   := GNSSSessions[SessI].MaskName;
+          ImgN  := GNSSSessions[SessI].StatusQ;
+        end
+      Except
+        Str := '[Error]';
+        SessI := -1;
+        imgN := 0;
+      End;
+
+      Node2 := TW.Items.AddChild(Node1, Str);
+      with Node2 do
+      begin
+         ImageIndex := ImgN +22;
+         SelectedIndex := ImgN +22;
+      end;
+
+
+      for k := 1 to Length(GNSSSessions[SessI].Solutions)-1 do
+      with GNSSSessions[SessI].Solutions[k] do
+      begin
+         SolI := GetSolutionSubStatus(SessI, k);
+         try
+           ImgN := SolI*7 + SolutionQ
+         except
+           ImgN := 0;
+         end;
+
+         if SolI > 0 then
+         with Node2 do
+         if ImageIndex < 60 then
+         begin
+            ImageIndex := ImageIndex +40;
+            SelectedIndex := ImageIndex;
+         end;
+
+         case SolutionKind of
+            1: Str := 'Single Code Solution';  //// ToDo: Translate
+            2:  try
+               Str := GNSSSessions[GetGNSSSessionNumber(BaseID)].MaskName
+                    + ' -> ' +  GNSSSessions[SessI].MaskName
+             except
+               Str := '[Error]'
+             end;
+            3: Str := 'PPP Solution';
+         end;
+
+         Node3 := TW.Items.AddChild(Node2, Str);
+         with Node3 do
+         begin
+           ImageIndex := ImgN +30;
+           SelectedIndex := ImgN + 30;
+         end;
+      end;
+
+    end;
+
+
+
+    if GNSSPoints[I].CoordSource <> 3 then
+      asd
   end;
 
-
+  for I := 0 to TW.Items.count - 1 do
+  begin
+    TW.Items[I].Expand(true);
+  end;
+    
 end;
+
 
 procedure RefreshPointSettings;
 var I, j:integer;
@@ -171,7 +267,7 @@ begin
       ImgList.Draw(StatImg.Canvas, 0, 0, I);
     end;
 
-    OutputGNSSObjTree(TreeView);
+    OutputGNSSObjTree(TreeView, StationN);
  End;
 
  IsInit := false;
@@ -335,6 +431,7 @@ var I, j :Integer;
 begin
  StationN := StatN;
  ImgList := Img;
+ TreeView.Images := Img;
  RefreshPointSettings;
  ShowModal;
 end;

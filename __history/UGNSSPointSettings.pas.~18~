@@ -80,17 +80,17 @@ implementation
 {$R *.dfm}
 
 procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
-var I, j, imgN, SolI, SessI :integer;
+var I, j, k, imgN, SolI, SessI :integer;
     Str : string;
     Node1, Node2, Node3, Node4, Node5 : TTreeNode;
 begin
   // TreeInd := TW.ItemIndex
-  TW.Items.Clear;                               StatN := -1; //DEL!
+  TW.Items.Clear;                               
   RNode := nil;
   FNode := nil;
   for I := Length(GNSSPoints) -1 downto 0 do
   begin
-    if (StatN > 0) and (I <> StatN) then
+    if (StatN >= 0) and (I <> StatN) then
       continue;
 
     Node1 := TW.Items.AddFirst(nil, GNSSPoints[I].PointName);
@@ -107,35 +107,79 @@ begin
     with Node1 do
     begin
        ImageIndex := ImgN;
-       //SelectedIndex := 7;
+       SelectedIndex := ImgN;
     end;
 
     for j := 0 to Length(GNSSPoints[I].Sessions) - 1 do
     begin
+      Str := '[Error]';
+      imgN := 0;
       Try
         SessI := GetGNSSSessionNumber(GNSSPoints[I].Sessions[j]);
-        ImgN := GNSSSessions[SessI].StatusQ;
+        if SessI <> -1 then
+        begin
+          Str   := GNSSSessions[SessI].MaskName;
+          ImgN  := GNSSSessions[SessI].StatusQ;
+        end
       Except
-        Str := Error;
+        Str := '[Error]';
+        SessI := -1;
         imgN := 0;
       End;
-      Node2 := TW.Items.AddChild(Node1,Route[I].Name);
+
+      Node2 := TW.Items.AddChild(Node1, Str);
       with Node2 do
       begin
-         ImageIndex := 3;
-         SelectedIndex := 8;
+         ImageIndex := ImgN +22;
+         SelectedIndex := ImgN +22;
       end;
-       Node2 := TreeView1.Items.AddChild(Node1,Route[I].Name);
-      with Node2 do
+
+
+      for k := 1 to Length(GNSSSessions[SessI].Solutions)-1 do
+      with GNSSSessions[SessI].Solutions[k] do
       begin
-         ImageIndex := 3;
-         SelectedIndex := 8;
+         SolI := GetSolutionSubStatus(SessI, k);
+         try
+           ImgN := SolI*7 + SolutionQ
+         except
+           ImgN := 0;
+         end;
+
+         if SolI > 0 then
+         with Node2 do
+         if ImageIndex < 60 then
+         begin
+            ImageIndex := ImageIndex +40;
+            SelectedIndex := ImageIndex;
+         end;
+
+         case SolutionKind of
+            1: Str := 'Single Code Solution';  //// ToDo: Translate
+            2:  try
+               Str := GNSSSessions[GetGNSSSessionNumber(BaseID)].MaskName
+                    + ' -> ' +  GNSSSessions[SessI].MaskName
+             except
+               Str := '[Error]'
+             end;
+            3: Str := 'PPP Solution';
+         end;
+
+         Node3 := TW.Items.AddChild(Node2, Str);
+         with Node3 do
+         begin
+           ImageIndex := ImgN +30;
+           SelectedIndex := ImgN + 30;
+         end;
       end;
 
     end;
   end;
 
-
+  for i := 0 to TW.items.count - 1 do
+  begin
+    TW.Items[i].Expand(true);
+  end;
+    
 end;
 
 {

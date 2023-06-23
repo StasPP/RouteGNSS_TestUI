@@ -438,7 +438,7 @@ begin
     for i := 0 to ListBox.Items.Count - 1 do
       with ListBox do
       begin
-        w := Canvas.TextWidth(Items[i]);
+        w := Canvas.TextWidth(Items[i]) +20;
         if w > MaxWidth then
           MaxWidth := w;
       end;
@@ -503,7 +503,7 @@ begin
   EAntHgt.Font.Color := clWindowText;
   AntMethodBox.Font.Color := clWindowText;
   Stat := 7;
-  ModeBox.Enabled := true;
+  ModeBox.Enabled := not isStaticOnly;
 
   StationBox.Clear;
   for I := 0 to Length(GNSSPoints) - 1 do

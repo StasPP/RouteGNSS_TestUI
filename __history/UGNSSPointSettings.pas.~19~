@@ -85,12 +85,12 @@ var I, j, k, imgN, SolI, SessI :integer;
     Node1, Node2, Node3, Node4, Node5 : TTreeNode;
 begin
   // TreeInd := TW.ItemIndex
-  TW.Items.Clear;                               StatN := -1; //DEL!
+  TW.Items.Clear;                               
   RNode := nil;
   FNode := nil;
   for I := Length(GNSSPoints) -1 downto 0 do
   begin
-    if (StatN > 0) and (I <> StatN) then
+    if (StatN >= 0) and (I <> StatN) then
       continue;
 
     Node1 := TW.Items.AddFirst(nil, GNSSPoints[I].PointName);
@@ -145,6 +145,14 @@ begin
            ImgN := 0;
          end;
 
+         if SolI > 0 then
+         with Node2 do
+         if ImageIndex < 60 then
+         begin
+            ImageIndex := ImageIndex +40;
+            SelectedIndex := ImageIndex;
+         end;
+
          case SolutionKind of
             1: Str := 'Single Code Solution';  //// ToDo: Translate
             2:  try
@@ -167,7 +175,11 @@ begin
     end;
   end;
 
-
+  for i := 0 to TW.Items.count - 1 do
+  begin
+    TW.Items[i].Expand(true);
+  end;
+    
 end;
 
 {
