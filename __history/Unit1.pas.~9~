@@ -1162,8 +1162,8 @@ inherited;
     end;
 
     //FillRect(Rect);
-    IcoList.Draw((Control as TListBox).Canvas, Rect.Left, Rect.Top-2, IcoN+77);
-    TextOut(Rect.Left + 20, Rect.Top, (Control as TListBox).Items[Index]);
+    IcoList.Draw((Control as TListBox).Canvas, Rect.Left, Rect.Top-2, IcoN);
+    TextOut(Rect.Left + 20, Rect.Top, (Control as TListBox).Items[Index]+77);
     if odFocused In State then begin
       Brush.Color := (Control as TListBox).Color;
       DrawFocusRect(Rect);

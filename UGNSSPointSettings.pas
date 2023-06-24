@@ -90,8 +90,8 @@ begin
   FNode := nil;
   for I := Length(GNSSPoints) -1 downto 0 do
   begin
-    if (StatN >= 0) and (I <> StatN) then
-      continue;
+//    if (StatN >= 0) and (I <> StatN) then
+//      continue;
 
     Node1 := TW.Items.AddFirst(nil, GNSSPoints[I].PointName);
     RNode := Node1;
@@ -106,8 +106,8 @@ begin
 
     with Node1 do
     begin
-       ImageIndex := ImgN;
-       SelectedIndex := ImgN;
+       ImageIndex := ImgN +77;
+       SelectedIndex := ImgN +77;
     end;
 
     for j := 0 to Length(GNSSPoints[I].Sessions)-1 do
@@ -302,7 +302,7 @@ begin
       except
         I := 8;
       end;
-      ImgList.Draw(StatImg.Canvas, 0, 0, I);
+      ImgList.Draw(StatImg.Canvas, 0, 0, I+77);
     end;
 
     OutputGNSSObjTree(TreeView, StationN);
