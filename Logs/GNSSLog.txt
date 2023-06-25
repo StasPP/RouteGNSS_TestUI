@@ -1,32 +1,8 @@
-10:21:11 PM Loaded session: karg219e20
-10:21:11 PM Added new Point: KARG for Session: karg219e20
-10:21:11 PM Adding Session: karg219e20_4404918 to Point: KARG
-10:21:11 PM Refreshing Point: KARG
-10:21:11 PM Setting Coordinates for Point: KARG  from RINEX headers
-10:21:11 PM Assigned:  from RINEX headers
-10:21:11 PM Checking Points... 
-10:21:11 PM Checking Points is DONE! 
-10:21:17 PM Started single processing: karg219e20
-10:21:18 PM Assigning status for Session : karg219e20 to [Single]
-10:21:18 PM Refreshing Point: KARG
-10:21:18 PM Setting Coordinates for Point: KARG  from Single/PPP solutions
-10:21:18 PM Assigned:  from Solution #1 of Session: karg219e20
-10:21:18 PM Applying new coordinates for Session: karg219e20 - Stack level: 1
-10:21:18 PM Refreshing Point: KARG
-10:21:18 PM Setting Coordinates for Point: KARG  from Single/PPP solutions
-10:21:18 PM Assigned:  from Solution #1 of Session: karg219e20
-10:21:31 PM Started single processing: karg219e20
-10:21:31 PM Refreshing Point: KARG
-10:21:31 PM Setting Coordinates for Point: KARG  from Single/PPP solutions
-10:21:31 PM Assigned:  from Solution #1 of Session: karg219e20
-10:22:39 PM Setting Station: KARG turned OFF
-10:22:41 PM Setting Station: KARG turned ON
-10:22:42 PM Setting Station: KARG turned OFF
-10:22:42 PM Setting Station: KARG turned ON
-10:22:44 PM Setting Station: KARG turned OFF
-10:22:44 PM Setting Station: KARG turned ON
-10:22:48 PM Setting AS BASE Station: KARG
-10:22:48 PM Checking directions of Vectors for: karg219e20
-10:22:50 PM Setting Coordinates for Point: KARG  User defined
-10:22:50 PM Assigned:  User defined
-10:23:02 PM Checking directions of Vectors for: karg219e20
+2:19:07 AM Loaded session: BSBV153a
+2:19:07 AM Added new Point: BSBV for Session: BSBV153a
+2:19:07 AM Adding Session: BSBV153a_4361799 to Point: BSBV
+2:19:07 AM Refreshing Point: BSBV
+2:19:07 AM Setting Coordinates for Point: BSBV  from RINEX headers
+2:19:07 AM Assigned:  from RINEX headers
+2:19:07 AM Checking Points... 
+2:19:07 AM Checking Points is DONE! 

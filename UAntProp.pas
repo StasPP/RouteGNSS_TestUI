@@ -162,6 +162,7 @@ end;
 procedure TFAntProp.ShowAntProp(AntName: string);
 var I: Integer;
 begin
+  AntName := AnsiUpperCase(AntName);
   ANTPCV := GetAntParams(AntName);
   AntAccepted := false;
   NameEd.Text := ANTPCV.AntName;

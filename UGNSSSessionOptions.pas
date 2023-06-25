@@ -44,7 +44,6 @@ type
     DelPPP: TSpeedButton;
     Label15: TLabel;
     AntNameBox: TComboBox;
-    CustomAnt: TButton;
     EAntdN: TEdit;
     EAntdE: TEdit;
     EAntHgt: TEdit;
@@ -96,6 +95,7 @@ type
     StatImg: TImage;
     SolStatImg: TImage;
     ProcAllBL: TSpeedButton;
+    CustAnt: TSpeedButton;
     procedure FormShow(Sender: TObject);
     procedure CloseBtnClick(Sender: TObject);
     procedure TabSheet1Show(Sender: TObject);
