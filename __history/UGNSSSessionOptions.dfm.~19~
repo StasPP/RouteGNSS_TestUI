@@ -3,7 +3,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Session Properties'
-  ClientHeight = 278
+  ClientHeight = 306
   ClientWidth = 457
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,6 +13,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -750,8 +751,8 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     Left = 8
     Top = 59
     Width = 441
-    Height = 182
-    ActivePage = TabSheet2
+    Height = 208
+    ActivePage = TabSheet1
     TabOrder = 0
     OnChange = PageControlChange
     object TabSheet1: TTabSheet
@@ -766,7 +767,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object GetSingle: TSpeedButton
         Left = 11
-        Top = 126
+        Top = 152
         Width = 134
         Height = 22
         Caption = 'Single Point Processing'
@@ -775,7 +776,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object GetPPP: TSpeedButton
         Left = 151
-        Top = 126
+        Top = 152
         Width = 114
         Height = 22
         Caption = 'PPP Processing'
@@ -800,7 +801,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object ProcBL: TSpeedButton
         Left = 271
-        Top = 126
+        Top = 152
         Width = 154
         Height = 22
         Caption = 'Process Available Baselines'
@@ -883,20 +884,20 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Height = 13
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'dE, m:'
+        Caption = 'dN, m:'
       end
       object Label17: TLabel
         Left = 51
-        Top = 80
+        Top = 82
         Width = 44
         Height = 13
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'dN, m:'
+        Caption = 'dE, m:'
       end
       object Label18: TLabel
         Left = 3
-        Top = 104
+        Top = 108
         Width = 90
         Height = 13
         Alignment = taRightJustify
@@ -905,7 +906,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object Label19: TLabel
         Left = 23
-        Top = 128
+        Top = 134
         Width = 70
         Height = 13
         Alignment = taRightJustify
@@ -913,8 +914,8 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Caption = 'Method:'
       end
       object Image4: TImage
-        Left = 286
-        Top = 9
+        Left = 278
+        Top = 24
         Width = 140
         Height = 140
         AutoSize = True
@@ -1981,7 +1982,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Top = 24
         Width = 211
         Height = 21
-        ItemHeight = 13
+        ItemHeight = 0
         TabOrder = 0
         OnChange = AntNameBoxChange
       end
@@ -2004,7 +2005,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object EAntdE: TEdit
         Left = 99
-        Top = 77
+        Top = 79
         Width = 123
         Height = 21
         TabOrder = 3
@@ -2012,7 +2013,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object EAntHgt: TEdit
         Left = 99
-        Top = 101
+        Top = 105
         Width = 123
         Height = 21
         TabOrder = 4
@@ -2020,7 +2021,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object AntMethodBox: TComboBox
         Left = 99
-        Top = 125
+        Top = 131
         Width = 123
         Height = 22
         Style = csOwnerDrawFixed
@@ -2047,16 +2048,16 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object Label7: TLabel
         Left = 11
-        Top = 87
+        Top = 103
         Width = 101
         Height = 13
         Caption = 'Available processing:'
       end
       object AvSol: TListBox
         Left = 11
-        Top = 24
-        Width = 195
-        Height = 57
+        Top = 25
+        Width = 192
+        Height = 65
         Style = lbOwnerDrawFixed
         ItemHeight = 16
         TabOrder = 0
@@ -2065,9 +2066,9 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object AvProc: TListBox
         Left = 11
-        Top = 106
-        Width = 195
-        Height = 44
+        Top = 122
+        Width = 192
+        Height = 53
         Style = lbOwnerDrawFixed
         ItemHeight = 16
         TabOrder = 1
@@ -2078,7 +2079,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Left = 212
         Top = 3
         Width = 218
-        Height = 148
+        Height = 174
         ActivePage = TabSheet7
         TabOrder = 2
         object TabSheet7: TTabSheet
@@ -2099,7 +2100,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
           end
           object DelSol: TSpeedButton
             Left = 11
-            Top = 112
+            Top = 139
             Width = 71
             Height = 22
             Caption = 'Delete'
@@ -2116,7 +2117,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
           end
           object RecomputeBtn: TSpeedButton
             Left = 88
-            Top = 112
+            Top = 139
             Width = 113
             Height = 22
             Caption = 'Recompute'
@@ -2161,7 +2162,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
             Left = 11
             Top = 23
             Width = 190
-            Height = 83
+            Height = 110
             ReadOnly = True
             ScrollBars = ssVertical
             TabOrder = 0
@@ -2292,7 +2293,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Left = 6
         Top = 104
         Width = 419
-        Height = 47
+        Height = 69
         ReadOnly = True
         ScrollBars = ssVertical
         TabOrder = 3
@@ -2355,14 +2356,14 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object Label14: TLabel
         Left = 11
-        Top = 83
+        Top = 95
         Width = 117
         Height = 13
         Caption = 'Precise clock/orbits files:'
       end
       object AddPPP: TSpeedButton
         Left = 399
-        Top = 100
+        Top = 112
         Width = 23
         Height = 22
         Glyph.Data = {
@@ -2381,7 +2382,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object DelPPP: TSpeedButton
         Left = 399
-        Top = 124
+        Top = 136
         Width = 23
         Height = 22
         Enabled = False
@@ -2400,19 +2401,23 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Left = 11
         Top = 22
         Width = 382
-        Height = 55
-        ItemHeight = 13
+        Height = 67
+        Style = lbOwnerDrawFixed
+        ItemHeight = 17
         TabOrder = 0
         OnClick = NavFilesClick
+        OnDrawItem = NavFilesDrawItem
       end
       object PPPFiles: TListBox
         Left = 11
-        Top = 100
+        Top = 112
         Width = 382
-        Height = 51
-        ItemHeight = 13
+        Height = 61
+        Style = lbOwnerDrawFixed
+        ItemHeight = 17
         TabOrder = 1
         OnClick = PPPFilesClick
+        OnDrawItem = PPPFilesDrawItem
       end
     end
     object TabSheet6: TTabSheet
@@ -2429,7 +2434,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Left = 11
         Top = 25
         Width = 192
-        Height = 120
+        Height = 144
         ItemHeight = 13
         TabOrder = 0
       end
@@ -2437,7 +2442,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Left = 212
         Top = 3
         Width = 213
-        Height = 142
+        Height = 166
         TabOrder = 1
         Visible = False
         object Label10: TLabel
@@ -2537,7 +2542,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
   end
   object CloseBtn: TButton
     Left = 312
-    Top = 247
+    Top = 273
     Width = 137
     Height = 25
     Caption = 'Close'

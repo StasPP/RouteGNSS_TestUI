@@ -40,6 +40,7 @@
       <Form>ProcGNSS</Form>
     </DCCReference>
     <DCCReference Include="GNSSObjects.pas" />
+    <DCCReference Include="GNSSObjsTree.pas" />
     <DCCReference Include="RTKLibExecutor.pas" />
     <DCCReference Include="UAntProp.pas">
       <Form>FAntProp</Form>
@@ -59,5 +60,6 @@
     <DCCReference Include="UVectSettings.pas">
       <Form>FVectSettings</Form>
     </DCCReference>
+    <DCCReference Include="UWinManager.pas" />
   </ItemGroup>
 </Project>

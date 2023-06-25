@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, GNSSObjects, ComCtrls, GeoString, ImgList;
+  Dialogs, ExtCtrls, StdCtrls, GNSSObjects, ComCtrls, GeoString, ImgList,
+  GNSSObjsTree;
 
 type
   TFGNSSPointSettings = class(TForm)
@@ -41,6 +42,8 @@ type
     procedure isBSClick(Sender: TObject);
     procedure isAcClick(Sender: TObject);
     procedure SolBoxChange(Sender: TObject);
+    procedure TreeViewCustomDrawItem(Sender: TCustomTreeView; Node: TTreeNode;
+      State: TCustomDrawState; var DefaultDraw: Boolean);
   private
     { Private declarations }
   public
@@ -73,158 +76,10 @@ const
 //  PointStatusColors: array [0..13] of TColor = (clGray, $0000FF80,
 //          $0002EAFD, clFuchsia, clPurple, $006000FF, clTeal,clGray,
 //          clRed, clOlive, $000080FF, clOlive, clYellow, clBlue);
-var
-   RNode, FNode : TTreeNode;
+
 implementation
 
 {$R *.dfm}
-
-procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
-var I, j, k, imgN, SolI, SessI :integer;
-    Str : string;
-    Node1, Node2, Node3, Node4, Node5 : TTreeNode;
-begin
-  // TreeInd := TW.ItemIndex
-  TW.Items.Clear;                               
-  RNode := nil;
-  FNode := nil;
-  for I := Length(GNSSPoints) -1 downto 0 do
-  begin
-//    if (StatN >= 0) and (I <> StatN) then
-//      continue;
-
-    Node1 := TW.Items.AddFirst(nil, GNSSPoints[I].PointName);
-    RNode := Node1;
-
-    try
-        ImgN := GNSSPoints[I].Status;
-        if GNSSPoints[I].Active = false then
-          ImgN := 7;
-    except
-        ImgN := 8;
-    end;
-
-    with Node1 do
-    begin
-       ImageIndex := ImgN +77;
-       SelectedIndex := ImgN +77;
-    end;
-
-    for j := 0 to Length(GNSSPoints[I].Sessions)-1 do
-    begin
-      Str := '[Error]';
-      imgN := 0;
-      Try
-        SessI := GetGNSSSessionNumber(GNSSPoints[I].Sessions[j]);
-        if SessI <> -1 then
-        begin
-          Str   := GNSSSessions[SessI].MaskName;
-          ImgN  := GNSSSessions[SessI].StatusQ;
-        end
-      Except
-        Str := '[Error]';
-        SessI := -1;
-        imgN := 0;
-      End;
-
-      if GNSSPoints[I].Active = false then   ImgN := 0;
-        
-      Node2 := TW.Items.AddChild(Node1, Str);
-      with Node2 do
-      begin
-         ImageIndex := ImgN +22;
-         SelectedIndex := ImgN +22;
-      end;
-
-
-      for k := 1 to Length(GNSSSessions[SessI].Solutions)-1 do
-      with GNSSSessions[SessI].Solutions[k] do
-      begin
-         SolI := GetSolutionSubStatus(SessI, k);
-         try
-           ImgN := SolI*7 + SolutionQ
-         except
-           
-         end;
-
-         if GNSSPoints[I].Active = false then  ImgN := 0;
-
-         if SolI > 0 then
-         with Node2 do
-         if ImageIndex < 60 then
-         begin
-            ImageIndex := ImageIndex +40;
-            SelectedIndex := ImageIndex;
-         end;
-
-         case SolutionKind of
-            1: Str := 'Single Code Solution';  //// ToDo: Translate
-            2:  try
-               Str := GNSSSessions[GetGNSSSessionNumber(BaseID)].MaskName
-                    + ' -> ' +  GNSSSessions[SessI].MaskName
-             except
-               Str := '[Error]'
-             end;
-            3: Str := 'PPP Solution';
-         end;
-
-         Node3 := TW.Items.AddChild(Node2, Str);
-         with Node3 do
-         begin
-           ImageIndex := ImgN +30;
-           SelectedIndex := ImgN + 30;
-         end;
-      end;
-
-    end;
-
-
-
-    if (GNSSPoints[I].CoordSource <> 0) and (GNSSPoints[I].CoordSource <> 3) then
-    begin
-      ImgN := 70;
-      case GNSSPoints[I].CoordSource of
-          1: begin
-             Str  := '[Adjusted Single/PPP Solutions]';     /// ToDo: Translate
-             if GNSSPoints[I].Status = 9  then
-               ImgN := 76
-             else
-             if GNSSPoints[I].Status = 12  then
-               ImgN := 75;
-          end;
-          2: begin
-             Str  := '[Adjusted Baseline Solutions]';       /// ToDo: Translate
-             if GNSSPoints[I].Status = 10  then
-               ImgN := 73
-             else
-             if GNSSPoints[I].Status = 11  then
-               ImgN := 74;
-          end;
-          4: begin
-             Str  := '[User Defined Coordinates]';          /// ToDo: Translate
-             ImgN := 72;
-          end;
-      end;
-
-      if GNSSPoints[I].Status = 7 then ImgN := 70;
-
-      Node2 := TW.Items.AddChild(Node1, Str);
-      with Node2 do
-      begin
-         ImageIndex := ImgN;
-         SelectedIndex := ImgN;
-      end;
-    end;
-
-  end;
-
-  for I := 0 to TW.Items.count - 1 do
-  begin
-    TW.Items[I].Expand(true);
-  end;
-    
-end;
-
 
 procedure RefreshPointSettings;
 var I, j:integer;
@@ -572,6 +427,23 @@ begin
   end;
 
   RefreshPointSettings;
+end;
+
+procedure TFGNSSPointSettings.TreeViewCustomDrawItem(Sender: TCustomTreeView;
+  Node: TTreeNode; State: TCustomDrawState; var DefaultDraw: Boolean);
+begin
+  case Node.ImageIndex  of
+    0, 14, 17, 36, 37, 44, 71, 84, 22..35: Sender.Canvas.Font.Color := clGray;
+    8, 19, 70, 85 : Sender.Canvas.Font.Color := clMaroon;
+    90, 72 : Sender.Canvas.Font.Color := clNavy;
+  end;
+  case Node.ImageIndex  of
+    38..43, 70..76 : if not (fsUnderLine in Sender.Canvas.Font.Style) then
+      Sender.Canvas.Font.Style := Sender.Canvas.Font.Style + [fsUnderline];
+  end;
+  if Node.Level = 0 then if not (fsBold in Sender.Canvas.Font.Style) then
+     Sender.Canvas.Font.Style := Sender.Canvas.Font.Style + [fsBold];
+
 end;
 
 end.

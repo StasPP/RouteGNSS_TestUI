@@ -963,7 +963,6 @@ object FGNSSPointSettings: TFGNSSPointSettings
     Indent = 19
     ReadOnly = True
     TabOrder = 1
-    OnCustomDrawItem = TreeViewCustomDrawItem
   end
   object isAc: TCheckBox
     Left = 91

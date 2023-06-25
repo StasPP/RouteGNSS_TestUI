@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, GNSSObjects, StdCtrls, ComCtrls, ExtCtrls, Buttons, jpeg,
-  RTKLibExecutor, GeoFunctions, GeoString, Geoid;
+  RTKLibExecutor, GeoFunctions, GeoString, Geoid, UWinManager;
 
 type
   TFGNSSSessionOptions = class(TForm)
@@ -724,7 +724,7 @@ begin
   HorScrollBar(NavFiles, NavFiles.Width);
   HorScrollBar(PPPFiles, PPPFiles.Width);
 
-  StPan.Visible := ModeBox.Enabled;
+  StPan.Visible := ModeBox.ItemIndex = 0;
   StationLab.Visible := ModeBox.ItemIndex = 0;
   TrackLab.Visible := not StationLab.Visible;
 end;

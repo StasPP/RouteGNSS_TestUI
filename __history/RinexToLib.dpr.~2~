@@ -12,8 +12,7 @@ uses
   UGNSSPointSettings in 'UGNSSPointSettings.pas' {FGNSSPointSettings},
   UVectSettings in 'UVectSettings.pas' {FVectSettings},
   UAntProp in 'UAntProp.pas' {FAntProp},
-  UWinManager in 'UWinManager.pas',
-  GNSSObjsTree in 'GNSSObjsTree.pas';
+  UWinManager in 'UWinManager.pas';
 
 {$R *.res}
 

@@ -1,0 +1,28 @@
+unit GNSSObjsTree;
+
+interface
+
+uses CommCtrl;
+
+
+
+implementation
+
+procedure SetNodeBoldState(Node: TTreeNode; Value: Boolean);
+var
+  TVItem: TTVItem;
+begin
+  if not Assigned(Node) then Exit;
+  with TVItem do
+  begin
+    mask := TVIF_STATE or TVIF_HANDLE;
+    hItem := Node.ItemId;
+    stateMask := TVIS_BOLD;
+    if Value then state := TVIS_BOLD 
+    else 
+      state := 0;
+    TreeView_SetItem(Node.Handle, TVItem);
+  end;
+end;
+
+end.

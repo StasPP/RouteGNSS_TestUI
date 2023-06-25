@@ -147,9 +147,10 @@ begin
       
 
   if (isHasChanges) or (ANTPCV.LineN = -1) then
+  begin
     AcceptAnt;
-
-  AntAccepted := true;
+    AntAccepted := true;
+  end;
 
   close;
 end;
