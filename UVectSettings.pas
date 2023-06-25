@@ -14,7 +14,7 @@ type
     StatusLabel: TLabel;
     VPC: TPageControl;
     TabSheet1: TTabSheet;
-    SpeedButton1: TSpeedButton;
+    RevVect: TSpeedButton;
     Label1: TLabel;
     Label2: TLabel;
     isAc: TCheckBox;
@@ -25,10 +25,7 @@ type
     BaselinesBox: TListBox;
     Label3: TLabel;
     Button3: TButton;
-    Button2: TButton;
     Button1: TButton;
-    Button4: TButton;
-    Button5: TButton;
     Button6: TButton;
     SpeedButton2: TSpeedButton;
     PageControl2: TPageControl;
@@ -37,16 +34,19 @@ type
     Label4: TLabel;
     isItmAc: TCheckBox;
     Memo2: TMemo;
-    Button7: TButton;
-    SpeedButton3: TSpeedButton;
+    ProcVectI: TSpeedButton;
+    ProcVect: TSpeedButton;
+    VectRep: TSpeedButton;
+    VectRepI: TSpeedButton;
+    RepAll: TSpeedButton;
     procedure Button6Click(Sender: TObject);
     procedure isAcClick(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure RevVectClick(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure BaselinesBoxDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
     procedure BaselinesBoxClick(Sender: TObject);
-    procedure SpeedButton3Click(Sender: TObject);
+    procedure ProcVectIClick(Sender: TObject);
     procedure isItmAcClick(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -61,8 +61,9 @@ type
 
 var
   FVectSettings: TFVectSettings;
-  VectorN: integer;
-  VectorsN: Array of integer;
+  VectorN  :integer;
+  ChoosedN :integer;
+  VectorsN :Array of integer;
   BaseId, RoverId: string;
   ImgList :TImageList;
   isInit : boolean;
@@ -112,7 +113,7 @@ begin
   End;
 
   with FVectSettings do
-  Begin 
+  Begin
     N := BaseLinesBox.ItemIndex;
     if Length(VectorsN) > 1 then
     begin
@@ -126,13 +127,17 @@ begin
         BS := GNSSSessions[j].MaskName;
         j := GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].RoverID);
         if j = -1 then
-          continue;  
+          continue;
         RS := GNSSSessions[j].MaskName;
-        
+
         BaseLinesBox.Items.Add( BS + ' -> ' + RS );
+        if ChoosedN <> -1 then
+          if I = ChoosedN then
+            N := I
       end;
 
       BaseLinesBox.ItemIndex := N;
+
       StatI := 0;
     end
     else
@@ -145,6 +150,15 @@ begin
       if j >= 0 then
         REdit.Text := GNSSSessions[j].MaskName;
 
+      ProcVect.Glyph.Assign(nil);
+      if GNSSVectors[VectorN].StatusQ > 0 then
+         ImgList.GetBitmap(92,ProcVect.Glyph)
+      else
+         ImgList.GetBitmap(93,ProcVect.Glyph);
+
+      VectRep.Enabled := GNSSVectors[VectorN].StatusQ > 0;
+      ProcVect.Enabled := GNSSVectors[VectorN].StatusQ >= 0;
+      
       isAC.Checked := GNSSVectors[VectorN].StatusQ >= 0;
       StatI := GNSSVectors[VectorN].StatusQ;
 
@@ -188,10 +202,11 @@ begin
       end;
       ImgList.Draw(StatImg.Canvas, 0, 0, I);
     end;
-
+    BaseLinesBox.OnClick(nil);
   End;
   isInit := false;
 
+  
 end;
 
 procedure TFVectSettings.BaselinesBoxClick(Sender: TObject);
@@ -205,7 +220,7 @@ begin
   StatI := GNSSVectors[VectorsN[I]].StatusQ;
   if StatI < 0 then
     StatI := -1;
-  
+
   isItmAc.Checked := GNSSVectors[VectorsN[I]].StatusQ >= 0;
   
   Memo2.Clear;
@@ -230,9 +245,18 @@ begin
                     'mZX: '+ FormatFloat('0.0000', StDevs[6]) + ' m.');
   end
   else
-    Memo1.Lines.Add('No processing info yet');
+    Memo2.Lines.Add('No processing info yet');
 
-  isInit := false;   
+  ProcVectI.Glyph.Assign(nil);
+  ProcVectI.Enabled := GNSSVectors[VectorsN[I]].StatusQ >= 0;
+  if GNSSVectors[VectorsN[I]].StatusQ > 0 then
+      ImgList.GetBitmap(92,ProcVectI.Glyph)
+  else
+      ImgList.GetBitmap(93,ProcVectI.Glyph);
+
+  VectRepI.Enabled := GNSSVectors[VectorsN[I]].StatusQ > 0;
+
+  isInit := false;
 end;
 
 procedure TFVectSettings.BaselinesBoxDrawItem(Control: TWinControl;
@@ -372,24 +396,29 @@ begin
   if VectN < 0 then
       exit;
 
-  try  
+  try
     VectorN := VectN;
+    ChoosedN:= VectN;
     BaseId  := GetGNSSVectorPoint(VectN, true);
     RoverId := GetGNSSVectorPoint(VectN, false);
     ImgList := Img;
 
     RefreshVectorSettings;
     if VPC.ActivePageIndex = 1 then
-      BaseLinesBox.ItemIndex := 0;
+    begin
+      //BaseLinesBox.ItemIndex := 0;
+    end;
     
   finally
+    ChoosedN := -1;
     Showmodal;
   end;
+
  
 
 end;
 
-procedure TFVectSettings.SpeedButton1Click(Sender: TObject);
+procedure TFVectSettings.RevVectClick(Sender: TObject);
 begin
   if GNSSVectors[VectorN].StatusQ > 0 then
   if MessageDlg('The action can change the other data. Proceed?',
@@ -419,7 +448,7 @@ begin
 
 end;
 
-procedure TFVectSettings.SpeedButton3Click(Sender: TObject);
+procedure TFVectSettings.ProcVectIClick(Sender: TObject);
 var I:Integer;
 begin
   I := BaselinesBox.ItemIndex;

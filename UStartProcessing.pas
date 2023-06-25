@@ -34,12 +34,12 @@ type
     Image1: TImage;
     Image2: TImage;
     LProcKind: TLabel;
-    ProcButton: TButton;
     CancelButton: TButton;
     Image4: TImage;
     Label1: TLabel;
     Label2: TLabel;
     isDGNSS: TCheckBox;
+    ProcButton: TSpeedButton;
     procedure Cb_GNSSSystemsChange(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
     procedure ProcButtonClick(Sender: TObject);
@@ -98,19 +98,19 @@ begin
   case Method of
      1:
      begin
-       SessionLabel.Caption := GNSSSessions[Rover].Station;
+       SessionLabel.Caption := GNSSSessions[Rover].MaskName;
        LProcKind.Caption := 'Single processing'; /// ToDo: Translate
      end;
 
      2:
      begin
-       SessionLabel.Caption := GNSSSessions[Base].Station +'-'+GNSSSessions[Rover].Station;
+       SessionLabel.Caption := GNSSSessions[Base].MaskName +'-'+GNSSSessions[Rover].MaskName;
        LProcKind.Caption := 'Baseline processing'; /// ToDo: Translate
        TabSheet2Show(nil);
      end;
 
      3: begin
-       SessionLabel.Caption := GNSSSessions[Rover].Station;
+       SessionLabel.Caption := GNSSSessions[Rover].MaskName;
        LProcKind.Caption := 'Precise Point Positioning';
      end;
   end;

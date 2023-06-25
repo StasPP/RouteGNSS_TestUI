@@ -80,7 +80,6 @@ type
     Label19: TLabel;
     Panel2: TPanel;
     Memo1: TListBox;
-    Shape1: TShape;
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);

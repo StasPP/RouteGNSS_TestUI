@@ -95,6 +95,7 @@ type
     TrackLab: TLabel;
     StatImg: TImage;
     SolStatImg: TImage;
+    ProcAllBL: TSpeedButton;
     procedure FormShow(Sender: TObject);
     procedure CloseBtnClick(Sender: TObject);
     procedure TabSheet1Show(Sender: TObject);
@@ -130,6 +131,7 @@ type
       Rect: TRect; State: TOwnerDrawState);
     procedure PPPFilesDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
+    procedure ProcAllBLClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -156,7 +158,7 @@ var
   EditableStopPoints:array of StopPointN;
 
   AvProcArr :Array of TProcArr;
-  
+
   ImgList   :TImageList;
 
 implementation
@@ -727,6 +729,8 @@ begin
   StPan.Visible := ModeBox.ItemIndex = 0;
   StationLab.Visible := ModeBox.ItemIndex = 0;
   TrackLab.Visible := not StationLab.Visible;
+
+  TabSheet1.OnShow(nil);
 end;
 
 procedure TFGNSSSessionOptions.ShowGNSSSessionInfo(
@@ -1297,6 +1301,33 @@ begin
  ShowGNSSSessionInfo(A, Img);
 end;
 
+procedure TFGNSSSessionOptions.ProcAllBLClick(Sender: TObject);
+var I, j, k:Integer; A :Array of byte; B, C :Array of Integer;
+begin
+  SetLength(A, 0); SetLength(B, 0); SetLength(C, 0);
+  j := 0;
+
+  for k := 0 to length(ActiveGNSSSessions) - 1 do
+  with GNSSSessions[ActiveGNSSSessions[k]] do
+    for I := 0 to Length(GNSSVectors) - 1 do
+    if (GNSSVectors[I].RoverID = SessionID) then
+    begin
+      j := Length(A);
+      SetLength(A, j+1);
+      SetLength(B, j+1);
+      SetLength(C, j+1);
+
+      A[j] := 2;
+      B[j] := GetGNSSSessionNumber(GNSSVectors[I].RoverID);
+      C[j] := GetGNSSSessionNumber(GNSSVectors[I].BaseID);
+    end;
+
+  if length(A) > 0 then
+    FStartProcessing.ShowMultiProcOptions(A,B,C);
+  RefreshSettings;
+  TabSheet1Show(nil)
+end;
+
 procedure TFGNSSSessionOptions.SpeedButton3Click(Sender: TObject);
 var N:Integer;
 begin
@@ -1328,6 +1359,33 @@ procedure TFGNSSSessionOptions.TabSheet1Show(Sender: TObject);
        '0'..'9', '_' : result := true;
        else result := false;
      end;
+  end;
+
+  function HasSol(SKind:Integer): boolean;
+  var j, k:Integer;
+      b:boolean;
+  begin
+    result := false;
+    b := false;
+    for j := 0 to length(ActiveGNSSSessions) - 1 do
+    begin
+      with GNSSSessions[ActiveGNSSSessions[j]] do
+      begin
+        if SKind <> 2 then
+          b := false;
+        for k := 0 to Length(Solutions) - 1 do
+        if Solutions[k].SolutionKind = SKind then
+          b := true;
+      end;
+
+      case SKind of
+        1, 3 : if (b = false) then exit;
+        2:  if (b = true) then break;
+      end;
+      
+    end;
+    if b = true then
+      result := true;
   end;
 
   function HasNav:boolean;
@@ -1402,9 +1460,42 @@ procedure TFGNSSSessionOptions.TabSheet1Show(Sender: TObject);
   end;
 
 begin
+
+  GetSingle.Glyph.Assign(nil);
+  GetPPP.Glyph.Assign(nil);
+  ProcAllBL.Glyph.Assign(nil);
+
   GetSingle.Enabled := HasNav;
+  if GetSingle.Enabled then
+  begin
+    if HasSol(1) then
+      ImgList.GetBitmap(92,GetSingle.Glyph)
+    else
+      ImgList.GetBitmap(93,GetSingle.Glyph);
+  end;
+
   GetPPP.Enabled := HasFilesPPP and HasNav;
+
+  if GetPPP.Enabled then
+  begin
+    if HasSol(3) then
+      ImgList.GetBitmap(92,GetPPP.Glyph)
+    else
+      ImgList.GetBitmap(93,GetPPP.Glyph);
+  end;
+      
+
   ProcBL.Enabled := HasBaseLines;
+  ProcBL.Visible := HasBaseLines;
+  ProcAllBL.Enabled := HasBaseLines or HasSol(2);
+  if HasSol(2) then
+    ImgList.GetBitmap(92,ProcAllBL.Glyph)
+  else
+  begin
+    if ProcAllBL.Enabled then
+      ImgList.GetBitmap(93,ProcAllBL.Glyph);
+    ProcBL.Visible := false;
+  end;
 end;
 
 procedure TFGNSSSessionOptions.TabSheet3Show(Sender: TObject);

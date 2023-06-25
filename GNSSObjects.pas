@@ -981,10 +981,13 @@ begin
     if (St = 0) and (SolutionQ > 0) then
       St := SolutionQ
     else
-    if (SolutionQ = 6) and (St > 2) then
+    if (St > 2) and (SolutionQ = 6) then
       St := SolutionQ
     else
     if (St < 5) and (SolutionQ < St) then
+      St := SolutionQ
+    else
+    if (St = 6) and (SolutionQ > 0) and (SolutionQ < 3) then
       St := SolutionQ
     else
     if (St = 5) and (SolutionQ <> 5) and (SolutionQ > 0) then
