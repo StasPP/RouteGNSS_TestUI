@@ -5,9 +5,17 @@ interface
 uses CommCtrl, ComCtrls, GNSSObjects;
 
 procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
+procedure OutputGNSSVectTree(TW :TTreeView);
 
 var
    RNode, FNode : TTreeNode;
+type
+   TVectGroup = record
+     Name  : String;
+     Vects : array of Integer;
+   end;
+var
+   VectGroups: Array of TVectGroup;
 
 implementation
 
@@ -31,7 +39,7 @@ end;
 procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
 var I, j, k, imgN, SolI, SessI :integer;
     Str : string;
-    Node1, Node2, Node3, Node4, Node5 : TTreeNode;
+    Node1, Node2, Node3 : TTreeNode;
 begin
   // TreeInd := TW.ItemIndex
   TW.Items.Clear;
@@ -167,6 +175,126 @@ begin
          ImageIndex := ImgN;
          SelectedIndex := ImgN;
       end;
+    end;
+
+  end;
+
+  
+  for I := 0 to TW.Items.count - 1 do
+  begin
+    if (StatN = -1) and (TW.Items[I].Level > 0) then
+      TW.Items[I].Collapse(true)
+    else
+      TW.Items[I].Expand(false);
+  end;
+
+end;
+
+procedure GroupVectors;
+var I, j, k :Integer;
+    s : string;
+    NeedNew: boolean;
+begin
+   SetLength(VectGroups, 0);
+   for I := 0 to Length(GNSSVectors) - 1 do
+   begin
+     s := GetGNSSVectorPoint(I, true) + '-'+ GetGNSSVectorPoint(I, false);
+
+     NeedNew := True;
+     for j := 0 to Length(VectGroups) - 1 do
+       if VectGroups[j].Name = s then
+       begin
+         NeedNew := false;
+         break;
+       end;
+
+     if NeedNew then
+     begin
+       j := Length(VectGroups);
+       SetLength(VectGroups, j+1);
+       VectGroups[j].Name := s;
+     end;
+
+     k := Length(VectGroups[j].Vects);
+     SetLength(VectGroups[j].Vects, k+1);
+
+     VectGroups[j].Vects[k] := I;
+   end;
+end;
+
+procedure OutputGNSSVectTree(TW :TTreeView);
+var I, j, N, ImgN :Integer;
+    s : string;
+    Node1, Node2: TTreeNode;
+begin
+
+   GroupVectors;
+   TW.Items.Clear;
+   RNode := nil;
+   FNode := nil;
+
+   for I := Length(VectGroups) -1 downto 0 do
+   begin
+    Node1 := TW.Items.AddFirst(nil, VectGroups[I].Name);
+    RNode := Node1;
+
+    try
+        ImgN := GetGNSSVectorGroupStatus(VectGroups[I].Vects);
+        case ImgN of
+           -1..2 : ImgN := 15 + ImgN;
+           8     : ImgN := 19;
+           110   : ImgN := 101;
+           112   : ImgN := 102;
+           113, 114 : ImgN := 103;
+           120      : ImgN := 104;
+           123, 124 : ImgN := 105;
+           130, 140 : ImgN := 106;
+           // ToDo ADJUSTED: ok I := 20, poor I := 21
+           else ImgN := 15;
+         end;
+    except
+        ImgN := 15;
+    end;
+
+    with Node1 do
+    begin
+       ImageIndex := ImgN;
+       SelectedIndex := ImgN;
+    end;
+    SetNodeBoldState(Node1, True);
+
+    for j := 0 to Length(VectGroups[I].Vects) - 1 do
+    begin
+      try
+        ImgN := GNSSVectors[VectGroups[I].Vects[j]].StatusQ;
+
+        case ImgN of
+           -1..2 : ImgN := 15 + ImgN;
+           8     : ImgN := 19;
+           // ToDo ADJUSTED: ok I := 20, poor I := 21
+           else ImgN := 15;
+        end;
+
+        N := GetGNSSSessionNumber(GNSSVectors[VectGroups[I].Vects[j]].BaseID);
+        if N = -1 then
+          continue;
+        s:= GNSSSessions[N].MaskName;
+
+        N := GetGNSSSessionNumber(GNSSVectors[VectGroups[I].Vects[j]].RoverID);
+        if N = -1 then
+          continue;
+        s:= s + ' -> '+GNSSSessions[N].MaskName;
+      except
+        continue;
+      end;
+
+      Node2 := TW.Items.AddChild(Node1, s);
+      with Node2 do
+      begin
+         ImageIndex := ImgN;
+         SelectedIndex := ImgN;
+      end;
+      
     end;
 
   end;

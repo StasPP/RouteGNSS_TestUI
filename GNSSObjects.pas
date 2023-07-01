@@ -186,6 +186,7 @@ type
 
   function GetGNSSVector(RoverId, BaseId:String):integer;
   function GetGNSSVectorPoint(VectN: Integer; isBase: boolean):String;
+  function GetGNSSVectorGroupStatus(VectN: Array of Integer):integer;
   procedure EnableGNSSVector(VectorN:integer);
   procedure DisableGNSSVector(VectorN:integer);
   procedure InvertGNSSVector(VectorN:integer; GroupInv:Boolean = true);
@@ -1911,6 +1912,71 @@ begin
           and (GNSSSessions[SessN].Solutions[I].BaseID = Id) then
          DeleteGNSSSolution(SessN, I);
 end;
+
+function GetGNSSVectorGroupStatus(VectN: Array of Integer):integer;
+var i, j, bestQ, worstQ:integer;
+    isHomo :boolean;
+begin
+  result := -1;
+
+  if Length(GNSSVectors) < 1 then
+    exit;
+
+
+  // Test if the group is Homogenious by Q
+  bestQ := GNSSVectors[0].StatusQ ;
+  isHomo := true;
+  for I := 1 to Length(GNSSVectors) - 1 do
+  begin
+    if GNSSVectors[I].StatusQ < 0 then
+      continue;
+    if (GNSSVectors[I].StatusQ <> bestQ) then
+    begin
+      isHomo := false;
+    end;
+  end;
+
+  if isHomo then
+  begin
+    result := bestQ;
+    exit;
+  end;
+
+  // 2 Got the Best Q
+  bestQ := 0;
+  for I := 0 to Length(GNSSVectors) - 1 do
+  begin
+    if GNSSVectors[I].StatusQ < 0 then
+      continue;
+    if (bestQ = 0) or (GNSSVectors[I].StatusQ < bestQ) then
+      bestQ := GNSSVectors[I].StatusQ;
+  end;
+
+  // 3 Got the Worst Q
+  worstQ := -1;
+  for I := 0 to Length(GNSSVectors) - 1 do
+  begin
+    if GNSSVectors[I].StatusQ < 0 then
+      continue;
+    if (worstQ = -1) or (GNSSVectors[I].StatusQ > worstQ)
+      or (GNSSVectors[I].StatusQ = 0) then
+      worstQ := GNSSVectors[I].StatusQ;
+  end;
+
+  if (worstQ = bestQ) or (worstQ = -1) then
+  begin
+    result := bestQ;
+    exit;
+  end else
+  begin
+    if worstQ > 6 then
+      worstQ := 0;
+
+    result := 100 + bestQ*10 + worstQ;
+  end;
+
+end;
+
 
 procedure EnableGNSSVector(VectorN:integer);
 //var SessN:Integer;

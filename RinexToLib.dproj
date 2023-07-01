@@ -45,6 +45,9 @@
     <DCCReference Include="UAntProp.pas">
       <Form>FAntProp</Form>
     </DCCReference>
+    <DCCReference Include="UGNSSMainTree.pas">
+      <Form>FMainTree</Form>
+    </DCCReference>
     <DCCReference Include="UGNSSPointSettings.pas">
       <Form>FGNSSPointSettings</Form>
     </DCCReference>

@@ -2239,18 +2239,21 @@ begin
    LineN := OldAnt.LineN;
    isAdd := LineN = -1;
 
+   NewAnt.AntName :=  AnsiUpperCase(NewAnt.AntName);
+
    if isAdd then
    begin
      // 1) Find Alphabetical
      j := 0;
-     for I := 0 to Length(GNSSAntNames) - 1 do
-       if GNSSAntNames[I] > NewAnt.AntName  then
+     for I := 1 to Length(GNSSAntNames) - 1 do
+       if AnsiUpperCase(GNSSAntNames[I]) > AnsiUpperCase(NewAnt.AntName)  then
        begin
          j := I;
          break;
        end;
 
-     if (j = 0) and (GNSSAntNames[Length(GNSSAntNames) - 1] < NewAnt.AntName ) then
+     if (j = 0) and (AnsiUpperCase(GNSSAntNames[Length(GNSSAntNames) - 1])
+           < AnsiUpperCase(NewAnt.AntName) ) then
      begin
        LineN := PCVFile.Count;
        for I := 0 to 6 do
@@ -2323,8 +2326,10 @@ begin
   if (isAdd) then
     ARFile.Insert(LineN, NewAnt.AntName + #$9 + FloatToStr(NewAnt.Radius)
           + #$9 + FloatToStr(NewAnt.GroundPlaneH));
-          
+
   ARFile.SaveToFile(ARFilePath);
+
+  LoadAntennasPCV(PCVFilePath, ARFilePath);
 end;
 
 procedure GetAntList;

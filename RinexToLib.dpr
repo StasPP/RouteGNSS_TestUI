@@ -13,7 +13,8 @@ uses
   UVectSettings in 'UVectSettings.pas' {FVectSettings},
   UAntProp in 'UAntProp.pas' {FAntProp},
   UWinManager in 'UWinManager.pas',
-  GNSSObjsTree in 'GNSSObjsTree.pas';
+  GNSSObjsTree in 'GNSSObjsTree.pas',
+  UGNSSMainTree in 'UGNSSMainTree.pas' {FMainTree};
 
 {$R *.res}
 
@@ -28,5 +29,6 @@ begin
   Application.CreateForm(TFGNSSPointSettings, FGNSSPointSettings);
   Application.CreateForm(TFVectSettings, FVectSettings);
   Application.CreateForm(TFAntProp, FAntProp);
+  Application.CreateForm(TFMainTree, FMainTree);
   Application.Run;
 end.

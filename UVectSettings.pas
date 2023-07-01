@@ -68,7 +68,7 @@ var
   ImgList :TImageList;
   isInit : boolean;
 const
-  StatList :Array[-1..13] of String = ('Turned off',
+  StatList :Array[-1..14] of String = ('Turned off',
                                       'Not Processed',
                                       'Fixed Solution',
                                       'Float Solution',
@@ -82,7 +82,8 @@ const
                                       'Adjusted Baselines (ok)',
                                       'Adjusted Baselines (poor)',
                                       ' ',
-                                      ' ');
+                                      ' ',
+                                      'Mixed');
                                       /// ToDo : Translate
 implementation
 
@@ -138,7 +139,7 @@ begin
 
       BaseLinesBox.ItemIndex := N;
 
-      StatI := 0;
+      StatI := GetGNSSVectorGroupStatus(VectorsN);
     end
     else
     begin
@@ -188,7 +189,10 @@ begin
     end;
 
     VectLabel.Caption := BaseId + ' -> ' + RoverId;
-    StatusLabel.Caption := StatList[StatI];
+    if (StatI >= -1) and (StatI < 100) then
+      StatusLabel.Caption := StatList[StatI]
+    else
+      StatusLabel.Caption := StatList[14];
 
     with StatImg.Canvas do
     begin
@@ -198,6 +202,12 @@ begin
       case StatI of
          -1..2 : I := 15 + StatI;
          8 : I := 19;
+         110 : I := 101;
+         112 : I := 102;
+         113, 114 : I := 103;
+         120 : I := 104;
+         123, 124 : I := 105;
+         130, 140 : I := 106;
          // ToDo ADJUSTED: ok I := 20, poor I := 21
       end;
       ImgList.Draw(StatImg.Canvas, 0, 0, I);
@@ -413,8 +423,6 @@ begin
     ChoosedN := -1;
     Showmodal;
   end;
-
- 
 
 end;
 

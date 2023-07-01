@@ -24,5 +24,7 @@
     <Transaction>2023/05/26 19:52:22.096.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UAntProp.dfm</Transaction>
     <Transaction>2023/06/25 12:47:44.735.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UWinManager.pas</Transaction>
     <Transaction>2023/06/25 13:18:00.506.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\GNSSObjsTree.pas</Transaction>
+    <Transaction>2023/07/01 12:41:10.963.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UGNSSMainTree.pas</Transaction>
+    <Transaction>2023/07/01 12:41:10.964.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UGNSSMainTree.dfm</Transaction>
   </Transactions>
 </BorlandProject>

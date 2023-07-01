@@ -4,7 +4,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   BorderStyle = bsDialog
   Caption = 'Point/Track settings'
   ClientHeight = 329
-  ClientWidth = 594
+  ClientWidth = 569
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -958,7 +958,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   object TreeView: TTreeView
     Left = 301
     Top = 48
-    Width = 276
+    Width = 252
     Height = 233
     Indent = 19
     ReadOnly = True
@@ -975,7 +975,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     OnClick = isAcClick
   end
   object OKButton: TButton
-    Left = 184
+    Left = 176
     Top = 296
     Width = 217
     Height = 25

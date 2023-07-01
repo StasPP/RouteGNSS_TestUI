@@ -186,6 +186,7 @@ type
 
   function GetGNSSVector(RoverId, BaseId:String):integer;
   function GetGNSSVectorPoint(VectN: Integer; isBase: boolean):String;
+  function GetGNSSVectorGroupStatus(VectN: Array of Integer):integer;
   procedure EnableGNSSVector(VectorN:integer);
   procedure DisableGNSSVector(VectorN:integer);
   procedure InvertGNSSVector(VectorN:integer; GroupInv:Boolean = true);
@@ -1912,6 +1913,71 @@ begin
          DeleteGNSSSolution(SessN, I);
 end;
 
+function GetGNSSVectorGroupStatus(VectN: Array of Integer):integer;
+var i, j, bestQ, worstQ:integer;
+    isHomo :boolean;
+begin
+  result := -1;
+
+  if Length(GNSSVectors) < 1 then
+    exit;
+
+
+  // Test if the group is Homogenious by Q
+  bestQ := GNSSVectors[0];
+  isHomo := true;
+  for I := 1 to Length(GNSSVectors) - 1 do
+  begin
+    if GNSSVectors[I].StatusQ < 0 then
+      continue;
+    if (GNSSVectors[I].StatusQ <> bestQ) then
+    begin
+      isHomo := false;
+    end;
+  end;
+
+  if isHomo then
+  begin
+    result := bestQ;
+    exit;
+  end;
+
+  // 2 Got the Best Q
+  bestQ := 0;
+  for I := 0 to Length(GNSSVectors) - 1 do
+  begin
+    if GNSSVectors[I].StatusQ < 0 then
+      continue;
+    if (bestQ = 0) or (GNSSVectors[I].StatusQ < bestQ) then
+      bestQ := GNSSVectors[I].StatusQ;
+  end;
+
+  // 3 Got the Worst Q
+  worstQ := -1;
+  for I := 0 to Length(GNSSVectors) - 1 do
+  begin
+    if GNSSVectors[I].StatusQ < 0 then
+      continue;
+    if (worstQ = -1) or (GNSSVectors[I].StatusQ > worstQ)
+      or (GNSSVectors[I].StatusQ = 0) then
+      worstQ := GNSSVectors[I].StatusQ;
+  end;
+
+  if (worstQ = bestQ) or (worstQ = -1) then
+  begin
+    result := bestQ;
+    exit;
+  end else
+  begin
+    if worstQ > 6 then
+      worstQ := 0;
+
+    result := 100 + bestQ*10 + worstQ;
+  end;
+
+end;
+
+
 procedure EnableGNSSVector(VectorN:integer);
 //var SessN:Integer;
 begin
@@ -2239,6 +2305,8 @@ begin
    LineN := OldAnt.LineN;
    isAdd := LineN = -1;
 
+   NewAnt.AntName :=  AnsiUpperCase(NewAnt.AntName);
+
    if isAdd then
    begin
      // 1) Find Alphabetical
@@ -2250,7 +2318,8 @@ begin
          break;
        end;
 
-     if (j = 0) and (AnsiUpperCase(GNSSAntNames[Length(GNSSAntNames) - 1]) < AnsiUpperCase(NewAnt.AntName) ) then
+     if (j = 0) and (AnsiUpperCase(GNSSAntNames[Length(GNSSAntNames) - 1])
+           < AnsiUpperCase(NewAnt.AntName) ) then
      begin
        LineN := PCVFile.Count;
        for I := 0 to 6 do
@@ -2323,8 +2392,10 @@ begin
   if (isAdd) then
     ARFile.Insert(LineN, NewAnt.AntName + #$9 + FloatToStr(NewAnt.Radius)
           + #$9 + FloatToStr(NewAnt.GroundPlaneH));
-          
+
   ARFile.SaveToFile(ARFilePath);
+
+  LoadAntennasPCV(PCVFilePath, ARFilePath);
 end;
 
 procedure GetAntList;

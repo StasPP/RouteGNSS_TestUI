@@ -138,6 +138,7 @@ type
     procedure RefreshSettings;
     procedure ShowGNSSSessionInfo(AGNSSSessions:Array of Integer; Img :TImageList); overload;
     procedure ShowGNSSSessionInfo(AGNSSSession:Integer; Img :TImageList); overload;
+    procedure ShowGNSSSessionInfo(AGNSSSession:Integer; Img :TImageList; Sol: integer); overload;
     { Public declarations }
   end;
 
@@ -160,7 +161,7 @@ var
   AvProcArr :Array of TProcArr;
 
   ImgList   :TImageList;
-
+  ShowSol   :Integer = -1;
 implementation
 
 uses FLoader, UStartProcessing, UGNSSPointSettings, UAntProp, GeoClasses;
@@ -1036,6 +1037,15 @@ end;
 procedure TFGNSSSessionOptions.FormShow(Sender: TObject);
 begin
   Reloaded := false;
+
+  if ShowSol >= 0 then
+  begin
+    PageControl.ActivePageIndex := 2;
+    TabSheet3Show(nil);
+    AvSol.ItemIndex := ShowSol;
+    AvSol.OnClick(nil);
+    ShowSol := -1;
+  end;
 end;
 
 procedure TFGNSSSessionOptions.GetPPPClick(Sender: TObject);
@@ -1326,6 +1336,13 @@ begin
     FStartProcessing.ShowMultiProcOptions(A,B,C);
   RefreshSettings;
   TabSheet1Show(nil)
+end;
+
+procedure TFGNSSSessionOptions.ShowGNSSSessionInfo(AGNSSSession: Integer;
+  Img: TImageList; Sol: integer);
+begin
+  ShowSol := Sol;
+  ShowGNSSSessionInfo(AGNSSSession, Img);
 end;
 
 procedure TFGNSSSessionOptions.SpeedButton3Click(Sender: TObject);

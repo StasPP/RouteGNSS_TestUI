@@ -80,6 +80,10 @@ type
     Label19: TLabel;
     Panel2: TPanel;
     Memo1: TListBox;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    Button6: TButton;
+    SpeedButton2: TSpeedButton;
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -124,10 +128,13 @@ type
     procedure SessionBoxDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
     procedure BaselinesBoxDblClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
+    procedure ShowDebugLog;
   end;
 
 var
@@ -144,7 +151,7 @@ var
 implementation
 
 uses FProcGNSS, UGNSSSessionOptions, FLoader, UStartProcessing,
-  UGNSSPointSettings, UVectSettings;
+  UGNSSPointSettings, UVectSettings, UGNSSMainTree;
 
 {$R *.dfm}
 
@@ -753,7 +760,8 @@ var s:string;
 begin
    //  GetDosOutput('C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\RTKLIB\bin\rnx2rtkp.exe -?', 'c:\');
    //  GetDosOutput('C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\TestApp\test.exe', 'c:\') ;
-    ExecAndCapture('C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\RTKLIB\bin\rnx2rtkp.exe -?', s);
+  //  ExecAndCapture('C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\RTKLIB\bin\rnx2rtkp.exe -?', s);
+  close;
 end;
 
 procedure TForm1.Button7Click(Sender: TObject);
@@ -878,6 +886,11 @@ begin
 
 end;
 
+procedure TForm1.FormShow(Sender: TObject);
+begin
+  SpeedButton2.Click;
+end;
+
 procedure TForm1.Invert1Click(Sender: TObject);
 var I :Integer;
 begin
@@ -976,6 +989,32 @@ procedure TForm1.SessionBoxKeyDown(Sender: TObject; var Key: Word;
 begin
   if key = vk_return then
      SessionBox.OnDblClick(nil);
+end;
+
+procedure TForm1.ShowDebugLog;
+var I:Integer;
+begin
+  if GNSSDebug <> nil then
+      if Memo1.Items.Count < GNSSDebug.Count then
+         for I := Memo1.Items.Count to GNSSDebug.Count - 1 do
+            Memo1.Items.Add(GNSSDebug[I]);
+
+    Memo1.perform( WM_VSCROLL, SB_BOTTOM, 0 );
+    Memo1.perform( WM_VSCROLL, SB_ENDSCROLL, 0 );
+end;
+
+procedure TForm1.SpeedButton2Click(Sender: TObject);
+begin
+  if not FMainTree.Showing then
+  begin
+    FMainTree.ImgList := IcoList;
+    FMainTree.TreeView.Images := FMainTree.ImgList;
+    FMainTree.Top  := Top - (FMainTree.Height - Height)div 2;
+    FMainTree.Left := Left + Width;
+    if FMainTree.Left + FMainTree.Width > Screen.Width then
+      FMainTree.Left := Screen.Width - FMainTree.Width;
+    FMainTree.Show;
+  end;
 end;
 
 procedure TForm1.BaselinesBoxClick(Sender: TObject);
