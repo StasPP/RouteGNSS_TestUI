@@ -2,7 +2,7 @@ object FVectSettings: TFVectSettings
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Vector Settings'
+  Caption = 'FVectSettings'
   ClientHeight = 259
   ClientWidth = 461
   Color = clBtnFace
@@ -526,7 +526,7 @@ object FVectSettings: TFVectSettings
         Top = 158
         Width = 133
         Height = 25
-        Caption = 'Process the Batch'
+        Caption = 'Process All'
         TabOrder = 1
         OnClick = Button3Click
       end

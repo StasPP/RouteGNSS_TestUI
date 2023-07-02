@@ -83,7 +83,7 @@ type
     Panel3: TPanel;
     Panel4: TPanel;
     Button6: TButton;
-    ShowTree: TSpeedButton;
+    SpeedButton2: TSpeedButton;
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -128,7 +128,7 @@ type
     procedure SessionBoxDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
     procedure BaselinesBoxDblClick(Sender: TObject);
-    procedure ShowTreeClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
@@ -888,7 +888,7 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
-  ShowTree.Click;
+  SpeedButton2.Click;
 end;
 
 procedure TForm1.Invert1Click(Sender: TObject);
@@ -1003,7 +1003,7 @@ begin
     Memo1.perform( WM_VSCROLL, SB_ENDSCROLL, 0 );
 end;
 
-procedure TForm1.ShowTreeClick(Sender: TObject);
+procedure TForm1.SpeedButton2Click(Sender: TObject);
 begin
   if not FMainTree.Showing then
   begin

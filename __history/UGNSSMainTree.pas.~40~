@@ -38,8 +38,6 @@ type
     DeletePoint1: TMenuItem;
     AllSessions1: TMenuItem;
     Report1: TMenuItem;
-    urnOff1: TMenuItem;
-    urnON1: TMenuItem;
     procedure ImprortRINClick(Sender: TObject);
     procedure DataCatDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
@@ -64,13 +62,6 @@ type
     procedure SetasResult1Click(Sender: TObject);
     procedure TreeViewCustomDrawItem(Sender: TCustomTreeView; Node: TTreeNode;
       State: TCustomDrawState; var DefaultDraw: Boolean);
-    procedure Settings1Click(Sender: TObject);
-    procedure Process1Click(Sender: TObject);
-    procedure Invert1Click(Sender: TObject);
-    procedure Delete1Click(Sender: TObject);
-    procedure Enable1Click(Sender: TObject);
-    procedure urnOff1Click(Sender: TObject);
-    procedure urnON1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -83,8 +74,7 @@ var
   ChosenPoint, ChosenSession, ChosenSol, ChosenVect, ChosenVG :integer;
 implementation
 
-uses FLoader, Unit1, UGNSSSessionOptions, UGNSSPointSettings, UStartProcessing,
-  UVectSettings;
+uses FLoader, Unit1, UGNSSSessionOptions, UGNSSPointSettings, UStartProcessing;
 
 {$R *.dfm}
 
@@ -180,12 +170,6 @@ begin
   end;
 end;
 
-procedure TFMainTree.Delete1Click(Sender: TObject);
-begin
-  DisableGNSSVector(ChosenVect);
-  MainTreeDraw;
-end;
-
 procedure TFMainTree.DeletePoint1Click(Sender: TObject);
 var I:Integer;
 begin
@@ -205,12 +189,6 @@ end;
 procedure TFMainTree.DeleteSolution1Click(Sender: TObject);
 begin
   DeleteGNSSSolution(ChosenSession, ChosenSol);
-  MainTreeDraw;
-end;
-
-procedure TFMainTree.Enable1Click(Sender: TObject);
-begin
-  EnableGNSSVector(ChosenVect);
   MainTreeDraw;
 end;
 
@@ -273,45 +251,6 @@ begin
 
 end;
 
-procedure TFMainTree.Invert1Click(Sender: TObject);
-begin
-  InvertGNSSVector(ChosenVect);
-  MainTreeDraw;
-end;
-
-procedure TFMainTree.Process1Click(Sender: TObject);
-var I, j:Integer; A :Array of byte; B, C :Array of Integer;
-begin
-  SetLength(A, 0);  SetLength(B, 0);  SetLength(C, 0);
-
-  if ChosenVG = -1 then
-  begin
-     FStartProcessing.ShowProcOptions(2,
-          GetGNSSSessionNumber(GNSSVectors[ChosenVect].RoverID),
-          GetGNSSSessionNumber(GNSSVectors[ChosenVect].BaseID));
-     MainTreeDraw;     
-     exit;
-  end
-  else
-  For I := 0 To Length(VectGroups[ChosenVG].Vects) -1 Do
-  begin
-    if GNSSVectors[VectGroups[ChosenVG].Vects[I]].StatusQ < 0 then
-      continue;  // disabled vector
-
-    j := Length(A);
-    SetLength(A, j+1); SetLength(B, j+1);   SetLength(C, j+1);
-    A[j] := 2;
-    B[j] := GetGNSSSessionNumber(GNSSVectors[VectGroups[ChosenVG].Vects[I]].RoverId);
-    C[j] := GetGNSSSessionNumber(GNSSVectors[VectGroups[ChosenVG].Vects[I]].BaseId);
-  end;
-
-  if Length(A) = 0 then
-    exit
-  else FStartProcessing.ShowMultiProcOptions(A,B,C);
-
-  MainTreeDraw;
-end;
-
 procedure TFMainTree.Processagain1Click(Sender: TObject);
 var N:Integer;
 begin
@@ -359,12 +298,6 @@ begin
   MainTreeDraw;
 end;
 
-procedure TFMainTree.Settings1Click(Sender: TObject);
-begin
-  FVectSettings.ShowVectorProp(ChosenVect, Form1.IcoList);
-  MainTreeDraw;
-end;
-
 procedure TFMainTree.TreeViewContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
 var  TreeNode : TTreeNode;
@@ -393,8 +326,7 @@ end;
 
 procedure TFMainTree.TreeViewDblClick(Sender: TObject);
 begin
-   case DataCat.ItemIndex of
-      0:  if ChosenSol > -1 then
+   if ChosenSol > -1 then
    begin
      View1Click(nil);
    end
@@ -404,10 +336,6 @@ begin
    end
    else if ChosenPoint > -1 then
      ConfigurePoint1Click(nil);
-
-      1:  Settings1Click(nil)
-   end;
-  
 end;
 
 procedure TFMainTree.TreeViewMouseMove(Sender: TObject; Shift: TShiftState; X,
@@ -441,11 +369,11 @@ begin
 
   P := Mouse.CursorPos;
 
-  ChosenPoint   := -1;
+  ChosenPoint := -1;
   ChosenSession := -1;
-  ChosenSol     := -1;
-  ChosenVect    := -1;
-  ChosenVG      := -1;
+  ChosenSol := -1;
+  ChosenVect := -1;
+  ChosenVG := -1;
 
   if DataCat.ItemIndex = 0 then
   Case TreeNode.Level of
@@ -478,7 +406,7 @@ begin
     0: begin
       ChosenVG := TreeNode.Index;
       try
-        ChosenVect := VectGroups[ChosenVG].Vects[0];
+        ChosenVect := VectGroups[ChosenVG][0];
       except
         ChosenVect := -1;
       end;
@@ -487,7 +415,7 @@ begin
     begin
       try
         ParentNode  := TreeNode.Parent;
-        ChosenVect := VectGroups[ParentNode.Index].Vects[TreeNode.Index];
+        ChosenVect := VectGroups[ParentNode.Index][TreeNode.Index];
       except
         ChosenVect := -1;
       end;
@@ -504,8 +432,6 @@ begin
                      Pos(' ', PointPopup.Items[0].Caption) ) + TreeNode.Text;
         PointPopup.Items[0].ImageIndex := TreeNode.ImageIndex;
         PointPopup.Items[1].Visible := Length(GNSSPoints[ChosenPoint].Sessions) > 1;
-        PointPopup.Items[2].Visible := GNSSPoints[ChosenPoint].Active;
-        PointPopup.Items[3].Visible := not GNSSPoints[ChosenPoint].Active;
         PointPopup.Popup(P.x, P.y);
       end;
 
@@ -539,49 +465,39 @@ begin
 
     1: /// Vectors
     begin
-      if (TreeNode.Level = 0) or (TreeNode.Level = 1) then
+       if TreeNode.Level = 0 then
       begin
         VectorPopup.Items[0].Caption := Copy(PointPopup.Items[0].Caption, 1,
                      Pos(' ', PointPopup.Items[0].Caption) ) + TreeNode.Text;
         VectorPopup.Items[0].ImageIndex := TreeNode.ImageIndex;
 
-        VectorPopup.Items[4].Visible := (ChosenVG = -1) and
+
+        VectorPopup.Items[4].Visible := (ChoosedVG = -1) and
               (GNSSVectors[ChosenVect].StatusQ >= 0);
-        VectorPopup.Items[5].Visible := (ChosenVG = -1) and
+        VectorPopup.Items[5].Visible := (ChoosedVG = -1) and
               (GNSSVectors[ChosenVect].StatusQ < 0);
+
         
-        if (ChosenVG > -1) and (VectGroups[ChosenVG].StatQ > 0)
-          or (ChosenVG = -1) and (GNSSVectors[ChosenVect].StatusQ > 0) then
+        if (ChoosedVG > -1) and (VectGroups[ChoosedVG].StatQ > 0)
+          or (ChoosedVG = -1) and (GNSSVectors[ChoosedVect].StatusQ > 0) then
           VectorPopup.Items[1].ImageIndex := 92
         else
           VectorPopup.Items[1].ImageIndex := 93;
 
-        if (ChosenVG > -1) and (VectGroups[ChosenVG].StatQ < 0)
-          or (ChosenVG = -1) and (GNSSVectors[ChosenVect].StatusQ < 0) then
+        if (ChoosedVG > -1) and (VectGroups[ChoosedVG].StatQ < 0)
+          or (ChoosedVG = -1) and (GNSSVectors[ChoosedVect].StatusQ < 0) then
           VectorPopup.Items[1].Visible := false
         else
           VectorPopup.Items[1].Visible := true;
 
-        VectorPopup.Popup(P.x, P.y);
+
+
+        PointPopup.Popup(P.x, P.y);
       end;
     end;
   end;
 
 
-end;
-
-procedure TFMainTree.urnOff1Click(Sender: TObject);
-begin
-  if ChosenPoint > -1 then
-    FGNSSPointSettings.TurnOnOffStation(ChosenPoint, false);
-  MainTreeDraw;
-end;
-
-procedure TFMainTree.urnON1Click(Sender: TObject);
-begin
-  if ChosenPoint > -1 then
-    FGNSSPointSettings.TurnOnOffStation(ChosenPoint, true);
-  MainTreeDraw;
 end;
 
 procedure TFMainTree.View1Click(Sender: TObject);

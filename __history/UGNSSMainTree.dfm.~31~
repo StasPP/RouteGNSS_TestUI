@@ -2,7 +2,7 @@ object FMainTree: TFMainTree
   Left = 0
   Top = 0
   BorderStyle = bsSizeToolWin
-  Caption = 'Objects'
+  Caption = 'FMainTree'
   ClientHeight = 327
   ClientWidth = 278
   Color = clBtnFace
@@ -191,16 +191,6 @@ object FMainTree: TFMainTree
       Caption = 'Configure Sessions'
       ImageIndex = 107
       OnClick = Sessionsof1Click
-    end
-    object urnOff1: TMenuItem
-      Caption = 'Turn OFF'
-      ImageIndex = 109
-      OnClick = urnOff1Click
-    end
-    object urnON1: TMenuItem
-      Caption = 'Turn ON'
-      ImageIndex = 96
-      OnClick = urnON1Click
     end
     object DeletePoint1: TMenuItem
       Caption = 'Delete Point'

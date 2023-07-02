@@ -89,6 +89,7 @@ object FMainTree: TFMainTree
       OnDblClick = TreeViewDblClick
       OnMouseMove = TreeViewMouseMove
       OnMouseUp = TreeViewMouseUp
+      ExplicitTop = 28
     end
   end
   object OpenDialog: TOpenDialog
@@ -195,12 +196,10 @@ object FMainTree: TFMainTree
     object urnOff1: TMenuItem
       Caption = 'Turn OFF'
       ImageIndex = 109
-      OnClick = urnOff1Click
     end
     object urnON1: TMenuItem
       Caption = 'Turn ON'
       ImageIndex = 96
-      OnClick = urnON1Click
     end
     object DeletePoint1: TMenuItem
       Caption = 'Delete Point'

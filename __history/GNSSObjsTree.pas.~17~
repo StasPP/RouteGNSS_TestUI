@@ -242,7 +242,7 @@ begin
 
     try
         ImgN := VectGroups[I].StatQ;
-        if ImgN < 0 then ImgN := -1;
+        if StatQ < 0 then StatQ := -1;
         case ImgN of
            -1..2 : ImgN := 15 + ImgN;
 
@@ -273,12 +273,10 @@ begin
     begin
       try
         ImgN := GNSSVectors[VectGroups[I].Vects[j]].StatusQ;
-        if ImgN < 0 then ImgN := -1;
+
         case ImgN of
            -1..2 : ImgN := 15 + ImgN;
-           3..7  : ImgN := 18;
            8     : ImgN := 19;
-           11..12: ImgN := ImgN - 6;
            // ToDo ADJUSTED: ok I := 20, poor I := 21
            else ImgN := 15;
         end;

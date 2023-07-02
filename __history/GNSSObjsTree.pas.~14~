@@ -239,23 +239,18 @@ begin
     Node1 := TW.Items.AddFirst(nil, VectGroups[I].Name);
     RNode := Node1;
     VectGroups[I].StatQ := GetGNSSVectorGroupStatus(VectGroups[I].Vects);
-
     try
         ImgN := VectGroups[I].StatQ;
-        if ImgN < 0 then ImgN := -1;
         case ImgN of
            -1..2 : ImgN := 15 + ImgN;
-
-           3..7  : ImgN := 18;
            8     : ImgN := 19;
-           11..12: ImgN := ImgN - 6;
-
            110   : ImgN := 101;
            112   : ImgN := 102;
            113, 114 : ImgN := 103;
            120      : ImgN := 104;
            123, 124 : ImgN := 105;
            130, 140 : ImgN := 106;
+           // ToDo ADJUSTED: ok I := 20, poor I := 21
            else ImgN := 15;
          end;
     except
@@ -273,12 +268,10 @@ begin
     begin
       try
         ImgN := GNSSVectors[VectGroups[I].Vects[j]].StatusQ;
-        if ImgN < 0 then ImgN := -1;
+
         case ImgN of
            -1..2 : ImgN := 15 + ImgN;
-           3..7  : ImgN := 18;
            8     : ImgN := 19;
-           11..12: ImgN := ImgN - 6;
            // ToDo ADJUSTED: ok I := 20, poor I := 21
            else ImgN := 15;
         end;

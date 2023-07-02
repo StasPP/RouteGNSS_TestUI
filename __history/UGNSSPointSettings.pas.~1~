@@ -48,7 +48,6 @@ type
     { Private declarations }
   public
     procedure ShowStationOrTrack(StatN:Integer; Img:TImageList);
-    procedure TurnOnOffStation(N: Integer; isOn:Boolean);
     { Public declarations }
   end;
 
@@ -194,48 +193,48 @@ var I, j, N :Integer; WarnMe:boolean;
 begin
  if isInit then
     exit;
- TurnOnOffStation(StationN, isAc.Checked);
-//  WarnMe := false;
-//
-//  for I := 0 to Length(GNSSPoints[StationN].Sessions)- 1 do
-//  begin
-//      for j := 0 to Length(GNSSVectors) - 1 do
-//         if ((GNSSVectors[j].RoverID = GNSSPoints[StationN].Sessions[I]) or
-//             (GNSSVectors[j].BaseID = GNSSPoints[StationN].Sessions[I]))
-//            and (GNSSVectors[j].StatusQ <> 0) then
-//            begin
-//              WarnMe := true;
-//              break
-//            end;
-//      if WarnMe then
-//        break;
-//  end;
-//
-//
-//  if WarnMe then
-//  if messagedlg('This may change the other stations. Proceed?',    // Todo : TRANSLATE
-//        mtConfirmation, [mbYes, mbNo], 0)<> 6 then
-//  begin
-//    isInit := true;
-//    isAc.Checked := not isAc.Checked;
-//    isInit := false;
-//    exit;
-//  end;
-//
-//  GNSSPoints[StationN].Active := isAC.Checked;
-//  if GNSSPoints[StationN].Active then
-//    DebugMSG('Setting Station: '+ GNSSPoints[StationN].PointName +' turned ON')
-//  else
-//    DebugMSG('Setting Station: '+ GNSSPoints[StationN].PointName +' turned OFF');
-//
-//  for I := 0 to Length(GNSSPoints[StationN].Sessions)- 1 do
-//  begin
-//    if GNSSPoints[StationN].Active then
-//      AddGNSSVectorsForSession(GNSSPoints[StationN].Sessions[I])
-//    else
-//      DelGNSSVectorsForSession(GNSSPoints[StationN].Sessions[I]);
-//  end;
+    
+  WarnMe := false;
 
+  for I := 0 to Length(GNSSPoints[StationN].Sessions)- 1 do
+  begin
+      for j := 0 to Length(GNSSVectors) - 1 do
+         if ((GNSSVectors[j].RoverID = GNSSPoints[StationN].Sessions[I]) or
+             (GNSSVectors[j].BaseID = GNSSPoints[StationN].Sessions[I]))
+            and (GNSSVectors[j].StatusQ <> 0) then
+            begin
+              WarnMe := true;
+              break
+            end;
+      if WarnMe then
+        break;
+  end;
+
+
+  if WarnMe then
+  if messagedlg('This may change the other stations. Proceed?',    // Todo : TRANSLATE
+        mtConfirmation, [mbYes, mbNo], 0)<> 6 then
+  begin
+    isInit := true;
+    isAc.Checked := not isAc.Checked;
+    isInit := false;
+    exit;
+  end;
+
+  GNSSPoints[StationN].Active := isAC.Checked;
+  if GNSSPoints[StationN].Active then
+    DebugMSG('Setting Station: '+ GNSSPoints[StationN].PointName +' turned ON')
+  else
+    DebugMSG('Setting Station: '+ GNSSPoints[StationN].PointName +' turned OFF');
+    
+  for I := 0 to Length(GNSSPoints[StationN].Sessions)- 1 do
+  begin
+    if GNSSPoints[StationN].Active then
+      AddGNSSVectorsForSession(GNSSPoints[StationN].Sessions[I])
+    else
+      DelGNSSVectorsForSession(GNSSPoints[StationN].Sessions[I]);
+  end;
+  
   RefreshPointSettings;
 end;
 
@@ -444,50 +443,6 @@ begin
   end;
   if Node.Level = 0 then if not (fsBold in Sender.Canvas.Font.Style) then
      Sender.Canvas.Font.Style := Sender.Canvas.Font.Style + [fsBold];
-
-end;
-
-procedure TFGNSSPointSettings.TurnOnOffStation(N: Integer; isOn:Boolean);
-var I, j :Integer; WarnMe:boolean;
-begin
- if isInit then
-    exit;
-
-  WarnMe := false;
-
-  for I := 0 to Length(GNSSPoints[N].Sessions)- 1 do
-  begin
-      for j := 0 to Length(GNSSVectors) - 1 do
-         if ((GNSSVectors[j].RoverID = GNSSPoints[N].Sessions[I]) or
-             (GNSSVectors[j].BaseID = GNSSPoints[N].Sessions[I]))
-            and (GNSSVectors[j].StatusQ <> 0) then
-            begin
-              WarnMe := true;
-              break
-            end;
-      if WarnMe then
-        break;
-  end;
-
-
-  if WarnMe then
-  if messagedlg('This may change the other stations. Proceed?',    // Todo : TRANSLATE
-        mtConfirmation, [mbYes, mbNo], 0)<> 6 then
-    exit;
-
-  GNSSPoints[N].Active := isON;
-  if GNSSPoints[N].Active then
-    DebugMSG('Setting Station: '+ GNSSPoints[N].PointName +' turned ON')
-  else
-    DebugMSG('Setting Station: '+ GNSSPoints[N].PointName +' turned OFF');
-
-  for I := 0 to Length(GNSSPoints[N].Sessions)- 1 do
-  begin
-    if GNSSPoints[N].Active then
-      AddGNSSVectorsForSession(GNSSPoints[N].Sessions[I])
-    else
-      DelGNSSVectorsForSession(GNSSPoints[N].Sessions[I]);
-  end;
 
 end;
 

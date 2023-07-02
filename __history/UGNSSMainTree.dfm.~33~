@@ -192,16 +192,6 @@ object FMainTree: TFMainTree
       ImageIndex = 107
       OnClick = Sessionsof1Click
     end
-    object urnOff1: TMenuItem
-      Caption = 'Turn OFF'
-      ImageIndex = 109
-      OnClick = urnOff1Click
-    end
-    object urnON1: TMenuItem
-      Caption = 'Turn ON'
-      ImageIndex = 96
-      OnClick = urnON1Click
-    end
     object DeletePoint1: TMenuItem
       Caption = 'Delete Point'
       ImageIndex = 95

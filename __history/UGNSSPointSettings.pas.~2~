@@ -483,7 +483,7 @@ begin
 
   for I := 0 to Length(GNSSPoints[N].Sessions)- 1 do
   begin
-    if GNSSPoints[N].Active then
+    if GNSSPoints[StationN].Active then
       AddGNSSVectorsForSession(GNSSPoints[N].Sessions[I])
     else
       DelGNSSVectorsForSession(GNSSPoints[N].Sessions[I]);

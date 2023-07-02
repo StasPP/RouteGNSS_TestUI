@@ -69,8 +69,6 @@ type
     procedure Invert1Click(Sender: TObject);
     procedure Delete1Click(Sender: TObject);
     procedure Enable1Click(Sender: TObject);
-    procedure urnOff1Click(Sender: TObject);
-    procedure urnON1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -568,20 +566,6 @@ begin
   end;
 
 
-end;
-
-procedure TFMainTree.urnOff1Click(Sender: TObject);
-begin
-  if ChosenPoint > -1 then
-    FGNSSPointSettings.TurnOnOffStation(ChosenPoint, false);
-  MainTreeDraw;
-end;
-
-procedure TFMainTree.urnON1Click(Sender: TObject);
-begin
-  if ChosenPoint > -1 then
-    FGNSSPointSettings.TurnOnOffStation(ChosenPoint, true);
-  MainTreeDraw;
 end;
 
 procedure TFMainTree.View1Click(Sender: TObject);

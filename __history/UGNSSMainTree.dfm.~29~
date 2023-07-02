@@ -2,7 +2,7 @@ object FMainTree: TFMainTree
   Left = 0
   Top = 0
   BorderStyle = bsSizeToolWin
-  Caption = 'Objects'
+  Caption = 'FMainTree'
   ClientHeight = 327
   ClientWidth = 278
   Color = clBtnFace
@@ -101,8 +101,16 @@ object FMainTree: TFMainTree
     Left = 56
     Top = 160
     object Settings1: TMenuItem
-      Caption = 'Configure '
-      OnClick = Settings1Click
+      Caption = 'Settings'
+    end
+    object Invert1: TMenuItem
+      Caption = 'Invert'
+    end
+    object Delete1: TMenuItem
+      Caption = 'Disable'
+    end
+    object Enable1: TMenuItem
+      Caption = 'Enable'
     end
     object Process1: TMenuItem
       Bitmap.Data = {
@@ -156,28 +164,10 @@ object FMainTree: TFMainTree
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000}
       Caption = 'Process'
-      ImageIndex = 93
-      OnClick = Process1Click
+      ImageIndex = 91
     end
-    object Report1: TMenuItem
-      Caption = 'Report'
-      Enabled = False
-      ImageIndex = 108
-    end
-    object Invert1: TMenuItem
-      Caption = 'Invert'
-      ImageIndex = 94
-      OnClick = Invert1Click
-    end
-    object Delete1: TMenuItem
-      Caption = 'Disable'
-      ImageIndex = 95
-      OnClick = Delete1Click
-    end
-    object Enable1: TMenuItem
-      Caption = 'Enable'
-      ImageIndex = 96
-      OnClick = Enable1Click
+    object SelectAll1: TMenuItem
+      Caption = 'SelectAll'
     end
   end
   object PointPopup: TPopupMenu
@@ -191,16 +181,6 @@ object FMainTree: TFMainTree
       Caption = 'Configure Sessions'
       ImageIndex = 107
       OnClick = Sessionsof1Click
-    end
-    object urnOff1: TMenuItem
-      Caption = 'Turn OFF'
-      ImageIndex = 109
-      OnClick = urnOff1Click
-    end
-    object urnON1: TMenuItem
-      Caption = 'Turn ON'
-      ImageIndex = 96
-      OnClick = urnON1Click
     end
     object DeletePoint1: TMenuItem
       Caption = 'Delete Point'

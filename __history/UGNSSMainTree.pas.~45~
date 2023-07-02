@@ -38,8 +38,6 @@ type
     DeletePoint1: TMenuItem;
     AllSessions1: TMenuItem;
     Report1: TMenuItem;
-    urnOff1: TMenuItem;
-    urnON1: TMenuItem;
     procedure ImprortRINClick(Sender: TObject);
     procedure DataCatDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
@@ -69,8 +67,6 @@ type
     procedure Invert1Click(Sender: TObject);
     procedure Delete1Click(Sender: TObject);
     procedure Enable1Click(Sender: TObject);
-    procedure urnOff1Click(Sender: TObject);
-    procedure urnON1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -406,6 +402,7 @@ begin
      ConfigurePoint1Click(nil);
 
       1:  Settings1Click(nil)
+
    end;
   
 end;
@@ -504,8 +501,6 @@ begin
                      Pos(' ', PointPopup.Items[0].Caption) ) + TreeNode.Text;
         PointPopup.Items[0].ImageIndex := TreeNode.ImageIndex;
         PointPopup.Items[1].Visible := Length(GNSSPoints[ChosenPoint].Sessions) > 1;
-        PointPopup.Items[2].Visible := GNSSPoints[ChosenPoint].Active;
-        PointPopup.Items[3].Visible := not GNSSPoints[ChosenPoint].Active;
         PointPopup.Popup(P.x, P.y);
       end;
 
@@ -568,20 +563,6 @@ begin
   end;
 
 
-end;
-
-procedure TFMainTree.urnOff1Click(Sender: TObject);
-begin
-  if ChosenPoint > -1 then
-    FGNSSPointSettings.TurnOnOffStation(ChosenPoint, false);
-  MainTreeDraw;
-end;
-
-procedure TFMainTree.urnON1Click(Sender: TObject);
-begin
-  if ChosenPoint > -1 then
-    FGNSSPointSettings.TurnOnOffStation(ChosenPoint, true);
-  MainTreeDraw;
 end;
 
 procedure TFMainTree.View1Click(Sender: TObject);

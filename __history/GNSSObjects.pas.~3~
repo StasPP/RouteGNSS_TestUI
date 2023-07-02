@@ -1922,6 +1922,7 @@ begin
   if Length(GNSSVectors) < 1 then
     exit;
 
+
   // Test if the group is Homogenious by Q
   bestQ := GNSSVectors[0].StatusQ ;
   isHomo := true;
@@ -1947,7 +1948,7 @@ begin
   begin
     if GNSSVectors[I].StatusQ < 0 then
       continue;
-    if (bestQ = 0) or (GNSSVectors[I].StatusQ < bestQ)and(GNSSVectors[I].StatusQ > 0) then
+    if (bestQ = 0) or (GNSSVectors[I].StatusQ < bestQ) then
       bestQ := GNSSVectors[I].StatusQ;
   end;
 
