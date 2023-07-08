@@ -920,7 +920,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
           Top = 19
           Width = 166
           Height = 21
-          ItemHeight = 13
+          ItemHeight = 0
           TabOrder = 1
           OnChange = StationBoxChange
         end
@@ -2084,7 +2084,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Top = 24
         Width = 211
         Height = 21
-        ItemHeight = 13
+        ItemHeight = 0
         TabOrder = 0
         OnChange = AntNameBoxChange
       end

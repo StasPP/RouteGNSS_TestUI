@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, GNSSObjects, ComCtrls, GeoString, ImgList,
-  GNSSObjsTree;
+  GNSSObjsTree, Menus;
 
 type
   TFGNSSPointSettings = class(TForm)
@@ -36,6 +36,18 @@ type
     SessBox: TComboBox;
     SolBox: TComboBox;
     StatImg: TImage;
+    SolPopup: TPopupMenu;
+    View1: TMenuItem;
+    SetasResult1: TMenuItem;
+    Processagain1: TMenuItem;
+    ProcessingReport1: TMenuItem;
+    DeleteSolution1: TMenuItem;
+    SessionPopup: TPopupMenu;
+    Configure1: TMenuItem;
+    AllSessions1: TMenuItem;
+    DeleteSession1: TMenuItem;
+    PointPopup: TPopupMenu;
+    Sessionsof1: TMenuItem;
     procedure SessBoxChange(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
     procedure SolSrcBoxChange(Sender: TObject);
@@ -44,11 +56,24 @@ type
     procedure SolBoxChange(Sender: TObject);
     procedure TreeViewCustomDrawItem(Sender: TCustomTreeView; Node: TTreeNode;
       State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure Button1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure TreeViewDblClick(Sender: TObject);
+    procedure TreeViewMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Sessionsof1Click(Sender: TObject);
+    procedure View1Click(Sender: TObject);
+    procedure SetasResult1Click(Sender: TObject);
+    procedure Processagain1Click(Sender: TObject);
+    procedure DeleteSolution1Click(Sender: TObject);
+    procedure Configure1Click(Sender: TObject);
+    procedure DeleteSession1Click(Sender: TObject);
   private
     { Private declarations }
   public
     procedure ShowStationOrTrack(StatN:Integer; Img:TImageList);
     procedure TurnOnOffStation(N: Integer; isOn:Boolean);
+    procedure RefreshPointSettings;
     { Public declarations }
   end;
 
@@ -59,6 +84,7 @@ var
   ImgList :TImagelist;
   TreeInd :integer = -1;
 
+  ChosenPoint, ChosenSession, ChosenSol :integer;
 const
   StatList :Array[0..13] of String = ('Not Processed',
                                       'Has Fixed Solution',
@@ -80,14 +106,14 @@ const
 
 implementation
 
+uses UGNSSSessionOptions, Unit1, UStartProcessing;
+
 {$R *.dfm}
 
-procedure RefreshPointSettings;
+procedure TFGNSSPointSettings.RefreshPointSettings;
 var I, j:integer;
 begin
 
- with FGNSSPointSettings do
- Begin
     IsInit := true;
     SessionLabel.Caption := GNSSPoints[StationN].PointName;
 
@@ -162,7 +188,6 @@ begin
     end;
 
     OutputGNSSObjTree(TreeView, StationN);
- End;
 
  IsInit := false;
 end;
@@ -187,6 +212,80 @@ begin
       CheckGNSSVectorsForSession(GNSSPoints[StationN].Sessions[I]);
 
   close;
+end;
+
+procedure TFGNSSPointSettings.Processagain1Click(Sender: TObject);
+var N:Integer;
+begin
+
+     with GNSSSessions[ChosenSession] do
+     case Solutions[ChosenSol].SolutionKind of
+       1: FStartProcessing.ShowProcOptions(1, ChosenSession, -1);
+       3: FStartProcessing.ShowProcOptions(3, ChosenSession, -1);
+       2: begin
+         N := GetGNSSSessionNumber(Solutions[ChosenSol].BaseID);
+         if N<> -1 then
+            FStartProcessing.ShowProcOptions(2, ChosenSession, N);
+       end;
+     end;
+    RefreshPointSettings; 
+end;
+
+procedure TFGNSSPointSettings.Button1Click(Sender: TObject);
+var F1 : TFGNSSSessionOptions;
+begin
+ F1 := TFGNSSSessionOptions.Create(nil);
+ F1.ShowModal;
+ F1.Release;
+end;
+
+procedure TFGNSSPointSettings.Configure1Click(Sender: TObject);
+var F : TFGNSSSessionOptions;
+begin
+  if ChosenSession > -1 then
+  begin
+     F := TFGNSSSessionOptions.Create(nil);
+     F.ShowGNSSSessionInfo(ChosenSession, Form1.IcoList);
+     F.Release;
+  end;
+  RefreshPointSettings;
+end;
+
+procedure TFGNSSPointSettings.DeleteSession1Click(Sender: TObject);
+var I:Integer;
+    finalSession:Boolean;
+begin
+
+  finalSession := Length(GNSSPoints[StationN].Sessions) <= 1;
+
+  if ChosenSession > -1 then
+    DelGNSSSession(ChosenSession);
+
+  for I := 0 to Application.ComponentCount - 1  do
+  Begin
+    if Pos(Application.Components[I].Name, 'FGNSSSessionOptions') > 0 then
+      with Application.Components[I] as TForm Do
+        close;
+  End;
+
+  if not finalSession then
+    RefreshPointSettings
+  else
+    close;
+end;
+
+procedure TFGNSSPointSettings.DeleteSolution1Click(Sender: TObject);
+begin
+  DeleteGNSSSolution(ChosenSession, ChosenSol);
+  RefreshPointSettings;
+end;
+
+procedure TFGNSSPointSettings.FormShow(Sender: TObject);
+begin
+  RefreshPointSettings;
+  PointPopup.Images := Treeview.Images;
+  SessionPopup.Images := Treeview.Images;
+  SolPopup.Images := Treeview.Images;
 end;
 
 procedure TFGNSSPointSettings.isAcClick(Sender: TObject);
@@ -291,7 +390,7 @@ begin
        SolSrcBoxChange(nil)
      end;
 
-    
+
   RefreshPointSettings;
 end;
 
@@ -317,7 +416,42 @@ begin
         end;
         SolBox.Items.Add(s);
      end;
-  //SolBox.ItemIndex := 0;   
+  //SolBox.ItemIndex := 0;
+end;
+
+procedure TFGNSSPointSettings.Sessionsof1Click(Sender: TObject);
+var A:Array of Integer;
+    F : TFGNSSSessionOptions;
+    I : Integer;
+begin
+  ChosenPoint := StationN;
+  if ChosenPoint < 0 then
+    exit;
+
+  SetLength(A, Length(GNSSPoints[ChosenPoint].Sessions));
+  for I := 0 to Length(GNSSPoints[ChosenPoint].Sessions)-1 do
+     A[I] := GetGNSSSessionNumber(GNSSPoints[ChosenPoint].Sessions[I]);
+
+  if Length(A) = 0 then
+    exit;
+
+  if Length(A) > 0 then
+  begin
+    F := TFGNSSSessionOptions.Create(nil);
+    F.ShowGNSSSessionInfo(A, Form1.IcoList);
+    F.Release;
+  end;
+
+  RefreshPointSettings;
+end;
+
+procedure TFGNSSPointSettings.SetasResult1Click(Sender: TObject);
+begin
+  ChosenPoint := StationN;
+  GNSSPoints[ChosenPoint].CoordSource := 3;
+  GNSSPoints[ChosenPoint].SolutionId.SessionId := GNSSSessions[ChosenSession].SessionID;
+  GNSSPoints[ChosenPoint].SolutionId.SolutionN := ChosenSol;
+  RefreshPointSettings;
 end;
 
 procedure TFGNSSPointSettings.ShowStationOrTrack(StatN: Integer; Img:TImageList);
@@ -447,6 +581,103 @@ begin
 
 end;
 
+procedure TFGNSSPointSettings.TreeViewDblClick(Sender: TObject);
+begin
+   if ChosenSol > -1 then
+   begin
+     View1Click(nil);
+   end
+   else if ChosenSession > -1 then
+   begin
+     Configure1Click(nil);
+   end
+end;
+
+procedure TFGNSSPointSettings.TreeViewMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var  TreeNode, ParentNode, ParentNode2 : TTreeNode;
+     P : TPoint;
+begin
+  TreeNode := TreeView.GetNodeAt(X, Y);
+  if Assigned(TreeNode) then
+    TreeNode.Selected := True;
+  if not Assigned(TreeNode) then
+    exit;
+
+  P := Mouse.CursorPos;
+
+  ChosenPoint   := -1;
+  ChosenSession := -1;
+  ChosenSol     := -1;
+
+  Case TreeNode.Level of
+    0: ChosenPoint := GetGNSSPointNumber(TreeNode.Text);
+
+    1:
+    begin
+      ParentNode  := TreeNode.Parent;
+      ChosenPoint := GetGNSSPointNumber(ParentNode.Text);
+      if TreeNode.Index < length(GNSSPoints[ChosenPoint].Sessions)  then
+        ChosenSession := GetGNSSSessionNumber(GNSSPoints[ChosenPoint].
+                   Sessions[TreeNode.Index]);
+    end;
+
+    2:
+    begin
+      ChosenSol   := TreeNode.Index + 1;
+      ParentNode  := TreeNode.Parent;
+      ParentNode2 := ParentNode.Parent;
+      ChosenPoint := GetGNSSPointNumber(ParentNode2.Text);
+
+      if ParentNode.Index < length(GNSSPoints[ChosenPoint].Sessions)  then
+        ChosenSession := GetGNSSSessionNumber(GNSSPoints[ChosenPoint].
+                   Sessions[ParentNode.Index]);
+    end;
+
+  End;
+
+  if Button = mbRight then
+  begin
+      if TreeNode.Level = 0 then
+      begin
+        PointPopup.Items[0].Visible := Length(GNSSPoints[ChosenPoint].Sessions) > 1;
+      end;
+
+      if TreeNode.Level = 1 then
+      begin
+        if TreeNode.Index < length(GNSSPoints[ChosenPoint].Sessions)  then
+        begin
+          SessionPopup.Items[0].Caption := Copy(PointPopup.Items[0].Caption, 1,
+                     Pos(' ', PointPopup.Items[0].Caption) ) + TreeNode.Text;
+          SessionPopup.Items[0].ImageIndex := TreeNode.ImageIndex;
+          SessionPopup.Items[1].Visible := Length(GNSSPoints[ChosenPoint].Sessions) > 1;
+          SessionPopup.Popup(P.x, P.y);
+        end
+        else
+        begin
+          PointPopup.Items[0].Caption := Copy(PointPopup.Items[0].Caption, 1,
+                     Pos(' ', PointPopup.Items[0].Caption) ) + ParentNode.Text;
+          PointPopup.Items[0].ImageIndex := ParentNode.ImageIndex;
+          PointPopup.Popup(P.x, P.y);
+        end;
+
+      end;
+
+      if TreeNode.Level = 2 then
+      begin
+        SolPopup.Items[0].ImageIndex := TreeNode.ImageIndex;
+        SolPopup.Popup(P.x, P.y);
+      end;
+
+    end;
+
+
+
+
+//  ChosenPoint := PointN;
+
+end;
+
 procedure TFGNSSPointSettings.TurnOnOffStation(N: Integer; isOn:Boolean);
 var I, j :Integer; WarnMe:boolean;
 begin
@@ -488,7 +719,16 @@ begin
     else
       DelGNSSVectorsForSession(GNSSPoints[N].Sessions[I]);
   end;
+end;
 
+procedure TFGNSSPointSettings.View1Click(Sender: TObject);
+var F : TFGNSSSessionOptions;
+begin
+  F := TFGNSSSessionOptions.Create(nil);
+  if ChosenSession > -1 then
+    F.ShowGNSSSessionInfo(ChosenSession, Form1.IcoList, ChosenSol);
+  F.Release;
+  RefreshPointSettings;
 end;
 
 end.

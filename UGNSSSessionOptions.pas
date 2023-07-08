@@ -132,8 +132,13 @@ type
     procedure PPPFilesDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
     procedure ProcAllBLClick(Sender: TObject);
+
+    procedure CheckAntennaPOSChange;
+    procedure CheckAntennaChange;
+    procedure ShowStatus(Stat:integer);
   private
     { Private declarations }
+
   public
     procedure RefreshSettings;
     procedure ShowGNSSSessionInfo(AGNSSSessions:Array of Integer; Img :TImageList); overload;
@@ -168,7 +173,7 @@ uses FLoader, UStartProcessing, UGNSSPointSettings, UAntProp, GeoClasses;
 
 {$R *.dfm}
 
-procedure CheckAntennaPOSChange;
+procedure TFGNSSSessionOptions.CheckAntennaPOSChange;
 var I, j, SolN, SessionN: integer;
     dE, dN, dH, realH: Double;
     newXYZ :TCoord3D;
@@ -181,9 +186,9 @@ begin
   begin
      // 1) Compare dE, dN
 
-     dN := StrToFloat2(FGNSSSessionOptions.EAntdN.Text) -
+     dN := StrToFloat2(EAntdN.Text) -
            GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN;
-     dE := StrToFloat2(FGNSSSessionOptions.EAntdE.Text) -
+     dE := StrToFloat2(EAntdE.Text) -
            GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE;
 
      isChanged := (abs(dN) >= 0.001) or (abs(dE) >= 0.001);
@@ -192,10 +197,9 @@ begin
 
      // 2) Recompute AntH from AntH_u and compare
 
-     realH := StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
-     realH := GetAntH(realH,
-                      FGNSSSessionOptions.AntNameBox.Text,
-                      FGNSSSessionOptions.AntMethodBox.ItemIndex);
+     realH := StrToFloat2(EAntHgt.Text);
+     realH := GetAntH(realH, AntNameBox.Text,
+                      AntMethodBox.ItemIndex);
      dH := realH -
            GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant;
 
@@ -217,28 +221,26 @@ begin
   for I := 0 to Length(ActiveGNSSSessions) - 1 do
   begin
      // 3.1 Calculate Deltas
-     dN := StrToFloat2(FGNSSSessionOptions.EAntdN.Text) -
+     dN := StrToFloat2(EAntdN.Text) -
            GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN;
-     dE := StrToFloat2(FGNSSSessionOptions.EAntdE.Text) -
+     dE := StrToFloat2(EAntdE.Text) -
            GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE;
-     realH := StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
-     realH := GetAntH(realH,
-                      FGNSSSessionOptions.AntNameBox.Text,
-                      FGNSSSessionOptions.AntMethodBox.ItemIndex);
+     realH := StrToFloat2(EAntHgt.Text);
+     realH := GetAntH(realH, AntNameBox.Text, AntMethodBox.ItemIndex);
      dH := realH -
            GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant;
 
      // 3.2 Assign
      GNSSSessions[ActiveGNSSSessions[I]].Antenna.dN     :=
-        StrToFloat2(FGNSSSessionOptions.EAntdN.Text);
+        StrToFloat2(EAntdN.Text);
      GNSSSessions[ActiveGNSSSessions[I]].Antenna.dE     :=
-        StrToFloat2(FGNSSSessionOptions.EAntdE.Text);
+        StrToFloat2(EAntdE.Text);
      GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant    :=
         realH;
      GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hant_u  :=
-        StrToFloat2(FGNSSSessionOptions.EAntHgt.Text);
+        StrToFloat2(EAntHgt.Text);
      GNSSSessions[ActiveGNSSSessions[I]].AntHgt.Hkind   :=
-        FGNSSSessionOptions.AntMethodBox.ItemIndex;
+        AntMethodBox.ItemIndex;
 
      // 3.3 if not the same - go to solutions - recompute XYZ + d(XYZ) by ENU
      if (abs(dN) >= 0.001) or (abs(dE) >= 0.001) or (abs(dH) >= 0.001) then
@@ -276,15 +278,9 @@ begin
      end;
   end;
 
-
-
-
-
-
-
 end;
 
-procedure CheckAntennaChange;
+procedure TFGNSSSessionOptions.CheckAntennaChange;
 var I, j, SolN, SessionN: integer;
     WarnMe, isChanged: boolean;
 begin
@@ -292,7 +288,7 @@ begin
 
     for I := 0 to Length(ActiveGNSSSessions) - 1 do
     if GNSSSessions[ActiveGNSSSessions[I]].Antenna.AntName <>
-       FGNSSSessionOptions.AntNameBox.Text  then
+       AntNameBox.Text  then
       isChanged := true;
 
     if not isChanged then
@@ -334,14 +330,13 @@ begin
           end;
 
         GNSSSessions[ActiveGNSSSessions[I]].Antenna.AntName :=
-           FGNSSSessionOptions.AntNameBox.Text;
+           AntNameBox.Text;
     end;
 
 end;
 
 
-
-procedure ShowStatus(Stat:integer);
+procedure TFGNSSSessionOptions.ShowStatus(Stat:integer);
 var I:Integer;
         // ToDo: Translate or replace with Inf[...]
 const StatList :Array[0..7] of String = ('Not Processed',
@@ -354,8 +349,7 @@ const StatList :Array[0..7] of String = ('Not Processed',
                                          '(Mixed)'
                                          );
 begin
-  with FGNSSSessionOptions do
-  begin
+
     with StatImg.Canvas do
     begin
       Brush.Color := clBtnFace;
@@ -363,7 +357,7 @@ begin
       ImgList.Draw(StatImg.Canvas, 0, 0, Stat+22);
     end;
     StatusLabel.Caption := StatList[Stat];
-  end;
+
 end;
 
 { TFGNSSSessionOptions }
@@ -520,6 +514,14 @@ begin
             StationBox.Items.Add(GNSSPoints[I].PointName);
     end;
   end;
+
+  for I := 0 to Length(ActiveGNSSSessions) - 1 do
+  if ActiveGNSSSessions[I] > Length(GNSSSessions)-1 then
+  begin
+    close;
+    exit;
+  end;
+
 
   if length(ActiveGNSSSessions) = 1 then
   with GNSSSessions[ActiveGNSSSessions[0]] do
@@ -897,7 +899,7 @@ begin
   if NewName = '' then
     exit;
 
-  for I := 0 to Length(ActiveGNSSSessions) - 1 do 
+  for I := 0 to Length(ActiveGNSSSessions) - 1 do
   begin
      GNSSSessions[ActiveGNSSSessions[I]].Station := NewName;
      AddOrUpdateGNSSStation(ActiveGNSSSessions[I], false);
@@ -912,16 +914,25 @@ begin
   CheckAntennaPOSChange;
 end;
 
+
 procedure TFGNSSSessionOptions.PointPropBtnClick(Sender: TObject);
 var I:Integer;
+    F2: TFGNSSPointSettings;
 begin
+
   if StationBox.Font.Color = clWindowText then
     ApplyGNSSPoint(StationBox.Text);
   RefreshSettings;
 
   I := GetGNSSPointNumber(StationBox.Text);
   if I > -1 then
-    FGNSSPointSettings.ShowStationOrTrack( I, ImgList);
+  begin
+    F2 := TFGNSSPointSettings.Create(nil);
+//    FGNSSPointSettings.ShowStationOrTrack( I, ImgList);
+    F2.ShowStationOrTrack( I, ImgList);
+    F2.Release;
+    RefreshSettings;
+  end;
 end;
 
 
@@ -1037,7 +1048,7 @@ end;
 procedure TFGNSSSessionOptions.FormShow(Sender: TObject);
 begin
   Reloaded := false;
-
+  RefreshSettings;
   if ShowSol >= 0 then
   begin
     PageControl.ActivePageIndex := 2;

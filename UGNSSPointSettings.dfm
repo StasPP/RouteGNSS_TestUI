@@ -13,6 +13,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Image1: TImage
@@ -964,6 +965,8 @@ object FGNSSPointSettings: TFGNSSPointSettings
     ReadOnly = True
     TabOrder = 1
     OnCustomDrawItem = TreeViewCustomDrawItem
+    OnDblClick = TreeViewDblClick
+    OnMouseUp = TreeViewMouseUp
   end
   object isAc: TCheckBox
     Left = 91
@@ -1118,6 +1121,61 @@ object FGNSSPointSettings: TFGNSSPointSettings
           OnChange = SolSrcBoxChange
         end
       end
+    end
+  end
+  object SolPopup: TPopupMenu
+    Left = 224
+    Top = 56
+    object View1: TMenuItem
+      Caption = 'View Solution'
+      OnClick = View1Click
+    end
+    object SetasResult1: TMenuItem
+      Caption = 'Set as Result'
+      ImageIndex = 96
+      OnClick = SetasResult1Click
+    end
+    object Processagain1: TMenuItem
+      Caption = 'Process again'
+      ImageIndex = 94
+      OnClick = Processagain1Click
+    end
+    object ProcessingReport1: TMenuItem
+      Caption = 'Processing Report'
+      Enabled = False
+      ImageIndex = 108
+    end
+    object DeleteSolution1: TMenuItem
+      Caption = 'Delete the Solution'
+      ImageIndex = 95
+      OnClick = DeleteSolution1Click
+    end
+  end
+  object SessionPopup: TPopupMenu
+    Left = 256
+    Top = 56
+    object Configure1: TMenuItem
+      Caption = 'Configure '
+      OnClick = Configure1Click
+    end
+    object AllSessions1: TMenuItem
+      Caption = 'All Sessions of the Point'
+      ImageIndex = 107
+      OnClick = Sessionsof1Click
+    end
+    object DeleteSession1: TMenuItem
+      Caption = 'Delete Session'
+      ImageIndex = 95
+      OnClick = DeleteSession1Click
+    end
+  end
+  object PointPopup: TPopupMenu
+    Left = 192
+    Top = 56
+    object Sessionsof1: TMenuItem
+      Caption = 'Configure Sessions'
+      ImageIndex = 107
+      OnClick = Sessionsof1Click
     end
   end
 end

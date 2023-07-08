@@ -331,7 +331,7 @@ object FVectSettings: TFVectSettings
     Top = 58
     Width = 450
     Height = 193
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Style = tsButtons
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -422,6 +422,7 @@ object FVectSettings: TFVectSettings
         Top = 26
         Width = 118
         Height = 21
+        ReadOnly = True
         TabOrder = 1
         Text = 'Base'
       end
@@ -430,6 +431,7 @@ object FVectSettings: TFVectSettings
         Top = 26
         Width = 124
         Height = 21
+        ReadOnly = True
         TabOrder = 2
         Text = 'Rover'
       end

@@ -848,7 +848,7 @@ begin
 
   CMDString := CMDString + ' -k "' + RTKWorkDir +'Tmp\Config.conf' +'"';
 
-  ResultFile:= RTKWorkDir +'Tmp\' + Rover.SessionID + '.txt';
+  ResultFile:= RTKWorkDir +'Tmp\ppp_' + Rover.SessionID + '.txt';
   CMDString := CMDString + ' -o "' + ResultFile + '"';
 
   DebugMSG('Started PPP processing: ' + Rover.MaskName);

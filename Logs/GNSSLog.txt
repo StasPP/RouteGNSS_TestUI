@@ -1,94 +1,62 @@
-2:06:50 PM Loaded session: karg219e20
-2:06:50 PM Added new Point: KARG for Session: karg219e20
-2:06:50 PM Adding Session: karg219e20_4404918 to Point: KARG
-2:06:50 PM Refreshing Point: KARG
-2:06:50 PM Setting Coordinates for Point: KARG  from RINEX headers
-2:06:50 PM Assigned:  from RINEX headers
-2:06:50 PM Checking Points... 
-2:06:50 PM Checking Points is DONE! 
-2:06:50 PM Loaded session: karg219f20
-2:06:50 PM Adding Session: karg219f20_4404922 to Point: KARG
-2:06:50 PM Refreshing Point: KARG
-2:06:50 PM Setting Coordinates for Point: KARG  from RINEX headers
-2:06:50 PM Assigned:  from RINEX headers
-2:06:50 PM Checking Points... 
-2:06:50 PM Checking Points is DONE! 
-2:06:50 PM Loaded session: karg219h40
-2:06:50 PM Adding Session: karg219h40_4404931 to Point: KARG
-2:06:50 PM Refreshing Point: KARG
-2:06:50 PM Setting Coordinates for Point: KARG  from RINEX headers
-2:06:50 PM Assigned:  from RINEX headers
-2:06:50 PM Checking Points... 
-2:06:50 PM Checking Points is DONE! 
-2:06:50 PM Loaded session: karg219i50
-2:06:50 PM Adding Session: karg219i50_4404936 to Point: KARG
-2:06:50 PM Refreshing Point: KARG
-2:06:50 PM Setting Coordinates for Point: KARG  from RINEX headers
-2:06:50 PM Assigned:  from RINEX headers
-2:06:50 PM Checking Points... 
-2:06:50 PM Checking Points is DONE! 
-2:06:51 PM Loaded session: MDBG0810
-2:06:51 PM Added new Point: marker for Session: MDBG0810
-2:06:51 PM Adding Session: MDBG0810_4427697 to Point: marker
-2:06:51 PM Refreshing Point: marker
-2:06:51 PM Setting Coordinates for Point: marker  from RINEX headers
-2:06:51 PM Assigned:  from RINEX headers
-2:06:51 PM Checking Points... 
-2:06:51 PM Checking Points is DONE! 
-2:06:51 PM Loaded session: pku3310i
-2:06:51 PM Added new Point: pku318 for Session: pku3310i
-2:06:51 PM Adding Session: pku3310i_4341034 to Point: pku318
-2:06:51 PM Refreshing Point: pku318
-2:06:51 PM Setting Coordinates for Point: pku318  from RINEX headers
-2:06:51 PM Assigned:  from RINEX headers
-2:06:51 PM Checking Points... 
-2:06:51 PM Checking Points is DONE! 
-2:06:51 PM Loaded session: ubin219e20
-2:06:51 PM Added new Point: UBIN for Session: ubin219e20
-2:06:51 PM Adding Session: ubin219e20_4404918 to Point: UBIN
-2:06:51 PM Refreshing Point: UBIN
-2:06:51 PM Setting Coordinates for Point: UBIN  from RINEX headers
-2:06:51 PM Assigned:  from RINEX headers
-2:06:51 PM Checking Points... 
-2:06:51 PM Checking Points is DONE! 
-2:06:51 PM Added Vector: karg219e20 -> ubin219e20
-2:06:51 PM Loaded session: ubin219f20
-2:06:51 PM Adding Session: ubin219f20_4404922 to Point: UBIN
-2:06:51 PM Refreshing Point: UBIN
-2:06:51 PM Setting Coordinates for Point: UBIN  from RINEX headers
-2:06:51 PM Assigned:  from RINEX headers
-2:06:51 PM Checking Points... 
-2:06:51 PM Checking Points is DONE! 
-2:06:51 PM Added Vector: karg219f20 -> ubin219f20
-2:06:51 PM Loaded session: ubin219h40
-2:06:51 PM Adding Session: ubin219h40_4404931 to Point: UBIN
-2:06:51 PM Refreshing Point: UBIN
-2:06:51 PM Setting Coordinates for Point: UBIN  from RINEX headers
-2:06:51 PM Assigned:  from RINEX headers
-2:06:51 PM Checking Points... 
-2:06:51 PM Checking Points is DONE! 
-2:06:51 PM Added Vector: karg219h40 -> ubin219h40
-2:06:51 PM Loaded session: ubin219i50
-2:06:51 PM Adding Session: ubin219i50_4404936 to Point: UBIN
-2:06:51 PM Refreshing Point: UBIN
-2:06:51 PM Setting Coordinates for Point: UBIN  from RINEX headers
-2:06:51 PM Assigned:  from RINEX headers
-2:06:51 PM Checking Points... 
-2:06:51 PM Checking Points is DONE! 
-2:06:51 PM Added Vector: karg219i50 -> ubin219i50
-2:06:52 PM Refreshing Point: marker
-2:06:52 PM Setting Coordinates for Point: marker  from RINEX headers
-2:06:52 PM Assigned:  from RINEX headers
-2:06:52 PM Refreshing Point: pku318
-2:06:52 PM Setting Coordinates for Point: pku318  from RINEX headers
-2:06:52 PM Assigned:  from RINEX headers
-2:06:58 PM Setting Station: UBIN turned OFF
-2:06:58 PM Deleting Vector: karg219e20 -> ubin219e20
-2:06:58 PM Deleting Vector: karg219f20 -> ubin219f20
-2:06:58 PM Deleting Vector: karg219h40 -> ubin219h40
-2:06:58 PM Deleting Vector: karg219i50 -> ubin219i50
-2:07:03 PM Setting Station: UBIN turned ON
-2:07:03 PM Added Vector: karg219e20 -> ubin219e20
-2:07:03 PM Added Vector: karg219f20 -> ubin219f20
-2:07:03 PM Added Vector: karg219h40 -> ubin219h40
-2:07:03 PM Added Vector: karg219i50 -> ubin219i50
+3:42:22 AM Loaded session: karg219e20
+3:42:22 AM Added new Point: KARG for Session: karg219e20
+3:42:22 AM Adding Session: karg219e20_4404918 to Point: KARG
+3:42:22 AM Refreshing Point: KARG
+3:42:22 AM Setting Coordinates for Point: KARG  from RINEX headers
+3:42:22 AM Assigned:  from RINEX headers
+3:42:22 AM Checking Points... 
+3:42:22 AM Checking Points is DONE! 
+3:42:22 AM Loaded session: karg219f20
+3:42:22 AM Adding Session: karg219f20_4404922 to Point: KARG
+3:42:22 AM Refreshing Point: KARG
+3:42:22 AM Setting Coordinates for Point: KARG  from RINEX headers
+3:42:22 AM Assigned:  from RINEX headers
+3:42:22 AM Checking Points... 
+3:42:22 AM Checking Points is DONE! 
+3:42:22 AM Loaded session: karg219h40
+3:42:22 AM Adding Session: karg219h40_4404931 to Point: KARG
+3:42:22 AM Refreshing Point: KARG
+3:42:22 AM Setting Coordinates for Point: KARG  from RINEX headers
+3:42:22 AM Assigned:  from RINEX headers
+3:42:22 AM Checking Points... 
+3:42:22 AM Checking Points is DONE! 
+3:42:22 AM Loaded session: karg219i50
+3:42:22 AM Adding Session: karg219i50_4404936 to Point: KARG
+3:42:22 AM Refreshing Point: KARG
+3:42:22 AM Setting Coordinates for Point: KARG  from RINEX headers
+3:42:22 AM Assigned:  from RINEX headers
+3:42:22 AM Checking Points... 
+3:42:22 AM Checking Points is DONE! 
+3:42:31 AM Started single processing: karg219h40
+3:42:32 AM Assigning status for Session : karg219h40 to [Single]
+3:42:32 AM Refreshing Point: KARG
+3:42:32 AM Setting Coordinates for Point: KARG  from Single/PPP solutions
+3:42:32 AM Assigned:  from Solution #1 of Session: karg219h40
+3:42:32 AM Applying new coordinates for Session: karg219e20 - Stack level: 1
+3:42:32 AM Applying new coordinates for Session: karg219f20 - Stack level: 1
+3:42:32 AM Applying new coordinates for Session: karg219h40 - Stack level: 1
+3:42:32 AM Applying new coordinates for Session: karg219i50 - Stack level: 1
+3:42:32 AM Refreshing Point: KARG
+3:42:32 AM Setting Coordinates for Point: KARG  from Single/PPP solutions
+3:42:32 AM Assigned:  from Solution #1 of Session: karg219h40
+3:42:40 AM Started single processing: karg219f20
+3:42:40 AM Assigning status for Session : karg219f20 to [Single]
+3:42:40 AM Refreshing Point: KARG
+3:42:40 AM Setting Coordinates for Point: KARG  from Single/PPP solutions
+3:42:40 AM Assigned:  from Single/PPP solutions
+3:42:40 AM Applying new coordinates for Session: karg219e20 - Stack level: 1
+3:42:40 AM Applying new coordinates for Session: karg219f20 - Stack level: 1
+3:42:40 AM Applying new coordinates for Session: karg219h40 - Stack level: 1
+3:42:40 AM Applying new coordinates for Session: karg219i50 - Stack level: 1
+3:42:40 AM Refreshing Point: KARG
+3:42:40 AM Setting Coordinates for Point: KARG  from Single/PPP solutions
+3:42:40 AM Assigned:  from Single/PPP solutions
+3:43:00 AM Deleting Solution #1 of Session: karg219f20
+3:43:00 AM Assigning status for Session : karg219f20 to [Not processed]
+3:43:00 AM Refreshing Point: KARG
+3:43:00 AM Setting Coordinates for Point: KARG  from Single/PPP solutions
+3:43:00 AM Assigned:  from Solution #1 of Session: karg219h40
+3:43:00 AM Applying new coordinates for Session: karg219e20 - Stack level: 1
+3:43:00 AM Applying new coordinates for Session: karg219f20 - Stack level: 1
+3:43:00 AM Applying new coordinates for Session: karg219h40 - Stack level: 1
+3:43:00 AM Applying new coordinates for Session: karg219i50 - Stack level: 1
