@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, GNSSObjects, ComCtrls, GeoString, ImgList,
-  GNSSObjsTree, Menus;
+  GNSSObjsTree, Menus, UGNSSProject, Buttons, GeoClasses, Geoid,
+  GeoFunctions;
 
 type
   TFGNSSPointSettings = class(TForm)
@@ -26,7 +27,6 @@ type
     YLabel: TLabel;
     ZLabel: TLabel;
     ZEd: TEdit;
-    isBS: TCheckBox;
     SolPC: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
@@ -48,6 +48,12 @@ type
     DeleteSession1: TMenuItem;
     PointPopup: TPopupMenu;
     Sessionsof1: TMenuItem;
+    CSbox: TComboBox;
+    TabSheet3: TTabSheet;
+    SpeedButton1: TSpeedButton;
+    isBS: TCheckBox;
+    GeoidBox: TComboBox;
+    GeoLabel: TLabel;
     procedure SessBoxChange(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
     procedure SolSrcBoxChange(Sender: TObject);
@@ -68,12 +74,20 @@ type
     procedure DeleteSolution1Click(Sender: TObject);
     procedure Configure1Click(Sender: TObject);
     procedure DeleteSession1Click(Sender: TObject);
+    procedure CSboxChange(Sender: TObject);
+    procedure OutputCoordinates;
+    procedure GeoidBoxChange(Sender: TObject);
+    procedure CSboxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
+      State: TOwnerDrawState);
+    procedure GeoidBoxDrawItem(Control: TWinControl; Index: Integer;
+      Rect: TRect; State: TOwnerDrawState);
   private
     { Private declarations }
   public
     procedure ShowStationOrTrack(StatN:Integer; Img:TImageList);
     procedure TurnOnOffStation(N: Integer; isOn:Boolean);
     procedure RefreshPointSettings;
+    procedure RefreshCSBox;
     { Public declarations }
   end;
 
@@ -83,6 +97,8 @@ var
   IsInit  :Boolean;
   ImgList :TImagelist;
   TreeInd :integer = -1;
+
+  ECEFWGS, WGSCS : Integer;
 
   ChosenPoint, ChosenSession, ChosenSol :integer;
 const
@@ -103,12 +119,44 @@ const
 //  PointStatusColors: array [0..13] of TColor = (clGray, $0000FF80,
 //          $0002EAFD, clFuchsia, clPurple, $006000FF, clTeal,clGray,
 //          clRed, clOlive, $000080FF, clOlive, clYellow, clBlue);
-
+     TmpInf :Array[0..8] of String = ('X, m:', 'Y, m:', 'Z, m:',
+                                  'Latitude, deg:', 'Longtitude, deg:', 'Height, m:',
+                                  'Northing, m:', 'Easting, m:', 'Height, m:');
 implementation
 
 uses UGNSSSessionOptions, Unit1, UStartProcessing;
 
 {$R *.dfm}
+
+procedure TFGNSSPointSettings.RefreshCSBox;
+var I, j:Integer;
+begin
+  j := CSbox.ItemIndex;
+    
+  CSBox.Items.Clear;
+  for I := 0 to Length(PrjCS) - 1 do
+    CSBox.Items.Add(CoordinateSystemList[PrjCS[I]].Caption);
+
+  if j = -1 then
+    j := CSbox.Items.Count-1;
+  CSbox.ItemIndex := j;
+  CSBox.OnChange(nil);
+
+  j := GeoidBox.ItemIndex;
+
+  GeoidBox.Items.Clear;
+  GeoidBox.Items.Add('Off'); // ToDo: Translate
+  for I := 0 to Length(GeoidList) - 1 do
+    GeoidBox.Items.Add(GeoidList[I].Caption);
+
+  if j = -1 then
+    j := Geoidbox.Items.Count-1;
+  GeoidBox.ItemIndex := j;
+  GeoidBox.OnChange(nil);
+
+  ECEFWGS := FindCoordinateSystem('WGS84_ECEF');
+  WGSCS   := FindCoordinateSystem('WGS84_LatLon');
+end;
 
 procedure TFGNSSPointSettings.RefreshPointSettings;
 var I, j:integer;
@@ -152,15 +200,14 @@ begin
       SolBox.ItemIndex  :=  GNSSPoints[StationN].SolutionId.SolutionN-1;
     end;
 
-    if GNSSPoints[StationN].CoordSource = 3 then
-      SolPC.ActivePageIndex := 1
-    else
-      SolPC.ActivePageIndex := 0;
+    case GNSSPoints[StationN].CoordSource of
+      3: SolPC.ActivePageIndex := 1;
+      1, 2 : SolPC.ActivePageIndex := 2;
+      else SolPC.ActivePageIndex := 0;
+    end;
 
-    /// ToDo: Dependency on USER CS
-    XEd.Text := FormatFloat('### ### ### ##0.000', GNSSPoints[StationN].Position.X);
-    YEd.Text := FormatFloat('### ### ### ##0.000', GNSSPoints[StationN].Position.Y);
-    ZEd.Text := FormatFloat('### ### ### ##0.000', GNSSPoints[StationN].Position.Z);
+    RefreshCSBox;
+    OutputCoordinates;
 
     XEd.ReadOnly := SolSrcBox.ItemIndex <> 4;
     YEd.ReadOnly := SolSrcBox.ItemIndex <> 4;
@@ -196,15 +243,38 @@ end;
 { TFGNSSPointSettings }
 
 procedure TFGNSSPointSettings.OKButtonClick(Sender: TObject);
-var I :Integer;
+var I :Integer;   x, y, z, nX, nY, nZ, dH :Double;
 begin
-  /// ToDo: Apply XYZ
-  // SolSrcBox.OnChange;
 
   if (SolSrcBox.ItemIndex = 4)  then
   begin
-    SetGNSSPointUserCoords(StationN, StrToFloat2(Xed.Text),
-        StrToFloat2(Yed.Text), StrToFloat2(Zed.Text) );
+    if CoordinateSystemList[PrjCS[CSBox.ItemIndex]].ProjectionType = 0 then
+    begin
+      X := StrToLatLon(Xed.Text, true);
+      Y := StrToLatLon(Yed.Text, false);
+      Z := StrToFloat2(Zed.Text);
+    end
+    else
+    begin
+      X := StrToFloat2(Xed.Text);
+      Y := StrToFloat2(Yed.Text);
+      Z := StrToFloat2(Zed.Text);
+    end;
+
+    if GeoidBox.ItemIndex > 0 then
+    begin
+      CSToCS(X, Y, Z, PrjCS[CSBox.ItemIndex], WGSCS, nX, nY, nZ);
+      X := nX; Y := nY; Z := nZ;
+      dH   := GetGeoidH(GeoidBox.ItemIndex - 1, X, Y);  /// WGS ONLY!
+      Z   := Z + dH;
+      CSToCS(X, Y, Z, WGSCS, ECEFWGS, nX, nY, nZ);
+    end
+    else
+      CSToCS(X, Y, Z, PrjCS[CSBox.ItemIndex], ECEFWGS, nX, nY, nZ);
+
+
+
+    SetGNSSPointUserCoords(StationN, nX, nY, nZ);
   end;
 
   if (isBS.Checked) and (SolSrcBox.ItemIndex = 4)  then
@@ -212,6 +282,75 @@ begin
       CheckGNSSVectorsForSession(GNSSPoints[StationN].Sessions[I]);
 
   close;
+end;
+
+procedure TFGNSSPointSettings.OutputCoordinates;
+var nX, nY, nZ, B, L, H, dH : Double;
+begin
+    XEd.Text := '';  YEd.Text := '';  ZEd.Text := '';
+
+    if CSBox.ItemIndex = -1 then
+      exit;
+
+    CSToCS(GNSSPoints[StationN].Position.X,
+                    GNSSPoints[StationN].Position.Y,
+                    GNSSPoints[StationN].Position.Z, ECEFWGS,
+                    PrjCS[CSBox.ItemIndex],
+                    nX, nY, nZ);
+
+    if CoordinateSystemList[PrjCS[CSBox.ItemIndex]].ProjectionType <> 1 then
+      if GeoidBox.ItemIndex > 0 then
+      begin
+        CoordinateSystemToDatum(ECEFWGS,
+                    GNSSPoints[StationN].Position.X,
+                    GNSSPoints[StationN].Position.Y,
+                    GNSSPoints[StationN].Position.Z, 
+                    B, L, H);
+
+        dH   := GetGeoidH(GeoidBox.ItemIndex - 1, B, L);  /// WGS ONLY!
+        H    := H - dH;
+
+        CSToCS(B, L, H, WGSCS, PrjCS[CSBox.ItemIndex], nX, nY, nZ);
+      end;
+
+
+    GeoidBox.Visible := true;  GeoidBox.Enabled := true;
+    GeoLabel.Visible := true;  GeoLabel.Enabled := true;
+
+    case CoordinateSystemList[PrjCS[CSBox.ItemIndex]].ProjectionType of
+      0: begin
+        XEd.Text := DegToDMS(nX,true,  5, true);
+        YEd.Text := DegToDMS(nY,false, 5, true);
+        ZEd.Text := FormatFloat('0.000', nZ);
+
+        XLabel.Caption := TmpInf[3];    /// ToDo: replace with common inf
+        YLabel.Caption := TmpInf[4];
+        ZLabel.Caption := TmpInf[5];
+      end;
+
+      1: begin
+        XEd.Text := FormatFloat('### ### ### ##0.000', nX);
+        YEd.Text := FormatFloat('### ### ### ##0.000', nY);
+        ZEd.Text := FormatFloat('### ### ### ##0.000', nZ);
+
+        XLabel.Caption := TmpInf[0];
+        YLabel.Caption := TmpInf[1];
+        ZLabel.Caption := TmpInf[2];
+        GeoidBox.Enabled := false;  GeoLabel.Visible := false;
+        GeoLabel.Enabled := false;  GeoidBox.Visible := false;
+      end;
+
+      2..5: begin
+        XEd.Text := FormatFloat('0.000', nX);
+        YEd.Text := FormatFloat('0.000', nY);
+        ZEd.Text := FormatFloat('0.000', nZ);
+
+        XLabel.Caption := TmpInf[6];
+        YLabel.Caption := TmpInf[7];
+        ZLabel.Caption := TmpInf[8];
+      end;
+
+    end;
 end;
 
 procedure TFGNSSPointSettings.Processagain1Click(Sender: TObject);
@@ -251,6 +390,56 @@ begin
   RefreshPointSettings;
 end;
 
+procedure TFGNSSPointSettings.CSboxChange(Sender: TObject);
+//var I:Integer;
+begin
+  if CSbox.ItemIndex = -1 then
+    exit;
+
+//  I := CoordinateSystemList[CSbox.ItemIndex];
+
+  OutputCoordinates;
+end;
+
+procedure TFGNSSPointSettings.CSboxDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+var
+  ComboBox: TComboBox;
+  bitmap: TBitmap;
+  I: Integer;
+begin
+  ComboBox := (Control as TComboBox);
+  Bitmap := TBitmap.Create;
+  try
+    I := CoordinateSystemList[PrjCS[Index]].ProjectionType;
+    case I of
+       0: I := 110;
+       1: I := 111;
+       2..5: I := 112
+    end;
+    TreeView.Images.GetBitmap(I, Bitmap);
+    with ComboBox.Canvas do
+    begin
+
+      if Bitmap.Handle <> 0 then
+      begin
+        Bitmap.Transparent := true;
+        Draw(Rect.Left, Rect.Top, Bitmap);
+        Rect := Bounds(Rect.Left + Bitmap.Width, Rect.Top,
+                     Rect.Right - Rect.Left -Bitmap.Width, Rect.Bottom - Rect.Top);
+      end;
+      FillRect(Rect);
+      Rect := Bounds(Rect.Left + 2, Rect.Top,
+                     Rect.Right -2, Rect.Bottom - Rect.Top);
+
+      DrawText(handle, PChar(ComboBox.Items[Index]), length(ComboBox.Items[index]), Rect, DT_VCENTER+DT_SINGLELINE);
+    end;
+  finally
+    Bitmap.Free;
+  end;
+
+end;
+
 procedure TFGNSSPointSettings.DeleteSession1Click(Sender: TObject);
 var I:Integer;
     finalSession:Boolean;
@@ -286,6 +475,48 @@ begin
   PointPopup.Images := Treeview.Images;
   SessionPopup.Images := Treeview.Images;
   SolPopup.Images := Treeview.Images;
+end;
+
+procedure TFGNSSPointSettings.GeoidBoxChange(Sender: TObject);
+begin
+  OutputCoordinates;
+end;
+
+procedure TFGNSSPointSettings.GeoidBoxDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+var
+  ComboBox: TComboBox;
+  bitmap: TBitmap;
+  I: Integer;
+begin
+
+  ComboBox := (Control as TComboBox);
+  Bitmap := TBitmap.Create;
+  try
+    if Index > 0 then
+      TreeView.Images.GetBitmap(113, Bitmap);
+    with ComboBox.Canvas do
+    begin
+
+      if Bitmap.Handle <> 0 then
+      begin
+        Bitmap.Transparent := true;
+        Draw(Rect.Left, Rect.Top, Bitmap);
+        Rect := Bounds(Rect.Left + Bitmap.Width, Rect.Top,
+                     Rect.Right - Rect.Left -Bitmap.Width, Rect.Bottom - Rect.Top);
+      end;
+      FillRect(Rect);
+
+      Rect := Bounds(Rect.Left + 2, Rect.Top,
+                     Rect.Right -2, Rect.Bottom - Rect.Top);
+
+      DrawText(handle, PChar(ComboBox.Items[Index]), length(ComboBox.Items[index]),
+              Rect, DT_VCENTER+DT_SINGLELINE);
+    end;
+  finally
+    Bitmap.Free;
+  end;
+
 end;
 
 procedure TFGNSSPointSettings.isAcClick(Sender: TObject);
@@ -446,11 +677,35 @@ begin
 end;
 
 procedure TFGNSSPointSettings.SetasResult1Click(Sender: TObject);
+var WarnMe : boolean; I,j :Integer;
 begin
+
+  WarnMe := false;
+  for I := 0 to Length(GNSSPoints[StationN].Sessions)- 1 do
+  begin
+      for j := 0 to Length(GNSSVectors) - 1 do
+         if (GNSSVectors[j].BaseID = GNSSPoints[StationN].Sessions[I])
+            and (GNSSVectors[j].StatusQ > 0) then
+            begin
+              WarnMe := true;
+              break
+            end;
+      if WarnMe then
+        break;
+  end;
+
+  if WarnMe then
+  if messagedlg('This may change the other stations. Proceed?',    // Todo : TRANSLATE
+        mtConfirmation, [mbYes, mbNo], 0)<> 6 then
+    exit;
+
   ChosenPoint := StationN;
   GNSSPoints[ChosenPoint].CoordSource := 3;
-  GNSSPoints[ChosenPoint].SolutionId.SessionId := GNSSSessions[ChosenSession].SessionID;
-  GNSSPoints[ChosenPoint].SolutionId.SolutionN := ChosenSol;
+  GNSSPoints[ChosenPoint].SolutionId.SessionId :=
+    GNSSSessions[ChosenSession].SessionID;
+  GNSSPoints[ChosenPoint].SolutionId.SolutionN :=
+    ChosenSol;
+  SetGNSSPointSource(StationN, 3, ChosenSession, ChosenSol);
   RefreshPointSettings;
 end;
 
@@ -510,11 +765,12 @@ begin
     end;
     isInit := false;
 
-    if GNSSPoints[StationN].CoordSource = 3 then
-      SolPC.ActivePageIndex := 1
-    else
-      SolPC.ActivePageIndex := 0;
-      
+    case GNSSPoints[StationN].CoordSource of
+      3: SolPC.ActivePageIndex := 1;
+      1, 2 : SolPC.ActivePageIndex := 2;
+      else SolPC.ActivePageIndex := 0;
+    end;
+
     exit;
   end;
 
@@ -544,10 +800,12 @@ begin
        (GNSSPoints[StationN].SolutionId.SolutionN <> MySolId.SolutionN) ) then
     SetGNSSPointSource(StationN, SolSrcBox.ItemIndex, SessN, MySolId.SolutionN);
 
-  if GNSSPoints[StationN].CoordSource = 3 then
-      SolPC.ActivePageIndex := 1
-    else
-      SolPC.ActivePageIndex := 0;
+  case GNSSPoints[StationN].CoordSource of
+    3: SolPC.ActivePageIndex := 1;
+    1, 2 : SolPC.ActivePageIndex := 2;
+    else SolPC.ActivePageIndex := 0;
+  end;
+
   XEd.ReadOnly := SolSrcBox.ItemIndex <> 4;
   YEd.ReadOnly := SolSrcBox.ItemIndex <> 4;
   ZEd.ReadOnly := SolSrcBox.ItemIndex <> 4;

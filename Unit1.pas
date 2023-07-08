@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, shellApi, ComCtrls, Buttons, RTKLibExecutor, ExtCtrls,
-  TabFunctions, Spin, GNSSObjects, GeoString, ImgList, Menus, GeoFiles, Geoid;
+  TabFunctions, Spin, GNSSObjects, GeoString, ImgList, Menus, GeoFiles, Geoid,
+  UGNSSProject;
 
 type
   TForm1 = class(TForm)
@@ -84,6 +85,7 @@ type
     Panel4: TPanel;
     Button6: TButton;
     ShowTree: TSpeedButton;
+    SpeedButton2: TSpeedButton;
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -871,19 +873,14 @@ begin
 
  GeoInit('Data\Sources.loc', '', '');
 
- /// EGM08
- if Length(GeoidList)< 1 then
- begin
-   SetLength(GeoidList, 1);
-   ReloadGeoidByID('EGM2008', 0);
- end;
-
+ PrepareNewGNSSProject;
 
  if Fileexists(RTKLibDest )= false then
    RTKLibPathEd.OnChange(nil)
  else
    RTKLibPathEd.Text := RTKLibDest;
 
+ 
 end;
 
 procedure TForm1.FormShow(Sender: TObject);

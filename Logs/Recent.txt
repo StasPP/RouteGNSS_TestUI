@@ -3,415 +3,516 @@ Starting the process...
 
 
 
+
+processing : 2020/08/06 05:20:00 Q=0
+
 processing : 2020/08/06 05:20:00 Q=0
 processing : 2020/08/06 05:20:10 Q=0
 processing : 2020/08/06 05:20:20 Q=0
 processing : 2020/08/06 05:20:30 Q=0
 processing : 2020/08/06 05:20:40 Q=0
 processing : 2020/08/06 05:20:50 Q=0
-processing : 2020/08/06 05:21:00 Q=0
-processing : 2020/08/06 05:21:10 
-Q=0
+processing : 2020/08/06 05:21:00
+ Q=0
+processing : 2020/08/06 05:21:10 Q=0
 processing : 2020/08/06 05:21:20 Q=0
 processing : 2020/08/06 05:21:30 Q=0
 processing : 2020/08/06 05:21:40 Q=0
 processing : 2020/08/06 05:21:50 Q=0
 processing : 2020/08/06 05:22:00 Q=0
-processing : 2020/08/06 05:22:10 Q=0
-processing : 2020/08/06 05:22
-:20 Q=0
+processing : 2020/08/06 05:2
+2:10 Q=0
+processing : 2020/08/06 05:22:20 Q=0
 processing : 2020/08/06 05:22:30 Q=0
 processing : 2020/08/06 05:22:40 Q=0
 processing : 2020/08/06 05:22:50 Q=0
 processing : 2020/08/06 05:23:00 Q=0
 processing : 2020/08/06 05:23:10 Q=0
-processing : 2020/08/06 05:23:20 Q=0
-processing : 2020/08/06 0
-5:23:30 Q=0
+processing : 2020/08/06 
+05:23:20 Q=0
+processing : 2020/08/06 05:23:30 Q=0
 processing : 2020/08/06 05:23:40 Q=0
 processing : 2020/08/06 05:23:50 Q=0
 processing : 2020/08/06 05:24:00 Q=0
 processing : 2020/08/06 05:24:10 Q=0
 processing : 2020/08/06 05:24:20 Q=0
-processing : 2020/08/06 05:24:30 Q=0
-processing : 2020/08/
-06 05:24:40 Q=0
+processing : 2020/08
+/06 05:24:30 Q=0
+processing : 2020/08/06 05:24:40 Q=0
 processing : 2020/08/06 05:24:50 Q=0
 processing : 2020/08/06 05:25:00 Q=0
 processing : 2020/08/06 05:25:10 Q=0
 processing : 2020/08/06 05:25:20 Q=0
 processing : 2020/08/06 05:25:30 Q=0
-processing : 2020/08/06 05:25:40 Q=0
-processing : 2020
-/08/06 05:25:50 Q=0
+processing : 202
+0/08/06 05:25:40 Q=0
+processing : 2020/08/06 05:25:50 Q=0
 processing : 2020/08/06 05:26:00 Q=0
 processing : 2020/08/06 05:26:10 Q=0
 processing : 2020/08/06 05:26:20 Q=0
 processing : 2020/08/06 05:26:30 Q=0
 processing : 2020/08/06 05:26:40 Q=0
-processing : 2020/08/06 05:26:50 Q=0
-processing : 
-2020/08/06 05:27:00 Q=0
+processing :
+ 2020/08/06 05:26:50 Q=0
+processing : 2020/08/06 05:27:00 Q=0
 processing : 2020/08/06 05:27:10 Q=0
 processing : 2020/08/06 05:27:20 Q=0
 processing : 2020/08/06 05:27:30 Q=0
 processing : 2020/08/06 05:27:40 Q=0
 processing : 2020/08/06 05:27:50 Q=0
-processing : 2020/08/06 05:28:00 Q=0
-processin
-g : 2020/08/06 05:28:10 Q=0
+processi
+ng : 2020/08/06 05:28:00 Q=0
+processing : 2020/08/06 05:28:10 Q=0
 processing : 2020/08/06 05:28:20 Q=0
 processing : 2020/08/06 05:28:30 Q=0
 processing : 2020/08/06 05:28:40 Q=0
 processing : 2020/08/06 05:28:50 Q=0
 processing : 2020/08/06 05:29:00 Q=0
-processing : 2020/08/06 05:29:10 Q=0
-proce
-ssing : 2020/08/06 05:29:20 Q=0
+proc
+essing : 2020/08/06 05:29:10 Q=0
+processing : 2020/08/06 05:29:20 Q=0
 processing : 2020/08/06 05:29:30 Q=0
 processing : 2020/08/06 05:29:40 Q=0
 processing : 2020/08/06 05:29:50 Q=0
 processing : 2020/08/06 05:30:00 Q=0
 processing : 2020/08/06 05:30:10 Q=0
 processing : 2020/08/06 05:30:20 Q=0
-p
-rocessing : 2020/08/06 05:30:30 Q=0
+processing : 2020/08/06 05:30:30 Q=0
 processing : 2020/08/06 05:30:40 Q=0
 processing : 2020/08/06 05:30:50 Q=0
 processing : 2020/08/06 05:31:00 Q=0
 processing : 2020/08/06 05:31:10 Q=0
-processing : 2020/08/06 05:31:20 Q=0
-processing : 2020/08/06 05:31:30 Q
-=0
+processing : 2020/08/06 05:31:20 
+Q=0
+processing : 2020/08/06 05:31:30 Q=0
 processing : 2020/08/06 05:31:40 Q=0
 processing : 2020/08/06 05:31:50 Q=0
 processing : 2020/08/06 05:32:00 Q=0
 processing : 2020/08/06 05:32:10 Q=0
 processing : 2020/08/06 05:32:20 Q=0
-processing : 2020/08/06 05:32:30 Q=0
-processing : 2020/08/06 05:32:
-40 Q=0
+processing : 2020/08/06 05:32
+:30 Q=0
+processing : 2020/08/06 05:32:40 Q=0
 processing : 2020/08/06 05:32:50 Q=0
 processing : 2020/08/06 05:33:00 Q=0
 processing : 2020/08/06 05:33:10 Q=0
 processing : 2020/08/06 05:33:20 Q=0
 processing : 2020/08/06 05:33:30 Q=0
-processing : 2020/08/06 05:33:40 Q=0
-processing : 2020/08/06 05
-:33:50 Q=0
+processing : 2020/08/06 0
+5:33:40 Q=0
+processing : 2020/08/06 05:33:50 Q=0
 processing : 2020/08/06 05:34:00 Q=0
 processing : 2020/08/06 05:34:10 Q=0
 processing : 2020/08/06 05:34:20 Q=0
 processing : 2020/08/06 05:34:30 Q=0
 processing : 2020/08/06 05:34:40 Q=0
-processing : 2020/08/06 05:34:50 Q=0
-processing : 2020/08/0
-6 05:35:00 Q=0
+processing : 2020/08/
+06 05:34:50 Q=0
+processing : 2020/08/06 05:35:00 Q=0
 processing : 2020/08/06 05:35:10 Q=0
 processing : 2020/08/06 05:35:20 Q=0
 processing : 2020/08/06 05:35:30 Q=0
 processing : 2020/08/06 05:35:40 Q=0
 processing : 2020/08/06 05:35:50 Q=0
-processing : 2020/08/06 05:36:00 Q=0
-processing : 2020/
-08/06 05:36:10 Q=0
+processing : 2020
+/08/06 05:36:00 Q=0
+processing : 2020/08/06 05:36:10 Q=0
 processing : 2020/08/06 05:36:20 Q=0
 processing : 2020/08/06 05:36:30 Q=0
 processing : 2020/08/06 05:36:40 Q=0
 processing : 2020/08/06 05:36:50 Q=0
 processing : 2020/08/06 05:37:00 Q=0
-processing : 2020/08/06 05:37:10 Q=0
-processing : 2
-020/08/06 05:37:20 Q=0
+processing : 
+2020/08/06 05:37:10 Q=0
+processing : 2020/08/06 05:37:20 Q=0
 processing : 2020/08/06 05:37:30 Q=0
 processing : 2020/08/06 05:37:40 Q=0
 processing : 2020/08/06 05:37:50 Q=0
 processing : 2020/08/06 05:38:00 Q=0
 processing : 2020/08/06 05:38:10 Q=0
-processing : 2020/08/06 05:38:20 Q=0
-processing
- : 2020/08/06 05:38:30 Q=0
+processin
+g : 2020/08/06 05:38:20 Q=0
+processing : 2020/08/06 05:38:30 Q=0
 processing : 2020/08/06 05:38:40 Q=0
 processing : 2020/08/06 05:38:50 Q=0
 processing : 2020/08/06 05:39:00 Q=0
 processing : 2020/08/06 05:39:10 Q=0
 processing : 2020/08/06 05:39:20 Q=0
-processing : 2020/08/06 05:39:30 Q=0
-proces
-sing : 2020/08/06 05:39:40 Q=0
+proce
+ssing : 2020/08/06 05:39:30 Q=0
+processing : 2020/08/06 05:39:40 Q=0
 processing : 2020/08/06 05:39:50 Q=0
 processing : 2020/08/06 05:40:00 Q=0
 processing : 2020/08/06 05:40:10 Q=0
 processing : 2020/08/06 05:40:20 Q=0
 processing : 2020/08/06 05:40:30 Q=0
-processing : 2020/08/06 05:40:40 Q=0
-pr
-ocessing : 2020/08/06 05:40:50 Q=0
+p
+rocessing : 2020/08/06 05:40:40 Q=0
+processing : 2020/08/06 05:40:50 Q=0
 processing : 2020/08/06 05:41:00 Q=0
 processing : 2020/08/06 05:41:10 Q=0
 processing : 2020/08/06 05:41:20 Q=0
 processing : 2020/08/06 05:41:30 Q=0
-processing : 2020/08/06 05:41:40 Q=0
-processing : 2020/08/06 05:41:50 Q=
-0
+processing : 2020/08/06 05:41:40 Q
+=0
+processing : 2020/08/06 05:41:50 Q=0
 processing : 2020/08/06 05:42:00 Q=0
 processing : 2020/08/06 05:42:10 Q=0
 processing : 2020/08/06 05:42:20 Q=0
 processing : 2020/08/06 05:42:30 Q=0
 processing : 2020/08/06 05:42:40 Q=0
-processing : 2020/08/06 05:42:50 Q=0
-processing : 2020/08/06 05:43:0
-0 Q=0
+processing : 2020/08/06 05:42:
+50 Q=0
+processing : 2020/08/06 05:43:00 Q=0
 processing : 2020/08/06 05:43:10 Q=0
 processing : 2020/08/06 05:43:20 Q=0
 processing : 2020/08/06 05:43:30 Q=0
 processing : 2020/08/06 05:43:40 Q=0
 processing : 2020/08/06 05:43:50 Q=0
-processing : 2020/08/06 05:44:00 Q=0
-processing : 2020/08/06 05:
-44:10 Q=0
+processing : 2020/08/06 05
+:44:00 Q=0
+processing : 2020/08/06 05:44:10 Q=0
 processing : 2020/08/06 05:44:20 Q=0
 processing : 2020/08/06 05:44:30 Q=0
 processing : 2020/08/06 05:44:40 Q=0
 processing : 2020/08/06 05:44:50 Q=0
 processing : 2020/08/06 05:45:00 Q=0
-processing : 2020/08/06 05:45:10 Q=0
-processing : 2020/08/06
- 05:45:20 Q=0
+processing : 2020/08/0
+6 05:45:10 Q=0
+processing : 2020/08/06 05:45:20 Q=0
 processing : 2020/08/06 05:45:30 Q=0
 processing : 2020/08/06 05:45:40 Q=0
 processing : 2020/08/06 05:45:50 Q=0
 processing : 2020/08/06 05:46:00 Q=0
 processing : 2020/08/06 05:46:10 Q=0
-processing : 2020/08/06 05:46:20 Q=0
-processing : 2020/0
-8/06 05:46:30 Q=0
+processing : 2020/
+08/06 05:46:20 Q=0
+processing : 2020/08/06 05:46:30 Q=0
 processing : 2020/08/06 05:46:40 Q=0
 processing : 2020/08/06 05:46:50 Q=0
 processing : 2020/08/06 05:47:00 Q=0
 processing : 2020/08/06 05:47:10 Q=0
 processing : 2020/08/06 05:47:20 Q=0
-processing : 2020/08/06 05:47:30 Q=0
-processing : 20
-20/08/06 05:47:40 Q=0
+processing : 2
+020/08/06 05:47:30 Q=0
+processing : 2020/08/06 05:47:40 Q=0
 processing : 2020/08/06 05:47:50 Q=0
 processing : 2020/08/06 05:48:00 Q=0
 processing : 2020/08/06 05:48:10 Q=0
 processing : 2020/08/06 05:48:20 Q=0
 processing : 2020/08/06 05:48:30 Q=0
-processing : 2020/08/06 05:48:40 Q=0
-processing 
-: 2020/08/06 05:48:50 Q=0
+processing
+ : 2020/08/06 05:48:40 Q=0
+processing : 2020/08/06 05:48:50 Q=0
 processing : 2020/08/06 05:49:00 Q=0
 processing : 2020/08/06 05:49:10 Q=0
 processing : 2020/08/06 05:49:20 Q=0
 processing : 2020/08/06 05:49:30 Q=0
 processing : 2020/08/06 05:49:40 Q=0
-processing : 2020/08/06 05:49:50 Q=0
-process
-ing : 2020/08/06 05:50:00 Q=0
+proces
+sing : 2020/08/06 05:49:50 Q=0
+processing : 2020/08/06 05:50:00 Q=0
 processing : 2020/08/06 05:50:10 Q=0
 processing : 2020/08/06 05:50:20 Q=0
 processing : 2020/08/06 05:50:30 Q=0
 processing : 2020/08/06 05:50:40 Q=0
 processing : 2020/08/06 05:50:50 Q=0
-processing : 2020/08/06 05:51:00 Q=0
-pro
-cessing : 2020/08/06 05:51:10 Q=0
+pr
+ocessing : 2020/08/06 05:51:00 Q=0
+processing : 2020/08/06 05:51:10 Q=0
 processing : 2020/08/06 05:51:20 Q=0
 processing : 2020/08/06 05:51:30 Q=0
 processing : 2020/08/06 05:51:40 Q=0
 processing : 2020/08/06 05:51:50 Q=0
-processing : 2020/08/06 05:52:00 Q=0
+processing : 2020/08/06 05:52:00 Q=
+0
 processing : 2020/08/06 05:52:10 Q=0
-
 processing : 2020/08/06 05:52:20 Q=0
 processing : 2020/08/06 05:52:30 Q=0
 processing : 2020/08/06 05:52:40 Q=0
 processing : 2020/08/06 05:52:50 Q=0
 processing : 2020/08/06 05:53:00 Q=0
-processing : 2020/08/06 05:53:10 Q=0
-processing : 2020/08/06 05:53:20
- Q=0
+processing : 2020/08/06 05:53:1
+0 Q=0
+processing : 2020/08/06 05:53:20 Q=0
 processing : 2020/08/06 05:53:30 Q=0
 processing : 2020/08/06 05:53:40 Q=0
 processing : 2020/08/06 05:53:50 Q=0
 processing : 2020/08/06 05:54:00 Q=0
 processing : 2020/08/06 05:54:10 Q=0
-processing : 2020/08/06 05:54:20 Q=0
-processing : 2020/08/06 05:5
-4:30 Q=0
+processing : 2020/08/06 05:
+54:20 Q=0
+processing : 2020/08/06 05:54:30 Q=0
 processing : 2020/08/06 05:54:40 Q=0
 processing : 2020/08/06 05:54:50 Q=0
 processing : 2020/08/06 05:55:00 Q=0
 processing : 2020/08/06 05:55:10 Q=0
 processing : 2020/08/06 05:55:20 Q=0
-processing : 2020/08/06 05:55:30 Q=0
-processing : 2020/08/06 
-05:55:40 Q=0
+processing : 2020/08/06
+ 05:55:30 Q=0
+processing : 2020/08/06 05:55:40 Q=0
 processing : 2020/08/06 05:55:50 Q=0
 processing : 2020/08/06 05:56:00 Q=0
 processing : 2020/08/06 05:56:10 Q=0
 processing : 2020/08/06 05:56:20 Q=0
 processing : 2020/08/06 05:56:30 Q=0
-processing : 2020/08/06 05:56:40 Q=0
-processing : 2020/08
-/06 05:56:50 Q=0
+processing : 2020/0
+8/06 05:56:40 Q=0
+processing : 2020/08/06 05:56:50 Q=0
 processing : 2020/08/06 05:57:00 Q=0
 processing : 2020/08/06 05:57:10 Q=0
 processing : 2020/08/06 05:57:20 Q=0
 processing : 2020/08/06 05:57:30 Q=0
 processing : 2020/08/06 05:57:40 Q=0
-processing : 2020/08/06 05:57:50 Q=0
-processing : 202
-0/08/06 05:58:00 Q=0
+processing : 20
+20/08/06 05:57:50 Q=0
+processing : 2020/08/06 05:58:00 Q=0
 processing : 2020/08/06 05:58:10 Q=0
 processing : 2020/08/06 05:58:20 Q=0
 processing : 2020/08/06 05:58:30 Q=0
 processing : 2020/08/06 05:58:40 Q=0
 processing : 2020/08/06 05:58:50 Q=0
-processing : 2020/08/06 05:59:00 Q=0
-processing :
- 2020/08/06 05:59:10 Q=0
+processing 
+: 2020/08/06 05:59:00 Q=0
+processing : 2020/08/06 05:59:10 Q=0
 processing : 2020/08/06 05:59:20 Q=0
 processing : 2020/08/06 05:59:30 Q=0
 processing : 2020/08/06 05:59:40 Q=0
 processing : 2020/08/06 05:59:50 Q=0
-processing : 2020/08/06 06:00:00 Q=0
-processing : 2020/08/06 06:00:10 Q=5
-processi
-ng : 2020/08/06 06:00:20 Q=5
-processing : 2020/08/06 06:00:30 Q=5
-processing : 2020/08/06 06:00:40 Q=5
-processing : 2020/08/06 06:00:50 Q=5
-processing : 2020/08/06 06:01:00 Q=5
-processing : 2020/08/06 06:01:10 Q=5
-processing : 2020/08/06 06:01:20 Q=5
-proc
-essing : 2020/08/06 06:01:30 Q=5
-processing : 2020/08/06 06:01:40 Q=5
-processing : 2020/08/06 06:01:50 Q=5
-processing : 2020/08/06 06:02:00 Q=5
-processing : 2020/08/06 06:02:10 Q=5
-processing : 2020/08/06 06:02:20 Q=5
-processing : 2020/08/06 06:02:30 Q=5
-processing : 2020/08/06 06:02:40 Q=5
-processing : 2020/08/06 06:02:50 Q=5
-processing : 2020/08/06 06:03:00 Q=5
-processing : 2020/08/06 06:03:10 Q=5
-processing : 2020/08/06 06:03:20 Q=5
-processing : 2020/08/06 06:03:30 Q=5
-processing : 2020/08/06 06:03:40 
-Q=5
-processing : 2020/08/06 06:03:50 Q=5
-processing : 2020/08/06 06:04:00 Q=5
-processing : 2020/08/06 06:04:10 Q=5
-processing : 2020/08/06 06:04:20 Q=5
-processing : 2020/08/06 06:04:30 Q=5
-processing : 2020/08/06 06:04:40 Q=5
-processing : 2020/08/06 06:04
-:50 Q=5
-processing : 2020/08/06 06:05:00 Q=5
-processing : 2020/08/06 06:05:10 Q=5
-processing : 2020/08/06 06:05:20 Q=5
-processing : 2020/08/06 06:05:30 Q=5
-processing : 2020/08/06 06:05:40 Q=5
-processing : 2020/08/06 06:05:50 Q=5
-processing : 2020/08/06 0
-6:06:00 Q=5
-processing : 2020/08/06 06:06:10 Q=5
-processing : 2020/08/06 06:06:20 Q=5
-processing : 2020/08/06 06:06:30 Q=5
-processing : 2020/08/06 06:06:40 Q=5
-processing : 2020/08/06 06:06:50 Q=5
-processing : 2020/08/06 06:07:00 Q=5
-processing : 2020/08/
-06 06:07:10 Q=5
-processing : 2020/08/06 06:07:20 Q=5
-processing : 2020/08/06 06:07:30 Q=5
-processing : 2020/08/06 06:07:40 Q=5
-processing : 2020/08/06 06:07:50 Q=5
-processing : 2020/08/06 06:08:00 Q=5
-processing : 2020/08/06 06:08:10 Q=5
-processing : 2020
-/08/06 06:08:20 Q=5
-processing : 2020/08/06 06:08:30 Q=5
-processing : 2020/08/06 06:08:40 Q=5
-processing : 2020/08/06 06:08:50 Q=5
-processing : 2020/08/06 06:09:00 Q=5
-processing : 2020/08/06 06:09:10 Q=5
-processing : 2020/08/06 06:09:20 Q=5
-processing : 
-2020/08/06 06:09:30 Q=5
-processing : 2020/08/06 06:09:40 Q=5
-processing : 2020/08/06 06:09:50 Q=5
-processing : 2020/08/06 06:10:00 Q=5
-processing : 2020/08/06 06:10:10 Q=5
-processing : 2020/08/06 06:10:20 Q=5
-processing : 2020/08/06 06:10:30 Q=5
-processin
-g : 2020/08/06 06:10:40 Q=5
-processing : 2020/08/06 06:10:50 Q=5
-processing : 2020/08/06 06:11:00 Q=5
-processing : 2020/08/06 06:11:10 Q=5
-processing : 2020/08/06 06:11:20 Q=5
-processing : 2020/08/06 06:11:30 Q=5
-processing : 2020/08/06 06:11:40 Q=5
-proce
-ssing : 2020/08/06 06:11:50 Q=5
-processing : 2020/08/06 06:12:00 Q=5
-processing : 2020/08/06 06:12:10 Q=5
-processing : 2020/08/06 06:12:20 Q=5
-processing : 2020/08/06 06:12:30 Q=5
-processing : 2020/08/06 06:12:40 Q=5
-processing : 2020/08/06 06:12:50 Q=5
-p
-rocessing : 2020/08/06 06:13:00 Q=5
-processing : 2020/08/06 06:13:10 Q=5
-processing : 2020/08/06 06:13:20 Q=5
-processing : 2020/08/06 06:13:30 Q=5
-processing : 2020/08/06 06:13:40 Q=5
-processing : 2020/08/06 06:13:50 Q=5
-processing : 2020/08/06 06:14:00 Q
-=5
-processing : 2020/08/06 06:14:10 Q=5
-processing : 2020/08/06 06:14:20 Q=5
-processing : 2020/08/06 06:14:30 Q=5
-processing : 2020/08/06 06:14:40 Q=5
-processing : 2020/08/06 06:14:50 Q=5
-processing : 2020/08/06 06:15:00 Q=5
-processing : 2020/08/06 06:15:
-10 Q=5
-processing : 2020/08/06 06:15:20 Q=5
-processing : 2020/08/06 06:15:30 Q=5
-processing : 2020/08/06 06:15:40 Q=5
-processing : 2020/08/06 06:15:50 Q=5
-processing : 2020/08/06 06:16:00 Q=5
-processing : 2020/08/06 06:16:10 Q=5
-processing : 2020/08/06 06
-:16:20 Q=5
-processing : 2020/08/06 06:16:30 Q=5
-processing : 2020/08/06 06:16:40 Q=5
-processing : 2020/08/06 06:16:50 Q=5
-processing : 2020/08/06 06:17:00 Q=5
-processing : 2020/08/06 06:17:10 Q=5
-processing : 2020/08/06 06:17:20 Q=5
-processing : 2020/08/0
-6 06:17:30 Q=5
-processing : 2020/08/06 06:17:40 Q=5
-processing : 2020/08/06 06:17:50 Q=5
-processing : 2020/08/06 06:18:00 Q=5
-processing : 2020/08/06 06:18:10 Q=5
-processing : 2020/08/06 06:18:20 Q=5
-processing : 2020/08/06 06:18:30 Q=5
-processing : 2020/
-08/06 06:18:40 Q=5
-processing : 2020/08/06 06:18:50 Q=5
-processing : 2020/08/06 06:19:00 Q=5
-processing : 2020/08/06 06:19:10 Q=5
-processing : 2020/08/06 06:19:20 Q=5
-processing : 2020/08/06 06:19:30 Q=5
-processing : 2020/08/06 06:19:40 Q=5
-processing : 2
-020/08/06 06:19:50 Q=5
+processing : 2020/08/06 06:00:00 Q=1
+process
+ing : 2020/08/06 06:00:10 Q=1
+processing : 2020/08/06 06:00:20 Q=1
+processing : 2020/08/06 06:00:30 Q=1
+processing : 2020/08/06 06:00:40 Q=1
+processing : 2020/08/06 06:00:50 Q=1
+
+processing : 2020/08/06 06:01:00 Q=1
+
+processing : 2020/08/06 06:01:10 Q=1
+
+processing : 2020/08/06 06:01:20 Q=1
+
+processing : 2020/08/06 06:01:30 Q=1
+
+processing : 2020/08/06 06:01:40 Q=1
+
+processing : 2020/08/06 06:01:50 Q=1
+
+processing : 2020/08/06 06:02:00 Q=1
+
+processing : 2020/08/06 06:02:10 Q=1
+
+processing : 2020/08/06 06:02:20 Q=1
+
+processing : 2020/08/06 06:02:30 Q=1
+
+processing : 2020/08/06 06:02:40 Q=1
+
+processing : 2020/08/06 06:02:50 Q=1
+
+processing : 2020/08/06 06:03:00 Q=1
+
+processing : 2020/08/06 06:03:10 Q=1
+
+processing : 2020/08/06 06:03:20 Q=1
+
+processing : 2020/08/06 06:03:30 Q=1
+
+processing : 2020/08/06 06:03:40 Q=1
+
+processing : 2020/08/06 06:03:50 Q=1
+
+processing : 2020/08/06 06:04:00 Q=1
+
+processing : 2020/08/06 06:04:10 Q=1
+
+processing : 2020/08/06 06:04:20 Q=1
+
+processing : 2020/08/06 06:04:30 Q=1
+
+processing : 2020/08/06 06:04:40 Q=1
+
+processing : 2020/08/06 06:04:50 Q=1
+
+processing : 2020/08/06 06:05:00 Q=1
+
+processing : 2020/08/06 06:05:10 Q=1
+
+processing : 2020/08/06 06:05:20 Q=1
+
+processing : 2020/08/06 06:05:30 Q=1
+
+processing : 2020/08/06 06:05:40 Q=1
+
+processing : 2020/08/06 06:05:50 Q=1
+
+processing : 2020/08/06 06:06:00 Q=1
+
+processing : 2020/08/06 06:06:10 Q=1
+
+processing : 2020/08/06 06:06:20 Q=1
+
+processing : 2020/08/06 06:06:30 Q=1
+
+processing : 2020/08/06 06:06:40 Q=1
+
+processing : 2020/08/06 06:06:50 Q=1
+
+processing : 2020/08/06 06:07:00 Q=1
+
+processing : 2020/08/06 06:07:10 Q=1
+
+processing : 2020/08/06 06:07:20 Q=1
+
+processing : 2020/08/06 06:07:30 Q=1
+
+processing : 2020/08/06 06:07:40 Q=1
+
+processing : 2020/08/06 06:07:50 Q=1
+
+processing : 2020/08/06 06:08:00 Q=1
+
+processing : 2020/08/06 06:08:10 Q=1
+
+processing : 2020/08/06 06:08:20 Q=1
+
+processing : 2020/08/06 06:08:30 Q=1
+
+processing : 2020/08/06 06:08:40 Q=1
+
+processing : 2020/08/06 06:08:50 Q=1
+
+processing : 2020/08/06 06:09:00 Q=1
+
+processing : 2020/08/06 06:09:10 Q=1
+
+processing : 2020/08/06 06:09:20 Q=1
+
+processing : 2020/08/06 06:09:30 Q=1
+
+processing : 2020/08/06 06:09:40 Q=1
+
+processing : 2020/08/06 06:09:50 Q=1
+
+processing : 2020/08/06 06:10:00 Q=1
+
+processing : 2020/08/06 06:10:10 Q=1
+
+processing : 2020/08/06 06:10:20 Q=1
+
+processing : 2020/08/06 06:10:30 Q=1
+
+processing : 2020/08/06 06:10:40 Q=1
+
+processing : 2020/08/06 06:10:50 Q=1
+
+processing : 2020/08/06 06:11:00 Q=1
+
+processing : 2020/08/06 06:11:10 Q=1
+
+processing : 2020/08/06 06:11:20 Q=1
+
+processing : 2020/08/06 06:11:30 Q=1
+
+processing : 2020/08/06 06:11:40 Q=1
+
+processing : 2020/08/06 06:11:50 Q=1
+
+processing : 2020/08/06 06:12:00 Q=1
+
+processing : 2020/08/06 06:12:10 Q=1
+
+processing : 2020/08/06 06:12:20 Q=1
+
+processing : 2020/08/06 06:12:30 Q=1
+
+processing : 2020/08/06 06:12:40 Q=1
+
+processing : 2020/08/06 06:12:50 Q=1
+
+processing : 2020/08/06 06:13:00 Q=1
+
+processing : 2020/08/06 06:13:10 Q=1
+
+processing : 2020/08/06 06:13:20 Q=1
+
+processing : 2020/08/06 06:13:30 Q=1
+
+processing : 2020/08/06 06:13:40 Q=1
+
+processing : 2020/08/06 06:13:50 Q=1
+
+processing : 2020/08/06 06:14:00 Q=1
+
+processing : 2020/08/06 06:14:10 Q=1
+
+processing : 2020/08/06 06:14:20 Q=1
+
+processing : 2020/08/06 06:14:30 Q=1
+
+processing : 2020/08/06 06:14:40 Q=1
+
+processing : 2020/08/06 06:14:50 Q=1
+
+processing : 2020/08/06 06:15:00 Q=1
+
+processing : 2020/08/06 06:15:10 Q=1
+
+processing : 2020/08/06 06:15:20 Q=1
+
+processing : 2020/08/06 06:15:30 Q=1
+
+processing : 2020/08/06 06:15:40 Q=1
+
+processing : 2020/08/06 06:15:50 Q=1
+
+processing : 2020/08/06 06:16:00 Q=1
+
+processing : 2020/08/06 06:16:10 Q=1
+
+processing : 2020/08/06 06:16:20 Q=1
+
+processing : 2020/08/06 06:16:30 Q=1
+
+processing : 2020/08/06 06:16:40 Q=1
+
+processing : 2020/08/06 06:16:50 Q=1
+
+processing : 2020/08/06 06:17:00 Q=1
+
+processing : 2020/08/06 06:17:10 Q=1
+
+processing : 2020/08/06 06:17:20 Q=1
+
+processing : 2020/08/06 06:17:30 Q=1
+
+processing : 2020/08/06 06:17:40 Q=1
+
+processing : 2020/08/06 06:17:50 Q=1
+
+processing : 2020/08/06 06:18:00 Q=1
+
+processing : 2020/08/06 06:18:10 Q=1
+
+processing : 2020/08/06 06:18:20 Q=1
+
+processing : 2020/08/06 06:18:30 Q=1
+
+processing : 2020/08/06 06:18:40 Q=1
+
+processing : 2020/08/06 06:18:50 Q=1
+
+processing : 2020/08/06 06:19:00 Q=1
+
+processing : 2020/08/06 06:19:10 Q=2
+
+processing : 2020/08/06 06:19:20 Q=2
+
+processing : 2020/08/06 06:19:30 Q=2
+
+processing : 2020/08/06 06:19:40 Q=2
+
+processing : 2020/08/06 06:19:50 Q=1
+
                                         

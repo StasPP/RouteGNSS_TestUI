@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Buttons, StdCtrls, ExtCtrls, GNSSObjects, ComCtrls;
+  Dialogs, Buttons, StdCtrls, ExtCtrls, GNSSObjects, ComCtrls,
+  UGNSSPointSettings;
 
 type
   TFVectSettings = class(TForm)
@@ -24,7 +25,6 @@ type
     TabSheet2: TTabSheet;
     BaselinesBox: TListBox;
     Label3: TLabel;
-    Button3: TButton;
     Button1: TButton;
     Button6: TButton;
     SpeedButton2: TSpeedButton;
@@ -39,6 +39,9 @@ type
     VectRep: TSpeedButton;
     VectRepI: TSpeedButton;
     RepAll: TSpeedButton;
+    ProcAll: TSpeedButton;
+    VectLabel3: TLabel;
+    VectLabel2: TLabel;
     procedure Button6Click(Sender: TObject);
     procedure isAcClick(Sender: TObject);
     procedure RevVectClick(Sender: TObject);
@@ -51,7 +54,14 @@ type
     procedure SpeedButton2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    
+    procedure VectLabelMouseLeave(Sender: TObject);
+    procedure VectLabelMouseEnter(Sender: TObject);
+    procedure VectLabelClick(Sender: TObject);
+    procedure VectLabel3MouseLeave(Sender: TObject);
+    procedure VectLabel3MouseEnter(Sender: TObject);
+    procedure VectLabel3Click(Sender: TObject);
+
+    procedure RefreshVectorSettings;
   private
     { Private declarations }
   public
@@ -93,15 +103,15 @@ uses UStartProcessing;
 
 { TFVectSettings }
 
-procedure RefreshVectorSettings;
+procedure TFVectSettings.RefreshVectorSettings;
 var I, j, N:integer;
    BS, RS :string;
    StatI :integer;
 begin
-  SetLength(VectorsN, 0);
-  isInit := true;
-  for I := 0 to Length(GNSSVectors) - 1 do
-  Begin
+    SetLength(VectorsN, 0);
+    isInit := true;
+    for I := 0 to Length(GNSSVectors) - 1 do
+    Begin
      BS :=  GetGNSSVectorPoint(I, true);
      RS :=  GetGNSSVectorPoint(I, false);
 
@@ -111,10 +121,9 @@ begin
        VectorsN[Length(VectorsN) - 1] := I;
      end;
 
-  End;
+    End;
 
-  with FVectSettings do
-  Begin
+
     N := BaseLinesBox.ItemIndex;
     if Length(VectorsN) > 1 then
     begin
@@ -188,7 +197,12 @@ begin
         Memo1.Lines.Add('No processing info yet');
     end;
 
-    VectLabel.Caption := BaseId + ' -> ' + RoverId;
+    VectLabel.Caption  := BaseId;
+    VectLabel3.Caption := RoverId;
+
+    VectLabel2.Left    := VectLabel.Left  + VectLabel.Width;
+    VectLabel3.Left    := VectLabel2.Left + VectLabel2.Width;
+    
     if (StatI >= -1) and (StatI < 100) then
       StatusLabel.Caption := StatList[StatI]
     else
@@ -213,10 +227,18 @@ begin
       ImgList.Draw(StatImg.Canvas, 0, 0, I);
     end;
     BaseLinesBox.OnClick(nil);
-  End;
-  isInit := false;
 
-  
+    ProcAll.Glyph.Assign(nil);
+    case StatI of
+       0, 8, 110, 120, 130, 140: ImgList.GetBitmap(114,ProcAll.Glyph);
+       else ImgList.GetBitmap(92,ProcAll.Glyph);
+    end;
+        
+
+    isInit := false;
+
+ 
+
 end;
 
 procedure TFVectSettings.BaselinesBoxClick(Sender: TObject);
@@ -456,6 +478,60 @@ begin
 
 end;
 
+procedure TFVectSettings.VectLabel3Click(Sender: TObject);
+var I:Integer;
+    F2: TFGNSSPointSettings;
+begin
+
+  I := GetGNSSPointNumber(RoverID);
+  if I > -1 then
+  begin
+    F2 := TFGNSSPointSettings.Create(nil);
+    F2.ShowStationOrTrack( I, ImgList);
+    F2.Release;
+    RefreshVectorSettings;
+  end;
+end;
+
+procedure TFVectSettings.VectLabel3MouseEnter(Sender: TObject);
+begin
+  if not (fsUnderline in VectLabel3.Font.Style) then
+    VectLabel3.Font.Style := VectLabel3.Font.Style + [fsUnderline];
+end;
+
+procedure TFVectSettings.VectLabel3MouseLeave(Sender: TObject);
+begin
+  if fsUnderline in VectLabel3.Font.Style then
+    VectLabel3.Font.Style := VectLabel3.Font.Style - [fsUnderline];
+end;
+
+procedure TFVectSettings.VectLabelClick(Sender: TObject);
+var I:Integer;
+    F2: TFGNSSPointSettings;
+begin
+
+  I := GetGNSSPointNumber(BaseID);
+  if I > -1 then
+  begin
+    F2 := TFGNSSPointSettings.Create(nil);
+    F2.ShowStationOrTrack( I, ImgList);
+    F2.Release;
+    RefreshVectorSettings;
+  end;
+end;
+
+procedure TFVectSettings.VectLabelMouseEnter(Sender: TObject);
+begin
+  if not (fsUnderline in VectLabel.Font.Style) then
+    VectLabel.Font.Style := VectLabel.Font.Style + [fsUnderline];
+end;
+
+procedure TFVectSettings.VectLabelMouseLeave(Sender: TObject);
+begin
+  if fsUnderline in VectLabel.Font.Style then
+    VectLabel.Font.Style := VectLabel.Font.Style - [fsUnderline];
+end;
+
 procedure TFVectSettings.ProcVectIClick(Sender: TObject);
 var I:Integer;
 begin
@@ -465,7 +541,7 @@ begin
   FStartProcessing.ShowProcOptions(2,
      GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].RoverId),
      GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].BaseId));
-  RefreshVectorSettings;   
+  RefreshVectorSettings;
 end;
 
 end.

@@ -3,7 +3,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Point/Track settings'
-  ClientHeight = 329
+  ClientHeight = 363
   ClientWidth = 569
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -960,7 +960,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     Left = 301
     Top = 48
     Width = 252
-    Height = 233
+    Height = 276
     Indent = 19
     ReadOnly = True
     TabOrder = 1
@@ -971,7 +971,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   object isAc: TCheckBox
     Left = 91
     Top = 75
-    Width = 121
+    Width = 94
     Height = 17
     Caption = 'Turn on'
     TabOrder = 2
@@ -979,25 +979,25 @@ object FGNSSPointSettings: TFGNSSPointSettings
   end
   object OKButton: TButton
     Left = 176
-    Top = 296
+    Top = 330
     Width = 217
     Height = 25
-    Caption = 'OK'
+    Caption = 'Apply'
     TabOrder = 3
     OnClick = OKButtonClick
   end
   object CoordPan: TPanel
     Left = 0
-    Top = 176
-    Width = 249
-    Height = 108
+    Top = 178
+    Width = 281
+    Height = 146
     BevelOuter = bvNone
     TabOrder = 4
     Visible = False
     object XLabel: TLabel
       Left = 8
-      Top = 8
-      Width = 77
+      Top = 34
+      Width = 135
       Height = 13
       Alignment = taRightJustify
       AutoSize = False
@@ -1005,8 +1005,8 @@ object FGNSSPointSettings: TFGNSSPointSettings
     end
     object YLabel: TLabel
       Left = 8
-      Top = 35
-      Width = 77
+      Top = 61
+      Width = 135
       Height = 13
       Alignment = taRightJustify
       AutoSize = False
@@ -1014,16 +1014,25 @@ object FGNSSPointSettings: TFGNSSPointSettings
     end
     object ZLabel: TLabel
       Left = 8
-      Top = 62
-      Width = 77
+      Top = 88
+      Width = 135
       Height = 13
       Alignment = taRightJustify
       AutoSize = False
       Caption = 'Z, m:'
     end
+    object GeoLabel: TLabel
+      Left = 8
+      Top = 115
+      Width = 135
+      Height = 13
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Geoid model:'
+    end
     object XEd: TEdit
-      Left = 91
-      Top = 5
+      Left = 147
+      Top = 31
       Width = 134
       Height = 21
       ReadOnly = True
@@ -1031,8 +1040,8 @@ object FGNSSPointSettings: TFGNSSPointSettings
       Text = '0'
     end
     object YEd: TEdit
-      Left = 91
-      Top = 32
+      Left = 147
+      Top = 58
       Width = 134
       Height = 21
       ReadOnly = True
@@ -1040,22 +1049,39 @@ object FGNSSPointSettings: TFGNSSPointSettings
       Text = '0'
     end
     object ZEd: TEdit
-      Left = 91
-      Top = 59
+      Left = 147
+      Top = 85
       Width = 134
       Height = 21
       ReadOnly = True
       TabOrder = 2
       Text = '0'
     end
-    object isBS: TCheckBox
-      Left = 91
-      Top = 86
-      Width = 97
-      Height = 17
-      Caption = 'Base Station'
+    object CSbox: TComboBox
+      Left = 16
+      Top = 3
+      Width = 265
+      Height = 22
+      Style = csOwnerDrawFixed
+      ItemHeight = 16
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
-      OnClick = isBSClick
+      OnChange = CSboxChange
+      OnDrawItem = CSboxDrawItem
+    end
+    object GeoidBox: TComboBox
+      Left = 147
+      Top = 112
+      Width = 134
+      Height = 22
+      Style = csOwnerDrawFixed
+      ItemHeight = 16
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 4
+      OnChange = GeoidBoxChange
+      OnDrawItem = GeoidBoxDrawItem
     end
   end
   object SolPC: TPageControl
@@ -1122,10 +1148,66 @@ object FGNSSPointSettings: TFGNSSPointSettings
         end
       end
     end
+    object TabSheet3: TTabSheet
+      Caption = '2'
+      ImageIndex = 2
+      TabVisible = False
+      object SpeedButton1: TSpeedButton
+        Left = 87
+        Top = 3
+        Width = 134
+        Height = 30
+        Caption = 'Adjustment settings'
+        Glyph.Data = {
+          26040000424D2604000000000000360000002800000012000000120000000100
+          180000000000F0030000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D5D5D5454544C4C4CFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF4B4B4B676767565656FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFF4B4B4B7C7C7CFFFFFFFFFFFF6D
+          6D6D7575756A6A6AFFFFFFFFFFFFFFFFFF5C5C5C4B4B4BFFFFFFFFFFFFFFFFFF
+          0000FFFFFFFFFFFF4B4B4B9090908585855252528080808C8C8C8383837A7A7A
+          6C6C6C5858585151515050504848484B4B4BFFFFFFFFFFFF0000FFFFFFFFFFFF
+          535353929292ABABABA6A6A69E9E9E9797978C8C8C8585857E7E7E7474746A6A
+          6A606060535353686868FFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFF4B4B4B9F9F
+          9FAAAAAA9A9A9A7171715353534E4E4E7676768282827878786F6F6F4B4B4BFF
+          FFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFF585858959595A2A2A2616161AD
+          ADADB2B2B2B1B1B18383837979798585857C7C7C4B4B4BFFFFFFFFFFFFFFFFFF
+          00004B4B4B6F6F6F6C6C6C909090939393585858C6C6C6888888525252616161
+          AEAEAE8383837B7B7B8989897A7A7A5757578686864B4B4B00005B5B5B696969
+          7B7B7B848484767676888888AAAAAA747474A4A4A49E9E9E575757ADADAD4E4E
+          4E9494948D8D8D8080806B6B6B5A5A5A00005858586363636D6D6D7777776969
+          69959595969696787878A0A0A0A4A4A44E4E4EADADAD5353539A9A9A98989890
+          90908686866F6F6F00005353535050505C5C5C6969696B6B6B6E6E6EC8C8C858
+          5858757575717171898989ABABAB777777A7A7A7A2A2A27C7C7C4D4D4D6C6C6C
+          0000FFFFFFFFFFFFFFFFFF5B5B5B6565655F5F5F969696CACACA999999ACACAC
+          C5C5C56262629B9B9BABABAB8F8F8FFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFF
+          FFFFFF4C4C4C5656566161615C5C5C6C6C6C9292928181815555558383839E9E
+          9EA4A4A47C7C7CFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFF5757574040404848
+          485252525C5C5C6161616060606C6C6C7F7F7F8C8C8C9494949B9B9B9D9D9D53
+          5353FFFFFFFFFFFF0000FFFFFFFFFFFF3333333030303B3B3B4444444D4D4D58
+          58586262626C6C6C7575757B7B7B6F6F6F828282989898808080FFFFFFFFFFFF
+          0000FFFFFFFFFFFFFFFFFF323232595959FFFFFFFFFFFF4949495353535D5D5D
+          FFFFFFFFFFFFFFFFFF6D6D6D676767FFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4343434545454F4F4FFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF4B4B4B3A3A3A454545FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFF0000}
+      end
+    end
+  end
+  object isBS: TCheckBox
+    Left = 191
+    Top = 75
+    Width = 104
+    Height = 17
+    Caption = 'Base Station'
+    TabOrder = 6
+    OnClick = isBSClick
   end
   object SolPopup: TPopupMenu
-    Left = 224
-    Top = 56
+    Left = 488
+    Top = 8
     object View1: TMenuItem
       Caption = 'View Solution'
       OnClick = View1Click
@@ -1152,8 +1234,8 @@ object FGNSSPointSettings: TFGNSSPointSettings
     end
   end
   object SessionPopup: TPopupMenu
-    Left = 256
-    Top = 56
+    Left = 520
+    Top = 8
     object Configure1: TMenuItem
       Caption = 'Configure '
       OnClick = Configure1Click
@@ -1170,8 +1252,8 @@ object FGNSSPointSettings: TFGNSSPointSettings
     end
   end
   object PointPopup: TPopupMenu
-    Left = 192
-    Top = 56
+    Left = 456
+    Top = 8
     object Sessionsof1: TMenuItem
       Caption = 'Configure Sessions'
       ImageIndex = 107

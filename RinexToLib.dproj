@@ -51,6 +51,7 @@
     <DCCReference Include="UGNSSPointSettings.pas">
       <Form>FGNSSPointSettings</Form>
     </DCCReference>
+    <DCCReference Include="UGNSSProject.pas" />
     <DCCReference Include="UGNSSSessionOptions.pas">
       <Form>FGNSSSessionOptions</Form>
     </DCCReference>

@@ -309,15 +309,19 @@ object FVectSettings: TFVectSettings
   object VectLabel: TLabel
     Left = 72
     Top = 4
-    Width = 154
+    Width = 66
     Height = 29
-    Caption = 'Selected Vector'
+    Cursor = crHandPoint
+    Caption = 'BaseSt'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -24
     Font.Name = 'Calibri'
     Font.Style = [fsBold]
     ParentFont = False
+    OnClick = VectLabelClick
+    OnMouseEnter = VectLabelMouseEnter
+    OnMouseLeave = VectLabelMouseLeave
   end
   object StatusLabel: TLabel
     Left = 91
@@ -326,12 +330,42 @@ object FVectSettings: TFVectSettings
     Height = 13
     Caption = 'Status: '
   end
+  object VectLabel3: TLabel
+    Left = 179
+    Top = 4
+    Width = 78
+    Height = 29
+    Cursor = crHandPoint
+    Caption = 'RoverSt'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -24
+    Font.Name = 'Calibri'
+    Font.Style = [fsBold]
+    ParentFont = False
+    OnClick = VectLabel3Click
+    OnMouseEnter = VectLabel3MouseEnter
+    OnMouseLeave = VectLabel3MouseLeave
+  end
+  object VectLabel2: TLabel
+    Left = 144
+    Top = 4
+    Width = 29
+    Height = 29
+    Caption = ' -> '
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -24
+    Font.Name = 'Calibri'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object VPC: TPageControl
     Left = 4
     Top = 58
     Width = 450
     Height = 193
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Style = tsButtons
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -512,6 +546,41 @@ object FVectSettings: TFVectSettings
           7D00D7FFFFFFF8787D00D7F7777778787D00D7FFFFFFF87F7D00D7F777777877
           7D00D7FFFFFFFF7DDD00D7777777777DDD00}
       end
+      object ProcAll: TSpeedButton
+        Left = 6
+        Top = 158
+        Width = 134
+        Height = 25
+        Caption = 'Process the Batch'
+        Glyph.Data = {
+          36030000424D3603000000000000360000002800000010000000100000000100
+          18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFF98C0A4E6E6E6FFFFFFFFFFFF98C0A4E6E6E6FF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF61AE79
+          19A74585B995FFFFFF61AE7919A74585B995FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFF61AE79009C2419A7453FA75F61AE79009C2419
+          A7453FA75FE6E6E6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF61AE79
+          009C24008C1419A74561AE79009C24008C1419A74525A64D98C0A4FFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFF51AA6C00992100840C008C1451AA6C00992100
+          840C008C1400941B19A74551AA6CEFEFEFFFFFFFFFFFFFFFFFFFFFFFFF51AA6C
+          009D2100840C00840C51AA6C009D2100840C00840C00840C008C1419A74525A6
+          4DC4D3C8FFFFFFFFFFFFFFFFFF51AA6C009D21008C0C008C0C51AA6C009D2100
+          8C0C008C0C008C0C008C0C009314009E2125A64D72B386F7F7F7FFFFFF3FA75F
+          009A1D008C0C008C0C3FA75F009A1D008C0C008C0C008C0C008C0C008C0C0098
+          1A00A02425A64D85B995FFFFFF51AA6C00A12100940C00940C51AA6C00A12100
+          940C00940C00940C009F1D00A01E31A65551AA6CDBDDDBFFFFFFFFFFFF51AA6C
+          00A521009D0F00A52151AA6C00A521009D0F00A52100A5213FA75F3FA75FAEC9
+          B6FFFFFFFFFFFFFFFFFFFFFFFF51AA6C00A52100A52151AA6C51AA6C00A52100
+          A52151AA6C51AA6C85B995F7F7F7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF51AA6C
+          00AA2151AA6C72B38651AA6C00AA2151AA6C72B386E6E6E6FFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFF51AA6C51AA6CC4D3C8FFFFFF51AA6C51AA6CC4
+          D3C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF85B995
+          F7F7F7FFFFFFFFFFFF85B995F7F7F7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+        OnClick = Button3Click
+      end
       object BaselinesBox: TListBox
         Left = 6
         Top = 24
@@ -523,22 +592,13 @@ object FVectSettings: TFVectSettings
         OnClick = BaselinesBoxClick
         OnDrawItem = BaselinesBoxDrawItem
       end
-      object Button3: TButton
-        Left = 6
-        Top = 158
-        Width = 133
-        Height = 25
-        Caption = 'Process the Batch'
-        TabOrder = 1
-        OnClick = Button3Click
-      end
       object Button1: TButton
         Left = 294
         Top = 158
         Width = 143
         Height = 25
         Caption = 'Close'
-        TabOrder = 2
+        TabOrder = 1
         OnClick = Button1Click
       end
       object PageControl2: TPageControl
@@ -548,7 +608,7 @@ object FVectSettings: TFVectSettings
         Height = 147
         ActivePage = TabSheet4
         Style = tsButtons
-        TabOrder = 3
+        TabOrder = 2
         object TabSheet3: TTabSheet
           Caption = 'TabSheet3'
           TabVisible = False
@@ -565,9 +625,9 @@ object FVectSettings: TFVectSettings
           ImageIndex = 1
           TabVisible = False
           object ProcVectI: TSpeedButton
-            Left = 120
+            Left = 0
             Top = 100
-            Width = 133
+            Width = 120
             Height = 23
             Caption = 'Process the Vector'
             Glyph.Data = {
@@ -608,9 +668,9 @@ object FVectSettings: TFVectSettings
             OnClick = ProcVectIClick
           end
           object VectRepI: TSpeedButton
-            Left = 120
-            Top = 0
-            Width = 133
+            Left = 126
+            Top = 100
+            Width = 127
             Height = 23
             Caption = 'Single Vector Report'
             Glyph.Data = {

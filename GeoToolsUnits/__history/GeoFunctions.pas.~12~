@@ -1811,14 +1811,14 @@ var B, L, H, B2, L2, H2 :Double;
 begin
   
   try
-    CoordinateSystemToDatum(InputSKNumber, x1, y1, z1,
+    CoordinateSystemToDatum(CoordinateSystemList[InputSKNumber], x1, y1, z1,
       B, L, H);
 
     result := Geo1ForceToGeo2(B, L, H, CoordinateSystemList[InputSKNumber].DatumN,
                     CoordinateSystemList[OutputSKNumber].DatumN,
                     B2, L2, H2);
 
-    DatumToCoordinateSystem(OutputSKNumber, B2, L2, H2,
+    DatumToCoordinateSystem(CoordinateSystemList[OutputSKNumber], B2, L2, H2,
       x2, y2, z2);
   except
     result := ParamNotFoundStr;

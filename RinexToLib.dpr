@@ -14,7 +14,8 @@ uses
   UAntProp in 'UAntProp.pas' {FAntProp},
   UWinManager in 'UWinManager.pas',
   GNSSObjsTree in 'GNSSObjsTree.pas',
-  UGNSSMainTree in 'UGNSSMainTree.pas' {FMainTree};
+  UGNSSMainTree in 'UGNSSMainTree.pas' {FMainTree},
+  UGNSSProject in 'UGNSSProject.pas';
 
 {$R *.res}
 

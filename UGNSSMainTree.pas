@@ -266,11 +266,11 @@ begin
      OpenRinex(OpenDialog.Files[I], FLoadGPS.ProgressBar1);
 
     FLoadGPS.close;
+    MainTreeDraw;
+    ShowNewSessions(j);
   end;
 
   MainTreeDraw;
-  ShowNewSessions(j);
-
 end;
 
 procedure TFMainTree.Invert1Click(Sender: TObject);
@@ -352,10 +352,32 @@ begin
 end;
 
 procedure TFMainTree.SetasResult1Click(Sender: TObject);
+var WarnMe : boolean; I,j :Integer;
 begin
+
+  WarnMe := false;
+  for I := 0 to Length(GNSSPoints[StationN].Sessions)- 1 do
+  begin
+      for j := 0 to Length(GNSSVectors) - 1 do
+         if (GNSSVectors[j].BaseID = GNSSPoints[StationN].Sessions[I])
+            and (GNSSVectors[j].StatusQ > 0) then
+            begin
+              WarnMe := true;
+              break
+            end;
+      if WarnMe then
+        break;
+  end;
+
+  if WarnMe then
+  if messagedlg('This may change the other stations. Proceed?',    // Todo : TRANSLATE
+        mtConfirmation, [mbYes, mbNo], 0)<> 6 then
+    exit;
+
   GNSSPoints[ChosenPoint].CoordSource := 3;
   GNSSPoints[ChosenPoint].SolutionId.SessionId := GNSSSessions[ChosenSession].SessionID;
   GNSSPoints[ChosenPoint].SolutionId.SolutionN := ChosenSol;
+  SetGNSSPointSource(StationN, 3, ChosenSession, ChosenSol);
   MainTreeDraw;
 end;
 

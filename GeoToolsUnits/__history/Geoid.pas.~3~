@@ -150,10 +150,10 @@ begin
      GeoidList[N].FileName := FileName;
 
      if Pos(NameIDS, AnsiLowerCase(Str)) > 0 then
-        GeoidList[N].NameID := Trim(GetCols(Str,1,GetColCount(Str,' '),' ',false));
+        GeoidList[N].NameID := GetCols(Str,1,GetColCount(Str,' '),' ',false);
 
      if Pos(CaptionS, AnsiLowerCase(Str)) > 0 then
-        GeoidList[N].Caption := Trim(GetCols(Str,1,GetColCount(Str,' '),' ',false));
+        GeoidList[N].Caption := GetCols(Str,1,GetColCount(Str,' '),' ',false);
 
      inc(I);
    until (Pos(EndHeadS, Str) > 0) or (I >= S.Count - 1);
