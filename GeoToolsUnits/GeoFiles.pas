@@ -18,7 +18,7 @@ uses GeoClasses, GeoFunctions, GeoString, Classes, Geoid;
   function LoadCoordinateSystemsFromDirectory(DirName : String):integer;
   function SaveCoordinateSystemToFile(FileName : String; CS:TCoordinateSystem;
                                       ParNames:TStringList):boolean;
-
+  procedure GeoReset;
   function GeoInit(FileName, OkMsg, BadMsg :String):String;
 
   procedure GeoTranslate(Old, New, Dir:String);
@@ -382,6 +382,16 @@ begin
 end;
 
 ////////////////////////////////////////////////// INIT ALL ///////////////////////////
+
+procedure GeoReset;
+begin
+  Setlength(ShortestConv, 0);
+  Setlength(EllipsoidList, 0);
+  Setlength(DatumList, 0);
+  Setlength(TransformationList, 0);
+  Setlength(CoordinateSystemList, 0);
+  Setlength(CoorinateSystemCategories, 0);
+end;
 
 function GeoInit(FileName, OkMsg, BadMsg:String):String;
 var S: TStringList;

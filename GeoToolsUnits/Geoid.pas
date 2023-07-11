@@ -221,8 +221,8 @@ end;
 procedure ReLoadGeoidbyID (GID :String; N: Integer);
 var GN:Integer;
 begin
-  if Length(GeoidList) < N then
-    SetLength(GeoidList, N);
+  if Length(GeoidList) < N+1 then
+    SetLength(GeoidList, N+1);
   GN := FindGeoidMeta(GID);
   if GN <> -1 then
     if GeoidList[N].NameID <> GeoidsMetaData[GN].NameID then

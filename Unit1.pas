@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, shellApi, ComCtrls, Buttons, RTKLibExecutor, ExtCtrls,
   TabFunctions, Spin, GNSSObjects, GeoString, ImgList, Menus, GeoFiles, Geoid,
-  UGNSSProject;
+  UGNSSProject, UProjCsys;
 
 type
   TForm1 = class(TForm)
@@ -132,6 +132,7 @@ type
     procedure BaselinesBoxDblClick(Sender: TObject);
     procedure ShowTreeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -921,7 +922,7 @@ var I:Integer;
 begin
   SPropButton.Enabled := false;
   DelSBtn.Enabled := false;
-  
+
   For I := 0 To SessionBox.Items.Count-1 Do
      if SessionBox.Selected[I] then
      begin
@@ -1012,6 +1013,11 @@ begin
       FMainTree.Left := Screen.Width - FMainTree.Width;
     FMainTree.Show;
   end;
+end;
+
+procedure TForm1.SpeedButton2Click(Sender: TObject);
+begin
+  FProjCsys.ShowProjCsys(IcoList); 
 end;
 
 procedure TForm1.BaselinesBoxClick(Sender: TObject);

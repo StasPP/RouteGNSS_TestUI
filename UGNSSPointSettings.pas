@@ -341,8 +341,8 @@ begin
       end;
 
       2..5: begin
-        XEd.Text := FormatFloat('0.000', nX);
-        YEd.Text := FormatFloat('0.000', nY);
+        XEd.Text := FormatFloat('### ### ### ##0.000', nX);
+        YEd.Text := FormatFloat('### ### ### ##0.000', nY);
         ZEd.Text := FormatFloat('0.000', nZ);
 
         XLabel.Caption := TmpInf[6];

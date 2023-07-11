@@ -27,5 +27,9 @@
     <Transaction>2023/07/01 12:41:10.963.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UGNSSMainTree.pas</Transaction>
     <Transaction>2023/07/01 12:41:10.964.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UGNSSMainTree.dfm</Transaction>
     <Transaction>2023/07/08 14:40:00.467.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UGNSSProject.pas</Transaction>
+    <Transaction>2023/07/11 18:39:51.870.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UProjCsys.pas</Transaction>
+    <Transaction>2023/07/11 18:39:51.871.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\Unit2.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\UProjCsys.dfm</Transaction>
+    <Transaction>2023/07/11 19:59:32.617.pas,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\CoordSysFm.pas=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\CoordSysFmNew.pas</Transaction>
+    <Transaction>2023/07/11 19:59:32.617.dfm,C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\CoordSysFm.dfm=C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\Test_Utils\Test0\CoordSysFmNew.dfm</Transaction>
   </Transactions>
 </BorlandProject>

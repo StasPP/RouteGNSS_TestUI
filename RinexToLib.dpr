@@ -15,7 +15,9 @@ uses
   UWinManager in 'UWinManager.pas',
   GNSSObjsTree in 'GNSSObjsTree.pas',
   UGNSSMainTree in 'UGNSSMainTree.pas' {FMainTree},
-  UGNSSProject in 'UGNSSProject.pas';
+  UGNSSProject in 'UGNSSProject.pas',
+  UProjCsys in 'UProjCsys.pas' {FProjCsys},
+  CoordSysFmNew in 'CoordSysFmNew.pas' {CSFormNew};
 
 {$R *.res}
 
@@ -31,5 +33,7 @@ begin
   Application.CreateForm(TFVectSettings, FVectSettings);
   Application.CreateForm(TFAntProp, FAntProp);
   Application.CreateForm(TFMainTree, FMainTree);
+  Application.CreateForm(TFProjCsys, FProjCsys);
+  Application.CreateForm(TCSFormNew, CSFormNew);
   Application.Run;
 end.
