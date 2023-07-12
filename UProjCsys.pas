@@ -13,7 +13,7 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
-    SpeedButton1: TSpeedButton;
+    AddButton: TSpeedButton;
     DelSBtn: TSpeedButton;
     Panel4: TPanel;
     Label1: TLabel;
@@ -32,7 +32,7 @@ type
     procedure CSBoxClick(Sender: TObject);
     procedure DelSBtnClick(Sender: TObject);
     procedure AcceptButtonClick(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure AddButtonClick(Sender: TObject);
     procedure CfgButtonClick(Sender: TObject);
   private
     { Private declarations }
@@ -174,7 +174,7 @@ begin
   showmodal;
 end;
 
-procedure TFProjCsys.SpeedButton1Click(Sender: TObject);
+procedure TFProjCsys.AddButtonClick(Sender: TObject);
 begin
   CSFormNew.ShowModal;
   RefreshBoxes;
@@ -220,6 +220,7 @@ begin
   GeoReset;
   GeoInit('Data\Sources.loc', '', '');
   RefreshGNSSProjectCSs;
+  CSFormNew.FullRefresh;
   RefreshBoxes;
 end;
 

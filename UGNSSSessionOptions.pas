@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, GNSSObjects, StdCtrls, ComCtrls, ExtCtrls, Buttons, jpeg,
-  RTKLibExecutor, GeoFunctions, GeoString, Geoid, UWinManager;
+  RTKLibExecutor, GeoFunctions, GeoString, Geoid, UWinManager, Menus,
+  UGNSSProject, GNSSObjsTree, UVectSettings;
 
 type
   TFGNSSSessionOptions = class(TForm)
@@ -62,11 +63,9 @@ type
     RinAnalyse: TSpeedButton;
     TabSheet6: TTabSheet;
     StPan: TPanel;
-    PointPropBtn: TButton;
     StationBox: TComboBox;
     StationLab: TLabel;
     ListBox2: TListBox;
-    Label9: TLabel;
     GroupBox2: TGroupBox;
     Edit1: TEdit;
     Edit2: TEdit;
@@ -82,7 +81,6 @@ type
     SolInfoPan: TPageControl;
     TabSheet7: TTabSheet;
     ChoosedSol: TLabel;
-    SolInfo: TMemo;
     DelSol: TSpeedButton;
     RecomputeBtn: TSpeedButton;
     TabSheet8: TTabSheet;
@@ -96,6 +94,21 @@ type
     SolStatImg: TImage;
     ProcAllBL: TSpeedButton;
     CustAnt: TSpeedButton;
+    VectRepI: TSpeedButton;
+    ZEd: TEdit;
+    ZLabel: TLabel;
+    YLabel: TLabel;
+    YEd: TEdit;
+    XEd: TEdit;
+    XLabel: TLabel;
+    CSbox: TComboBox;
+    Label9: TLabel;
+    Edit5: TEdit;
+    GeoidP: TPanel;
+    ChangeGeoid: TSpeedButton;
+    GeoidPopup: TPopupMenu;
+    VectBtn: TSpeedButton;
+    PointPropBtn: TSpeedButton;
     procedure FormShow(Sender: TObject);
     procedure CloseBtnClick(Sender: TObject);
     procedure TabSheet1Show(Sender: TObject);
@@ -136,6 +149,14 @@ type
     procedure CheckAntennaPOSChange;
     procedure CheckAntennaChange;
     procedure ShowStatus(Stat:integer);
+
+    procedure RefreshCSBox;
+    procedure GeoidPopupPopup(Sender: TObject);
+    procedure GeoidPopupClick(Sender: TObject);
+    procedure OutputCoordinates;
+    procedure CSboxChange(Sender: TObject);
+    procedure ChangeGeoidClick(Sender: TObject);
+    procedure VectBtnClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -167,6 +188,7 @@ var
 
   ImgList   :TImageList;
   ShowSol   :Integer = -1;
+  GeoidIdx :integer = -1;
 implementation
 
 uses FLoader, UStartProcessing, UGNSSPointSettings, UAntProp, GeoClasses;
@@ -278,6 +300,13 @@ begin
      end;
   end;
 
+end;
+
+procedure TFGNSSSessionOptions.ChangeGeoidClick(Sender: TObject);
+var P: TPoint;
+begin
+  P := Mouse.CursorPos;
+  GeoidPopup.Popup(P.X, P.Y);
 end;
 
 procedure TFGNSSSessionOptions.CheckAntennaChange;
@@ -471,6 +500,50 @@ begin
      //ShowStatus(GNSSSessions[ActiveGNSSSessions[0]].StatusQ);
   end;
 
+end;
+
+procedure TFGNSSSessionOptions.RefreshCSBox;
+var I, j:Integer;
+    PopupItm : TMenuItem;
+begin
+  // COORDINATE SYSTEMS -----------------
+
+  j := CSbox.ItemIndex;
+
+  CSBox.Items.Clear;
+  for I := 0 to Length(PrjCS) - 1 do
+    CSBox.Items.Add(CoordinateSystemList[PrjCS[I]].Caption);
+
+  if j = -1 then
+    j := CSbox.Items.Count-1;
+  CSbox.ItemIndex := j;
+  CSBox.OnChange(nil);
+
+  // GEOID -------------------------------
+
+  if (GeoidIdx > Length(GeoidList) -1 ) or (GeoidIdx = -1) then
+    GeoidIdx  := Length(GeoidList) -1;
+
+  GeoidPopup.Images := ImgList;
+  GeoidPopup.Items.Clear;
+  PopupItm := TMenuItem.Create(nil);
+  PopupItm.Caption := '(off)';  PopupItm.Tag := -1;
+  PopupItm.OnClick := GeoidPopupClick;
+  PopupItm.ImageIndex := -1;
+
+  GeoidPopup.Items.Add(PopupItm);
+
+  for I := 0 to Length(GeoidList) - 1 do
+  begin
+    PopupItm := TMenuItem.Create(nil);
+    PopupItm.Caption := Trim(GeoidList[I].Caption);
+    PopupItm.Tag := I;
+    PopupItm.OnClick := GeoidPopupClick;
+    GeoidPopup.Items.Add(PopupItm);
+  end;
+
+  ECEFWGS := FindCoordinateSystem('WGS84_ECEF');
+  WGSCS   := FindCoordinateSystem('WGS84_LatLon');
 end;
 
 procedure TFGNSSSessionOptions.RefreshSettings;
@@ -797,7 +870,7 @@ begin
 end;
 
 procedure TFGNSSSessionOptions.AvSolClick(Sender: TObject);
-var I, Zone:integer;
+var I, Zone, j :integer;
     B, L, H, E, N, dH :Double;
 begin
   if AvSol.ItemIndex > -1 then
@@ -809,8 +882,6 @@ begin
 
      DelSol.Enabled := true;
      RecomputeBtn.Enabled := true;
-
-     SolInfo.Lines.Clear;
 
      with GNSSSessions[ActiveGNSSSessions[0]] do
      begin
@@ -826,41 +897,39 @@ begin
 
         DelSol.Enabled := Solutions[AvSol.ItemIndex].SolutionKind > 0;
         RecomputeBtn.Enabled := Solutions[AvSol.ItemIndex].SolutionKind > 0;
-        //SolInfo.Lines.Add(' ' Solutions[AvSol.ItemIndex].SolutionQ)
-        SolInfo.Lines.Add('Result coordinates: ');
+        VectRepI.Enabled := Solutions[AvSol.ItemIndex].SolutionKind > 0;
 
-        // ToDo: Thanslate into user's system
-        SolInfo.Lines.Add('ECEF WGS84:');
-        SolInfo.Lines.Add('X: '+ FormatFloat('### ### ### ##0.000',Solutions[AvSol.ItemIndex].PointPos.X));
-        SolInfo.Lines.Add('Y: '+ FormatFloat('### ### ### ##0.000',Solutions[AvSol.ItemIndex].PointPos.Y));
-        SolInfo.Lines.Add('Z: '+ FormatFloat('### ### ### ##0.000',Solutions[AvSol.ItemIndex].PointPos.Z));
+        // if Static
+        OutputCoordinates;
+        with Solutions[AvSol.ItemIndex] do
+          Edit5.Text := FormatFloat('##0.0000',
+            sqrt(sqr(StDevs[1]) + sqr(StDevs[2]) + sqr(StDevs[3])));
 
-        SolInfo.Lines.Add('Lat-Long WGS84:');
-        with Solutions[AvSol.ItemIndex].PointPos do
-          ECEFToGeo(FindDatum('WGS84'), X, Y, Z, B, L, H);
-        SolInfo.Lines.Add('B: '+ DegToDMS(B, true,  5));
-        SolInfo.Lines.Add('L: '+ DegToDMS(L, false, 5));
-        SolInfo.Lines.Add('H: '+ FormatFloat('0.000', H));
+        VectBtn.Visible := Solutions[AvSol.ItemIndex].SolutionKind = 2;
+        VectBtn.Left := ChoosedSol.Left + ChoosedSol.Width + 2;
 
-        Zone := 0;
-        GeoToUTM(FindDatum('WGS84'), B, L, B < 0, N, E, Zone, true);
-        dH   := GetGeoidH(0, B, L);  /// WGS ONLY!
-        H    := H - dH;
+        Label9.Enabled := Solutions[AvSol.ItemIndex].SolutionKind <> 0;
+        Edit5.Enabled  := Solutions[AvSol.ItemIndex].SolutionKind <> 0;
 
-        SolInfo.Lines.Add('UTM WGS84, Zone ' + IntToStr(Zone) +':');
-        SolInfo.Lines.Add('N: '+ FormatFloat('### ### ### ##0.000', N));
-        SolInfo.Lines.Add('E: '+ FormatFloat('### ### ### ##0.000', E));
-        SolInfo.Lines.Add('H: '+ FormatFloat('0.000', H));
-
-
-        if Solutions[AvSol.ItemIndex].SolutionKind > 0 then
+        if Solutions[AvSol.ItemIndex].SolutionKind = 2 then
+        for I := 0 to Length(GNSSVectors) - 1 do
+        with GNSSSessions[ActiveGNSSSessions[0]] do
+        if (GNSSVectors[I].BaseID = Solutions[AvSol.ItemIndex].BaseID) and
+         (GNSSVectors[I].RoverID = SessionID)
+        then
         begin
-          //SolInfo.Lines.Add(' ' Solutions[AvSol.ItemIndex].SolutionQ)
-          SolInfo.Lines.Add('Result StdDev, m: ');
-          SolInfo.Lines.Add('stX: '+ FormatFloat('##0.0000',Solutions[AvSol.ItemIndex].StDevs[1]));
-          SolInfo.Lines.Add('stY: '+ FormatFloat('##0.0000',Solutions[AvSol.ItemIndex].StDevs[2]));
-          SolInfo.Lines.Add('stZ: '+ FormatFloat('##0.0000',Solutions[AvSol.ItemIndex].StDevs[3]));
+           VectBtn.Glyph.Assign(nil);
+           case GNSSVectors[I].StatusQ of
+             -1..2 : j := 15 + GNSSVectors[I].StatusQ;
+             3..7  : j := 18;
+             8     : j := 19;
+             11..12: j := GNSSVectors[I].StatusQ - 6;
+             // ToDo ADJUSTED: ok I := 20, poor I := 21
+             else j := 15;
+           end;
+           ImgList.GetBitmap(j,VectBtn.Glyph);
         end;
+
      end;
   end
   else
@@ -951,6 +1020,11 @@ begin
   CheckAntennaPOSChange;
 
   Close;
+end;
+
+procedure TFGNSSSessionOptions.CSboxChange(Sender: TObject);
+begin
+  OutPutCoordinates;
 end;
 
 procedure TFGNSSSessionOptions.CustomAntClick(Sender: TObject);
@@ -1056,6 +1130,24 @@ begin
     AvSol.ItemIndex := ShowSol;
     AvSol.OnClick(nil);
     ShowSol := -1;
+  end;
+end;
+
+procedure TFGNSSSessionOptions.GeoidPopupClick(Sender: TObject);
+begin
+  with Sender as TMenuItem do
+    GeoidIdx := tag;
+  OutputCoordinates;
+end;
+
+procedure TFGNSSSessionOptions.GeoidPopupPopup(Sender: TObject);
+var I:Integer;
+begin
+  for I := 0 to GeoidPopup.Items.Count - 1 do
+  begin
+    GeoidPopup.Items[I].ImageIndex := -1;
+    if GeoidPopup.Items[I].Tag = GeoidIdx then
+      GeoidPopup.Items[I].ImageIndex := 96;
   end;
 end;
 
@@ -1237,6 +1329,24 @@ begin
   end;
 end;
 
+procedure TFGNSSSessionOptions.OutputCoordinates;
+begin
+    if AvSol.ItemIndex < 0 then
+      exit;
+
+    with GNSSSessions[ActiveGNSSSessions[0]].Solutions[AvSol.ItemIndex].PointPos do
+        OutputCoords(X, Y, Z,
+              ECEFWGS, PrjCS[CSBox.ItemIndex], WGSCS,
+              Xed, Yed, Zed, Xlabel, Ylabel, Zlabel, GeoidP,
+              GeoidIdx);
+
+    ChangeGeoid.Glyph.Assign(nil);
+    if GeoidIdx > -1 then
+      ImgList.GetBitmap(113,ChangeGeoid.Glyph)
+    else
+      ImgList.GetBitmap(115,ChangeGeoid.Glyph);
+end;
+
 procedure TFGNSSSessionOptions.PPPFilesClick(Sender: TObject);
 begin
   DelPPP.Enabled := PPPFiles.ItemIndex >= 0;
@@ -1357,11 +1467,12 @@ begin
 end;
 
 procedure TFGNSSSessionOptions.SpeedButton3Click(Sender: TObject);
-var N:Integer;
+var N, j:Integer;
 begin
 
   if AvProc.ItemIndex > -1 then
   begin
+    j := AVSol.Items.Count;
     case AvProcArr[AvProc.ItemIndex].Method of
       1:  GetSingle.Click;
       3:  GetPPP.Click;
@@ -1371,8 +1482,14 @@ begin
             FStartProcessing.ShowProcOptions(2, ActiveGNSSSessions[0], N);
       end;
     end;
+
+    RefreshSettings;
+    Tabsheet3.OnShow(nil);
+    if j < AVSol.Items.Count then AVSol.ItemIndex := j;
+    AVSol.OnClick(nil);
+    
   end;
-  RefreshSettings;
+ 
 end;
 
 procedure TFGNSSSessionOptions.StationBoxChange(Sender: TObject);
@@ -1487,11 +1604,14 @@ procedure TFGNSSSessionOptions.TabSheet1Show(Sender: TObject);
       end;
   end;
 
+var I, j:Integer;
+
 begin
 
   GetSingle.Glyph.Assign(nil);
   GetPPP.Glyph.Assign(nil);
   ProcAllBL.Glyph.Assign(nil);
+  PointPropBtn.Glyph.Assign(nil);
 
   GetSingle.Enabled := HasNav;
   if GetSingle.Enabled then
@@ -1524,12 +1644,26 @@ begin
       ImgList.GetBitmap(93,ProcAllBL.Glyph);
     ProcBL.Visible := false;
   end;
+
+  I := GetGNSSPointNumber(StationBox.Text);
+  j := -1;
+  if I > -1 then
+  begin
+    j := GNSSPoints[I].Status;
+    if GNSSPoints[I].Active = false then
+      j := 7;
+    ImgList.GetBitmap(j+77 ,PointPropBtn.Glyph);
+    PointPropBtn.Caption := '';
+  end
+   else PointPropBtn.Caption := '...';
+
 end;
 
 procedure TFGNSSSessionOptions.TabSheet3Show(Sender: TObject);
 begin
   PageControl.OnChange(nil);
   RefreshSettings;
+  RefreshCSBox;
   AvSol.OnClick(nil);
 end;
 
@@ -1539,6 +1673,36 @@ begin
   HorScrollBar(PPPFiles, PPPFiles.Width);
   DelNav.Enabled := NavFiles.ItemIndex >= 0;
   DelPPP.Enabled := PPPFiles.ItemIndex >= 0;
+end;
+
+procedure TFGNSSSessionOptions.VectBtnClick(Sender: TObject);
+var    F2: TFVectSettings; I, j, VN:Integer;
+begin
+   if AvSol.ItemIndex > -1 then
+   begin
+      VN := -1;
+      for I := 0 to Length(GNSSVectors) - 1 do
+      with GNSSSessions[ActiveGNSSSessions[0]] do
+      if (GNSSVectors[I].BaseID = Solutions[AvSol.ItemIndex].BaseID) and
+         (GNSSVectors[I].RoverID = SessionID)
+      then
+      begin
+        VN := I;
+        break;
+      end;
+
+      if VN > -1 then
+      begin
+        j := AVSol.ItemIndex;
+        F2:= TFVectSettings.Create(nil);
+        F2.ShowVectorProp(VN ,ImgList);
+        F2.Release;
+        RefreshSettings;
+        AvSol.ItemIndex := j;
+        AVSol.OnClick(nil);
+      end;
+      
+   end;
 end;
 
 end.

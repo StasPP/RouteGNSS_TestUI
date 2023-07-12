@@ -237,8 +237,6 @@ begin
 
     isInit := false;
 
- 
-
 end;
 
 procedure TFVectSettings.BaselinesBoxClick(Sender: TObject);
@@ -449,17 +447,24 @@ begin
 end;
 
 procedure TFVectSettings.RevVectClick(Sender: TObject);
+var s:string;
 begin
   if GNSSVectors[VectorN].StatusQ > 0 then
   if MessageDlg('The action can change the other data. Proceed?',
             mtConfirmation, [mbYes, mbNo], 0) <> 6 then  exit;
   InvertGNSSVector(VectorN);
+
+  s := RoverId;
+  RoverId := BaseId;
+  BaseId := s;
+
   RefreshVectorSettings;
 end;
 
 procedure TFVectSettings.SpeedButton2Click(Sender: TObject);
 var I:Integer;
     needAsk: boolean;
+    s: string;
 begin
   needAsk := false;
   for I := 0 to Length(VectorsN) - 1 do
@@ -468,12 +473,17 @@ begin
       needAsk := true; 
       break;
     end;
-    
+
   if needAsk then
     if MessageDlg('The action can change the other data. Proceed?',
             mtConfirmation, [mbYes, mbNo], 0) <> 6 then  exit;
             
   InvertGNSSVector(VectorN, true);
+
+  s := RoverId;
+  RoverId := BaseId;
+  BaseId := s;
+
   RefreshVectorSettings;
 
 end;

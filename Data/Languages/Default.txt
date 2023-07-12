@@ -988,19 +988,19 @@ Label5
 Другие: 
 
 Label6
-592
+591
 
 Label7
 523
 
 Label8
-62
+61
 
 Label9
-2
+1
 
 Label10
-5
+6
 
 SpeedButton2
 Локализация план-схемы

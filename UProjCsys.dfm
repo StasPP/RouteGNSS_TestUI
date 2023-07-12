@@ -2,8 +2,8 @@ object FProjCsys: TFProjCsys
   Left = 0
   Top = 0
   Caption = 'Coordinate/Height Systems for the Project'
-  ClientHeight = 167
-  ClientWidth = 447
+  ClientHeight = 225
+  ClientWidth = 528
   Color = clBtnFace
   Constraints.MinHeight = 200
   Constraints.MinWidth = 450
@@ -18,21 +18,23 @@ object FProjCsys: TFProjCsys
   TextHeight = 13
   object Panel2: TPanel
     Left = 0
-    Top = 130
-    Width = 447
+    Top = 188
+    Width = 528
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 124
+    ExplicitTop = 130
+    ExplicitWidth = 447
     object Panel3: TPanel
-      Left = 142
+      Left = 223
       Top = 0
       Width = 305
       Height = 37
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitLeft = 142
       object CfgButton: TSpeedButton
         Left = 8
         Top = 6
@@ -124,29 +126,29 @@ object FProjCsys: TFProjCsys
   object Panel4: TPanel
     Left = 9
     Top = 0
-    Width = 429
-    Height = 130
+    Width = 510
+    Height = 188
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 0
-    ExplicitWidth = 447
-    ExplicitHeight = 124
+    ExplicitWidth = 429
+    ExplicitHeight = 130
     object Label1: TLabel
       Left = 0
       Top = 0
-      Width = 429
+      Width = 510
       Height = 16
       Align = alTop
       AutoSize = False
       Caption = 'Coordinate systems:'
       Layout = tlBottom
+      ExplicitWidth = 429
     end
     object CSBox: TListBox
       Left = 0
       Top = 16
-      Width = 396
-      Height = 76
+      Width = 477
+      Height = 134
       Style = lbOwnerDrawFixed
       Align = alClient
       ItemHeight = 16
@@ -154,34 +156,34 @@ object FProjCsys: TFProjCsys
       TabOrder = 0
       OnClick = CSBoxClick
       OnDrawItem = CSBoxDrawItem
-      ExplicitTop = 17
-      ExplicitWidth = 414
-      ExplicitHeight = 69
+      ExplicitWidth = 396
+      ExplicitHeight = 76
     end
     object Panel5: TPanel
       Left = 0
-      Top = 92
-      Width = 429
+      Top = 150
+      Width = 510
       Height = 38
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 86
-      ExplicitWidth = 447
+      ExplicitTop = 92
+      ExplicitWidth = 429
       object Label2: TLabel
         Left = 0
         Top = 0
-        Width = 429
+        Width = 510
         Height = 15
         Align = alTop
         AutoSize = False
         Caption = 'Geoid Model:'
         Layout = tlBottom
+        ExplicitWidth = 429
       end
       object GeoidBox: TComboBox
         Left = 0
         Top = 16
-        Width = 429
+        Width = 510
         Height = 22
         Align = alBottom
         Style = csOwnerDrawFixed
@@ -190,21 +192,20 @@ object FProjCsys: TFProjCsys
         ShowHint = True
         TabOrder = 0
         OnDrawItem = GeoidBoxDrawItem
-        ExplicitWidth = 447
+        ExplicitWidth = 429
       end
     end
     object Panel1: TPanel
-      Left = 396
+      Left = 477
       Top = 16
       Width = 33
-      Height = 76
+      Height = 134
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitLeft = 414
-      ExplicitTop = 17
-      ExplicitHeight = 69
-      object SpeedButton1: TSpeedButton
+      ExplicitLeft = 396
+      ExplicitHeight = 76
+      object AddButton: TSpeedButton
         Left = 4
         Top = -1
         Width = 26
@@ -222,7 +223,7 @@ object FProjCsys: TFProjCsys
           00A00000D000DDDDD000DDDDD0A0DDDDDDDDDDDDD000DDDDD0A0DDDDDDDDDDDD
           D000DDDDD0A0DDDDDDDDDDDDD000DDDDD000DDDDDDDDDDDDD000DDDDDDDDDDDD
           DDDDDDDDD000}
-        OnClick = SpeedButton1Click
+        OnClick = AddButtonClick
       end
       object DelSBtn: TSpeedButton
         Left = 4
@@ -245,25 +246,24 @@ object FProjCsys: TFProjCsys
     end
   end
   object Panel6: TPanel
-    Left = 438
+    Left = 519
     Top = 0
     Width = 9
-    Height = 130
+    Height = 188
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitHeight = 124
+    ExplicitLeft = 438
+    ExplicitHeight = 130
   end
   object Panel7: TPanel
     Left = 0
     Top = 0
     Width = 9
-    Height = 130
+    Height = 188
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitLeft = 438
-    ExplicitTop = 8
-    ExplicitHeight = 124
+    ExplicitHeight = 130
   end
 end

@@ -2,13 +2,24 @@ unit GNSSObjsTree;
 
 interface
 
-uses CommCtrl, ComCtrls, GNSSObjects;
+uses CommCtrl, ComCtrls, StdCtrls, GNSSObjects, GeoFunctions, GeoClasses, Geoid,
+   ExtCtrls, GeoString, Classes, SysUtils;
 
 procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
 procedure OutputGNSSVectTree(TW :TTreeView);
+procedure OutputCoords(X, Y, Z : Double; CS1, CS2, WGSCS:Integer;
+                XEd, YEd, ZEd: TEdit; XLabel, YLabel, ZLabel: TLabel;
+                GeoidP:TPanel; GeoidIdx: integer);
 
 var
    RNode, FNode : TTreeNode;
+
+const
+     TmpInf :Array[0..8] of String = ('X, m:', 'Y, m:', 'Z, m:',
+                                  'Latitude, deg:', 'Longtitude, deg:',
+                                  'Ellipsoidal Height, m:',
+                                  'Northing, m:', 'Easting, m:',
+                                  'Orthometric Height, m:');
 type
    TVectGroup = record
      Name  : String;
@@ -19,6 +30,75 @@ var
    VectGroups: Array of TVectGroup;
 
 implementation
+
+procedure OutputCoords(X, Y, Z : Double; CS1, CS2, WGSCS:Integer;
+    XEd, YEd, ZEd: TEdit; XLabel, YLabel, ZLabel: TLabel; GeoidP:TPanel;
+                GeoidIdx: integer);
+  var nX, nY, nZ, B, L, H, dH : Double;
+begin
+    XEd.Text := '';  YEd.Text := '';  ZEd.Text := '';
+
+    if (CS2 = -1) or (CS1 = -1) then
+      exit;
+    CSToCS(X, Y, Z, CS1, CS2, nX, nY, nZ);
+    if CoordinateSystemList[CS2].ProjectionType <> 1 then
+
+      if GeoidIdx > -1 then
+      begin
+        CSToCS(X, Y, Z, CS1, WGSCS, B, L, H);
+
+        dH   := GetGeoidH(GeoidIdx, B, L);  /// WGS ONLY!
+        H    := H - dH;
+
+        CSToCS(B, L, H, WGSCS, CS2, nX, nY, nZ);
+      end;
+
+
+
+    GeoidP.Visible := true;  GeoidP.Enabled := true;
+
+    case CoordinateSystemList[CS2].ProjectionType of
+      0: begin
+        XEd.Text := DegToDMS(nX, true,  5, true);
+        YEd.Text := DegToDMS(nY, false, 5, true);
+        ZEd.Text := FormatFloat('0.000', nZ);
+
+        XLabel.Caption := TmpInf[3];    /// ToDo: replace with common inf
+        YLabel.Caption := TmpInf[4];
+        if GeoidIdx = -1 then
+          ZLabel.Caption := TmpInf[5]
+        else
+          ZLabel.Caption := TmpInf[8]
+      end;
+
+      1: begin
+        XEd.Text := FormatFloat('### ### ### ##0.000', nX);
+        YEd.Text := FormatFloat('### ### ### ##0.000', nY);
+        ZEd.Text := FormatFloat('### ### ### ##0.000', nZ);
+
+        XLabel.Caption := TmpInf[0];
+        YLabel.Caption := TmpInf[1];
+        ZLabel.Caption := TmpInf[2];
+        GeoidP.Enabled := false;  GeoidP.Visible := false;
+      end;
+
+      2..5: begin
+        XEd.Text := FormatFloat('### ### ### ##0.000', nX);
+        YEd.Text := FormatFloat('### ### ### ##0.000', nY);
+        ZEd.Text := FormatFloat('0.000', nZ);
+
+        XLabel.Caption := TmpInf[6];
+        YLabel.Caption := TmpInf[7];
+        if GeoidIdx = -1 then
+          ZLabel.Caption := TmpInf[5]
+        else
+          ZLabel.Caption := TmpInf[8]
+      end;
+
+    end;
+
+
+end;
 
 procedure SetNodeBoldState(Node: TTreeNode; Value: Boolean);
 var

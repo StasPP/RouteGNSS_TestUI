@@ -1100,6 +1100,8 @@ begin
         j := GetGNSSSessionNumber(BaseId);
         if j = -1 then
           continue;
+        // ToDo - devide processed values and adjusted ones
+        // not assign if it is not the processing result!!!
         GNSSVectors[I].dX := PointPos.X - GNSSSessions[j].AppliedPos.X;
         GNSSVectors[I].dY := PointPos.Y - GNSSSessions[j].AppliedPos.Y;
         GNSSVectors[I].dZ := PointPos.Z - GNSSSessions[j].AppliedPos.Z;
@@ -1919,17 +1921,17 @@ var i, j, bestQ, worstQ:integer;
 begin
   result := -1;
 
-  if Length(GNSSVectors) < 1 then
+  if Length(VectN) < 1 then
     exit;
 
   // Test if the group is Homogenious by Q
-  bestQ := GNSSVectors[0].StatusQ ;
+  bestQ := GNSSVectors[VectN[0]].StatusQ ;
   isHomo := true;
-  for I := 1 to Length(GNSSVectors) - 1 do
+  for I := 1 to Length(VectN) - 1 do
   begin
-    if GNSSVectors[I].StatusQ < 0 then
+    if GNSSVectors[VectN[I]].StatusQ < 0 then
       continue;
-    if (GNSSVectors[I].StatusQ <> bestQ) then
+    if (GNSSVectors[VectN[I]].StatusQ <> bestQ) then
     begin
       isHomo := false;
     end;
@@ -1943,23 +1945,23 @@ begin
 
   // 2 Got the Best Q
   bestQ := 0;
-  for I := 0 to Length(GNSSVectors) - 1 do
+  for I := 0 to Length(VectN) - 1 do
   begin
-    if GNSSVectors[I].StatusQ < 0 then
+    if GNSSVectors[VectN[I]].StatusQ < 0 then
       continue;
-    if (bestQ = 0) or (GNSSVectors[I].StatusQ < bestQ)and(GNSSVectors[I].StatusQ > 0) then
-      bestQ := GNSSVectors[I].StatusQ;
+    if (bestQ = 0) or (GNSSVectors[VectN[I]].StatusQ < bestQ)and(GNSSVectors[VectN[I]].StatusQ > 0) then
+      bestQ := GNSSVectors[VectN[I]].StatusQ;
   end;
 
   // 3 Got the Worst Q
   worstQ := -1;
-  for I := 0 to Length(GNSSVectors) - 1 do
+  for I := 0 to Length(VectN) - 1 do
   begin
-    if GNSSVectors[I].StatusQ < 0 then
+    if GNSSVectors[VectN[I]].StatusQ < 0 then
       continue;
-    if (worstQ = -1) or (GNSSVectors[I].StatusQ > worstQ)
-      or (GNSSVectors[I].StatusQ = 0) then
-      worstQ := GNSSVectors[I].StatusQ;
+    if (worstQ = -1) or (GNSSVectors[VectN[I]].StatusQ > worstQ)
+      or (GNSSVectors[VectN[I]].StatusQ = 0) then
+      worstQ := GNSSVectors[VectN[I]].StatusQ;
   end;
 
   if (worstQ = bestQ) or (worstQ = -1) then

@@ -52,8 +52,9 @@ type
     TabSheet3: TTabSheet;
     SpeedButton1: TSpeedButton;
     isBS: TCheckBox;
-    GeoidBox: TComboBox;
-    GeoLabel: TLabel;
+    GeoidPopup: TPopupMenu;
+    GeoidP: TPanel;
+    ChangeGeoid: TSpeedButton;
     procedure SessBoxChange(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
     procedure SolSrcBoxChange(Sender: TObject);
@@ -81,6 +82,8 @@ type
       State: TOwnerDrawState);
     procedure GeoidBoxDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
+    procedure ChangeGeoidClick(Sender: TObject);
+    procedure GeoidPopupPopup(Sender: TObject);
   private
     { Private declarations }
   public
@@ -88,6 +91,7 @@ type
     procedure TurnOnOffStation(N: Integer; isOn:Boolean);
     procedure RefreshPointSettings;
     procedure RefreshCSBox;
+    procedure GeoPopupClick(Sender: TObject);
     { Public declarations }
   end;
 
@@ -97,6 +101,8 @@ var
   IsInit  :Boolean;
   ImgList :TImagelist;
   TreeInd :integer = -1;
+
+  GeoidIdx :integer = -1;
 
   ECEFWGS, WGSCS : Integer;
 
@@ -119,9 +125,7 @@ const
 //  PointStatusColors: array [0..13] of TColor = (clGray, $0000FF80,
 //          $0002EAFD, clFuchsia, clPurple, $006000FF, clTeal,clGray,
 //          clRed, clOlive, $000080FF, clOlive, clYellow, clBlue);
-     TmpInf :Array[0..8] of String = ('X, m:', 'Y, m:', 'Z, m:',
-                                  'Latitude, deg:', 'Longtitude, deg:', 'Height, m:',
-                                  'Northing, m:', 'Easting, m:', 'Height, m:');
+
 implementation
 
 uses UGNSSSessionOptions, Unit1, UStartProcessing;
@@ -130,9 +134,12 @@ uses UGNSSSessionOptions, Unit1, UStartProcessing;
 
 procedure TFGNSSPointSettings.RefreshCSBox;
 var I, j:Integer;
+    PopupItm : TMenuItem;
 begin
+  // COORDINATE SYSTEMS -----------------
+
   j := CSbox.ItemIndex;
-    
+
   CSBox.Items.Clear;
   for I := 0 to Length(PrjCS) - 1 do
     CSBox.Items.Add(CoordinateSystemList[PrjCS[I]].Caption);
@@ -142,17 +149,40 @@ begin
   CSbox.ItemIndex := j;
   CSBox.OnChange(nil);
 
-  j := GeoidBox.ItemIndex;
+  // GEOID -------------------------------
 
-  GeoidBox.Items.Clear;
-  GeoidBox.Items.Add('Off'); // ToDo: Translate
+  if (GeoidIdx > Length(GeoidList) -1 ) or (GeoidIdx = -1) then
+    GeoidIdx  := Length(GeoidList) -1;
+
+  GeoidPopup.Images := ImgList;
+  GeoidPopup.Items.Clear;
+  PopupItm := TMenuItem.Create(nil);
+  PopupItm.Caption := '(off)';  PopupItm.Tag := -1;
+  PopupItm.OnClick := GeoPopupClick;
+  PopupItm.ImageIndex := -1;
+
+  GeoidPopup.Items.Add(PopupItm);
+
   for I := 0 to Length(GeoidList) - 1 do
-    GeoidBox.Items.Add(GeoidList[I].Caption);
+  begin
+    PopupItm := TMenuItem.Create(nil);
+    PopupItm.Caption := Trim(GeoidList[I].Caption);
+    PopupItm.Tag := I;
+    PopupItm.OnClick := GeoPopupClick;
+    GeoidPopup.Items.Add(PopupItm);
+  end;
 
-  if j = -1 then
-    j := Geoidbox.Items.Count-1;
-  GeoidBox.ItemIndex := j;
-  GeoidBox.OnChange(nil);
+  //j := GeoidBox.ItemIndex;
+
+//  GeoidBox.Items.Clear;
+//  GeoidBox.Items.Add('Off'); // ToDo: Translate
+//  for I := 0 to Length(GeoidList) - 1 do
+//    GeoidBox.Items.Add(GeoidList[I].Caption);
+
+//  if j = -1 then
+//    j := Geoidbox.Items.Count-1;
+//  GeoidBox.ItemIndex := j;
+//  GeoidBox.OnChange(nil);
 
   ECEFWGS := FindCoordinateSystem('WGS84_ECEF');
   WGSCS   := FindCoordinateSystem('WGS84_LatLon');
@@ -261,11 +291,11 @@ begin
       Z := StrToFloat2(Zed.Text);
     end;
 
-    if GeoidBox.ItemIndex > 0 then
+    if GeoidIdx > -1 then
     begin
       CSToCS(X, Y, Z, PrjCS[CSBox.ItemIndex], WGSCS, nX, nY, nZ);
       X := nX; Y := nY; Z := nZ;
-      dH   := GetGeoidH(GeoidBox.ItemIndex - 1, X, Y);  /// WGS ONLY!
+      dH   := GetGeoidH(GeoidIdx, X, Y);  /// WGS ONLY!
       Z   := Z + dH;
       CSToCS(X, Y, Z, WGSCS, ECEFWGS, nX, nY, nZ);
     end
@@ -285,72 +315,21 @@ begin
 end;
 
 procedure TFGNSSPointSettings.OutputCoordinates;
-var nX, nY, nZ, B, L, H, dH : Double;
 begin
-    XEd.Text := '';  YEd.Text := '';  ZEd.Text := '';
+  OutputCoords(GNSSPoints[StationN].Position.X,
+              GNSSPoints[StationN].Position.Y,
+              GNSSPoints[StationN].Position.Z,
+              ECEFWGS, PrjCS[CSBox.ItemIndex], WGSCS,
+              Xed, Yed, Zed, Xlabel, Ylabel, Zlabel, GeoidP,
+              GeoidIdx);
 
-    if CSBox.ItemIndex = -1 then
-      exit;
+  ChangeGeoid.Glyph.Assign(nil);
 
-    CSToCS(GNSSPoints[StationN].Position.X,
-                    GNSSPoints[StationN].Position.Y,
-                    GNSSPoints[StationN].Position.Z, ECEFWGS,
-                    PrjCS[CSBox.ItemIndex],
-                    nX, nY, nZ);
-
-    if CoordinateSystemList[PrjCS[CSBox.ItemIndex]].ProjectionType <> 1 then
-      if GeoidBox.ItemIndex > 0 then
-      begin
-        CoordinateSystemToDatum(ECEFWGS,
-                    GNSSPoints[StationN].Position.X,
-                    GNSSPoints[StationN].Position.Y,
-                    GNSSPoints[StationN].Position.Z, 
-                    B, L, H);
-
-        dH   := GetGeoidH(GeoidBox.ItemIndex - 1, B, L);  /// WGS ONLY!
-        H    := H - dH;
-
-        CSToCS(B, L, H, WGSCS, PrjCS[CSBox.ItemIndex], nX, nY, nZ);
-      end;
-
-
-    GeoidBox.Visible := true;  GeoidBox.Enabled := true;
-    GeoLabel.Visible := true;  GeoLabel.Enabled := true;
-
-    case CoordinateSystemList[PrjCS[CSBox.ItemIndex]].ProjectionType of
-      0: begin
-        XEd.Text := DegToDMS(nX,true,  5, true);
-        YEd.Text := DegToDMS(nY,false, 5, true);
-        ZEd.Text := FormatFloat('0.000', nZ);
-
-        XLabel.Caption := TmpInf[3];    /// ToDo: replace with common inf
-        YLabel.Caption := TmpInf[4];
-        ZLabel.Caption := TmpInf[5];
-      end;
-
-      1: begin
-        XEd.Text := FormatFloat('### ### ### ##0.000', nX);
-        YEd.Text := FormatFloat('### ### ### ##0.000', nY);
-        ZEd.Text := FormatFloat('### ### ### ##0.000', nZ);
-
-        XLabel.Caption := TmpInf[0];
-        YLabel.Caption := TmpInf[1];
-        ZLabel.Caption := TmpInf[2];
-        GeoidBox.Enabled := false;  GeoLabel.Visible := false;
-        GeoLabel.Enabled := false;  GeoidBox.Visible := false;
-      end;
-
-      2..5: begin
-        XEd.Text := FormatFloat('### ### ### ##0.000', nX);
-        YEd.Text := FormatFloat('### ### ### ##0.000', nY);
-        ZEd.Text := FormatFloat('0.000', nZ);
-
-        XLabel.Caption := TmpInf[6];
-        YLabel.Caption := TmpInf[7];
-        ZLabel.Caption := TmpInf[8];
-      end;
-
-    end;
+    if GeoidIdx > -1 then
+      ImgList.GetBitmap(113,ChangeGeoid.Glyph)
+    else
+      ImgList.GetBitmap(115,ChangeGeoid.Glyph);
+  
 end;
 
 procedure TFGNSSPointSettings.Processagain1Click(Sender: TObject);
@@ -376,6 +355,13 @@ begin
  F1 := TFGNSSSessionOptions.Create(nil);
  F1.ShowModal;
  F1.Release;
+end;
+
+procedure TFGNSSPointSettings.ChangeGeoidClick(Sender: TObject);
+var P: TPoint;
+begin
+  P := Mouse.CursorPos;
+  GeoidPopup.Popup(P.X, P.Y);
 end;
 
 procedure TFGNSSPointSettings.Configure1Click(Sender: TObject);
@@ -517,6 +503,24 @@ begin
     Bitmap.Free;
   end;
 
+end;
+
+procedure TFGNSSPointSettings.GeoidPopupPopup(Sender: TObject);
+var I:Integer;
+begin
+  for I := 0 to GeoidPopup.Items.Count - 1 do
+  begin
+    GeoidPopup.Items[I].ImageIndex := -1;
+    if GeoidPopup.Items[I].Tag = GeoidIdx then
+      GeoidPopup.Items[I].ImageIndex := 96;
+  end;
+end;
+
+procedure TFGNSSPointSettings.GeoPopupClick(Sender: TObject);
+begin
+  with Sender as TMenuItem do
+    GeoidIdx := tag;
+  OutputCoordinates;
 end;
 
 procedure TFGNSSPointSettings.isAcClick(Sender: TObject);

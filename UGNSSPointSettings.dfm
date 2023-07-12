@@ -3,7 +3,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Point/Track settings'
-  ClientHeight = 363
+  ClientHeight = 339
   ClientWidth = 569
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -960,7 +960,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     Left = 301
     Top = 48
     Width = 252
-    Height = 276
+    Height = 241
     Indent = 19
     ReadOnly = True
     TabOrder = 1
@@ -979,7 +979,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   end
   object OKButton: TButton
     Left = 176
-    Top = 330
+    Top = 306
     Width = 217
     Height = 25
     Caption = 'Apply'
@@ -989,8 +989,8 @@ object FGNSSPointSettings: TFGNSSPointSettings
   object CoordPan: TPanel
     Left = 0
     Top = 178
-    Width = 281
-    Height = 146
+    Width = 291
+    Height = 112
     BevelOuter = bvNone
     TabOrder = 4
     Visible = False
@@ -1020,15 +1020,6 @@ object FGNSSPointSettings: TFGNSSPointSettings
       Alignment = taRightJustify
       AutoSize = False
       Caption = 'Z, m:'
-    end
-    object GeoLabel: TLabel
-      Left = 8
-      Top = 115
-      Width = 135
-      Height = 13
-      Alignment = taRightJustify
-      AutoSize = False
-      Caption = 'Geoid model:'
     end
     object XEd: TEdit
       Left = 147
@@ -1070,18 +1061,23 @@ object FGNSSPointSettings: TFGNSSPointSettings
       OnChange = CSboxChange
       OnDrawItem = CSboxDrawItem
     end
-    object GeoidBox: TComboBox
-      Left = 147
-      Top = 112
-      Width = 134
-      Height = 22
-      Style = csOwnerDrawFixed
-      ItemHeight = 16
-      ParentShowHint = False
-      ShowHint = True
+    object GeoidP: TPanel
+      Left = 261
+      Top = 86
+      Width = 19
+      Height = 19
+      BevelOuter = bvNone
       TabOrder = 4
-      OnChange = GeoidBoxChange
-      OnDrawItem = GeoidBoxDrawItem
+      object ChangeGeoid: TSpeedButton
+        Left = 0
+        Top = 0
+        Width = 19
+        Height = 19
+        Align = alClient
+        Flat = True
+        OnClick = ChangeGeoidClick
+        ExplicitTop = -1
+      end
     end
   end
   object SolPC: TPageControl
@@ -1259,5 +1255,10 @@ object FGNSSPointSettings: TFGNSSPointSettings
       ImageIndex = 107
       OnClick = Sessionsof1Click
     end
+  end
+  object GeoidPopup: TPopupMenu
+    OnPopup = GeoidPopupPopup
+    Left = 368
+    Top = 8
   end
 end

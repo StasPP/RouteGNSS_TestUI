@@ -23,6 +23,7 @@ type
       Y: Integer);
     procedure ListBox4DrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
+    procedure FullRefresh;  
   private
     { Private declarations }
   public
@@ -78,21 +79,10 @@ begin
 end;
 
 procedure TCSFormNew.FormActivate(Sender: TObject);
-var i: integer;
 begin
  WGS := FindDatum('WGS84');
  if  ComboBox2.Items.Count = 0 then
- begin
-   ComboBox2.Clear;
-   for i := 0 to Length(CoorinateSystemCategories)-1 do
-     ComboBox2.Items.Add(CoorinateSystemCategories[i]);
-
-   Combobox2.Sorted := true;
-   ComboBox2.ItemIndex := 0;
-   ComboBox2.OnChange(nil);
-
-//   ListBox4.OnClick(nil);
- end;
+   FullRefresh;
 end;
 
 procedure TCSFormNew.FormShow(Sender: TObject);
@@ -106,6 +96,18 @@ begin
  End; }
 
  OnActivate(nil);
+end;
+
+procedure TCSFormNew.FullRefresh;
+var i:integer;
+begin
+   ComboBox2.Clear;
+   for i := 0 to Length(CoorinateSystemCategories)-1 do
+     ComboBox2.Items.Add(CoorinateSystemCategories[i]);
+
+   Combobox2.Sorted := true;
+   ComboBox2.ItemIndex := 0;
+   ComboBox2.OnChange(nil);
 end;
 
 procedure TCSFormNew.ListBox4Click(Sender: TObject);
