@@ -273,7 +273,7 @@ end;
 { TFGNSSPointSettings }
 
 procedure TFGNSSPointSettings.OKButtonClick(Sender: TObject);
-var I :Integer;   x, y, z, nX, nY, nZ, dH :Double;
+var I :Integer;   x, y, z :Double; nXYZ :TXYZ;
 begin
 
   if (SolSrcBox.ItemIndex = 4)  then
@@ -291,20 +291,9 @@ begin
       Z := StrToFloat2(Zed.Text);
     end;
 
-    if GeoidIdx > -1 then
-    begin
-      CSToCS(X, Y, Z, PrjCS[CSBox.ItemIndex], WGSCS, nX, nY, nZ);
-      X := nX; Y := nY; Z := nZ;
-      dH   := GetGeoidH(GeoidIdx, X, Y);  /// WGS ONLY!
-      Z   := Z + dH;
-      CSToCS(X, Y, Z, WGSCS, ECEFWGS, nX, nY, nZ);
-    end
-    else
-      CSToCS(X, Y, Z, PrjCS[CSBox.ItemIndex], ECEFWGS, nX, nY, nZ);
-
-
-
-    SetGNSSPointUserCoords(StationN, nX, nY, nZ);
+    nXYZ := ConvCoords(X, Y, Z, PrjCS[CSBox.ItemIndex], ECEFWGS, WGSCS, GeoidIdx);
+                                   
+    SetGNSSPointUserCoords(StationN, nXYZ.X, nXYZ.Y, nXYZ.Z);
   end;
 
   if (isBS.Checked) and (SolSrcBox.ItemIndex = 4)  then

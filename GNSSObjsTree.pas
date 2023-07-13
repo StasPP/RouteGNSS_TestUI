@@ -10,6 +10,7 @@ procedure OutputGNSSVectTree(TW :TTreeView);
 procedure OutputCoords(X, Y, Z : Double; CS1, CS2, WGSCS:Integer;
                 XEd, YEd, ZEd: TEdit; XLabel, YLabel, ZLabel: TLabel;
                 GeoidP:TPanel; GeoidIdx: integer);
+function ConvCoords(X, Y, Z : Double; CS1, CS2, WGSCS, GeoidIdx:Integer): TXYZ;
 
 var
    RNode, FNode : TTreeNode;
@@ -31,37 +32,68 @@ var
 
 implementation
 
+function ConvCoords(X, Y, Z : Double; CS1, CS2, WGSCS, GeoidIdx:Integer): TXYZ;
+var nX, nY, nZ, B, L, H, dH, Bwgs, Lwgs, Hwgs, dEll : Double;
+begin
+  nX := 0;
+  nY := 0;
+  nZ := 0;
+
+  try
+  //  CSToCS(X, Y, Z, CS1, CS2, nX, nY, nZ);
+  //  if CoordinateSystemList[CS2].ProjectionType <> 1 then
+
+      if GeoidIdx > -1 then
+      begin
+        CoordinateSystemToDatum(CS1, X, Y, Z, B, L, H);
+        CSToCS(X, Y, Z, CS1, WGSCS, Bwgs, Lwgs, Hwgs);
+        dH   := GetGeoidH(GeoidIdx, Bwgs, Lwgs);
+
+        if CoordinateSystemList[CS1].ProjectionType <> 1 then
+        begin
+          dEll := H - Hwgs;
+          H    := H + dEll + dH;  // extrude Geoid from input;
+          DatumToCoordinateSystem(CS1, B, L, H, X, Y, Z);
+        end;
+
+        CSToCS(X, Y, Z, CS1, CS2, nX, nY, nZ);
+
+        if CoordinateSystemList[CS2].ProjectionType <> 1 then
+        begin
+          CoordinateSystemToDatum(CS2, nX, nY, nZ, B, L, H);
+          dEll := H - Hwgs;
+          H    := H - dEll - dH; /// Add Geoid to New
+          DatumToCoordinateSystem(CS2, B, L, H, nX, nY, nZ);
+        end;
+
+      end
+       else
+         CSToCS(X, Y, Z, CS1, CS2, nX, nY, nZ);
+  finally
+    result.X := nX; result.Y := nY; result.Z := nZ;
+  end;
+
+end;
+
 procedure OutputCoords(X, Y, Z : Double; CS1, CS2, WGSCS:Integer;
     XEd, YEd, ZEd: TEdit; XLabel, YLabel, ZLabel: TLabel; GeoidP:TPanel;
                 GeoidIdx: integer);
-  var nX, nY, nZ, B, L, H, dH : Double;
+  var nXYZ : TXYZ;
 begin
     XEd.Text := '';  YEd.Text := '';  ZEd.Text := '';
 
     if (CS2 = -1) or (CS1 = -1) then
       exit;
-    CSToCS(X, Y, Z, CS1, CS2, nX, nY, nZ);
-    if CoordinateSystemList[CS2].ProjectionType <> 1 then
 
-      if GeoidIdx > -1 then
-      begin
-        CSToCS(X, Y, Z, CS1, WGSCS, B, L, H);
-
-        dH   := GetGeoidH(GeoidIdx, B, L);  /// WGS ONLY!
-        H    := H - dH;
-
-        CSToCS(B, L, H, WGSCS, CS2, nX, nY, nZ);
-      end;
-
-
+    nXYZ :=  ConvCoords(X, Y, Z, CS1, CS2, WGSCS, GeoidIdx);
 
     GeoidP.Visible := true;  GeoidP.Enabled := true;
 
     case CoordinateSystemList[CS2].ProjectionType of
       0: begin
-        XEd.Text := DegToDMS(nX, true,  5, true);
-        YEd.Text := DegToDMS(nY, false, 5, true);
-        ZEd.Text := FormatFloat('0.000', nZ);
+        XEd.Text := DegToDMS(nXYZ.X, true,  5, true);
+        YEd.Text := DegToDMS(nXYZ.Y, false, 5, true);
+        ZEd.Text := FormatFloat('0.000', nXYZ.Z);
 
         XLabel.Caption := TmpInf[3];    /// ToDo: replace with common inf
         YLabel.Caption := TmpInf[4];
@@ -72,9 +104,9 @@ begin
       end;
 
       1: begin
-        XEd.Text := FormatFloat('### ### ### ##0.000', nX);
-        YEd.Text := FormatFloat('### ### ### ##0.000', nY);
-        ZEd.Text := FormatFloat('### ### ### ##0.000', nZ);
+        XEd.Text := FormatFloat('### ### ### ##0.000', nXYZ.X);
+        YEd.Text := FormatFloat('### ### ### ##0.000', nXYZ.Y);
+        ZEd.Text := FormatFloat('### ### ### ##0.000', nXYZ.Z);
 
         XLabel.Caption := TmpInf[0];
         YLabel.Caption := TmpInf[1];
@@ -83,9 +115,9 @@ begin
       end;
 
       2..5: begin
-        XEd.Text := FormatFloat('### ### ### ##0.000', nX);
-        YEd.Text := FormatFloat('### ### ### ##0.000', nY);
-        ZEd.Text := FormatFloat('0.000', nZ);
+        XEd.Text := FormatFloat('### ### ### ##0.000', nXYZ.X);
+        YEd.Text := FormatFloat('### ### ### ##0.000', nXYZ.Y);
+        ZEd.Text := FormatFloat('0.000', nXYZ.Z);
 
         XLabel.Caption := TmpInf[6];
         YLabel.Caption := TmpInf[7];
