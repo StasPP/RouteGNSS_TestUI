@@ -906,7 +906,10 @@ begin
             sqrt(sqr(StDevs[1]) + sqr(StDevs[2]) + sqr(StDevs[3])));
 
         VectBtn.Visible := Solutions[AvSol.ItemIndex].SolutionKind = 2;
-        VectBtn.Left := ChoosedSol.Left + ChoosedSol.Width + 2;
+        if VectBtn.Visible  then
+          ChoosedSol.Left := VectBtn.Left + VectBtn.Width + 2
+        else
+          ChoosedSol.Left := VectBtn.Left;
 
         Label9.Enabled := Solutions[AvSol.ItemIndex].SolutionKind <> 0;
         Edit5.Enabled  := Solutions[AvSol.ItemIndex].SolutionKind <> 0;

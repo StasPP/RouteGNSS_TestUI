@@ -2171,7 +2171,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Top = 3
         Width = 293
         Height = 185
-        ActivePage = TabSheet9
+        ActivePage = TabSheet7
         TabOrder = 2
         object TabSheet7: TTabSheet
           Caption = 'ChoosedReady'
@@ -2347,10 +2347,11 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
             Caption = 'StDev 3D, m:'
           end
           object VectBtn: TSpeedButton
-            Left = 248
-            Top = 1
-            Width = 25
-            Height = 22
+            Left = 30
+            Top = 2
+            Width = 19
+            Height = 20
+            Flat = True
             OnClick = VectBtnClick
           end
           object ZEd: TEdit
