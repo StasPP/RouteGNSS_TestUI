@@ -24,8 +24,6 @@ object FProjCsys: TFProjCsys
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 130
-    ExplicitWidth = 447
     object Panel3: TPanel
       Left = 223
       Top = 0
@@ -34,13 +32,12 @@ object FProjCsys: TFProjCsys
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 142
       object CfgButton: TSpeedButton
         Left = 8
         Top = 6
         Width = 162
         Height = 25
-        Caption = 'Configure Datebase'
+        Caption = 'Configure Database'
         Glyph.Data = {
           26040000424D2604000000000000360000002800000012000000120000000100
           180000000000F0030000120B0000120B00000000000000000000FFFFFFFFFFFF
@@ -131,8 +128,6 @@ object FProjCsys: TFProjCsys
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 429
-    ExplicitHeight = 130
     object Label1: TLabel
       Left = 0
       Top = 0
@@ -156,8 +151,6 @@ object FProjCsys: TFProjCsys
       TabOrder = 0
       OnClick = CSBoxClick
       OnDrawItem = CSBoxDrawItem
-      ExplicitWidth = 396
-      ExplicitHeight = 76
     end
     object Panel5: TPanel
       Left = 0
@@ -167,8 +160,6 @@ object FProjCsys: TFProjCsys
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 92
-      ExplicitWidth = 429
       object Label2: TLabel
         Left = 0
         Top = 0
@@ -192,7 +183,6 @@ object FProjCsys: TFProjCsys
         ShowHint = True
         TabOrder = 0
         OnDrawItem = GeoidBoxDrawItem
-        ExplicitWidth = 429
       end
     end
     object Panel1: TPanel
@@ -203,8 +193,6 @@ object FProjCsys: TFProjCsys
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitLeft = 396
-      ExplicitHeight = 76
       object AddButton: TSpeedButton
         Left = 4
         Top = -1
@@ -253,8 +241,6 @@ object FProjCsys: TFProjCsys
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitLeft = 438
-    ExplicitHeight = 130
   end
   object Panel7: TPanel
     Left = 0
@@ -264,6 +250,5 @@ object FProjCsys: TFProjCsys
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitHeight = 130
   end
 end

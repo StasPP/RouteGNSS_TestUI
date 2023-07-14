@@ -42,6 +42,12 @@ type
     ProcAll: TSpeedButton;
     VectLabel3: TLabel;
     VectLabel2: TLabel;
+    SolTypeI: TLabel;
+    SolBtnI: TSpeedButton;
+    Label5: TLabel;
+    BEditI: TEdit;
+    Label6: TLabel;
+    REditI: TEdit;
     procedure Button6Click(Sender: TObject);
     procedure isAcClick(Sender: TObject);
     procedure RevVectClick(Sender: TObject);
@@ -62,6 +68,12 @@ type
     procedure VectLabel3Click(Sender: TObject);
 
     procedure RefreshVectorSettings;
+    procedure SolTypeIMouseEnter(Sender: TObject);
+    procedure SolTypeIMouseLeave(Sender: TObject);
+    procedure SolBtnIClick(Sender: TObject);
+    procedure SolTypeIClick(Sender: TObject);
+    procedure BEditDblClick(Sender: TObject);
+    procedure REditChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -97,11 +109,24 @@ const
                                       /// ToDo : Translate
 implementation
 
-uses UStartProcessing;
+uses UStartProcessing, UGNSSSessionOptions, Unit1;
 
 {$R *.dfm}
 
 { TFVectSettings }
+
+procedure TFVectSettings.REditChange(Sender: TObject);
+var I:Integer;
+    F2  :TFGNSSSessionOptions;
+begin
+
+  I := GetGNSSSessionNumber(REdit.Text);
+
+  F2 := TFGNSSSessionOptions.Create(nil);
+  F2.ShowGNSSSessionInfo(I, Form1.IcoList);
+  F2.Release;
+  RefreshVectorSettings;
+end;
 
 procedure TFVectSettings.RefreshVectorSettings;
 var I, j, N:integer;
@@ -122,9 +147,15 @@ begin
      end;
 
     End;
-
-
     N := BaseLinesBox.ItemIndex;
+
+    if Length(VectorsN)= 0 then
+    begin
+      close;
+      exit;
+    end
+    else
+
     if Length(VectorsN) > 1 then
     begin
       VPC.ActivePageIndex := 1;
@@ -241,18 +272,54 @@ end;
 
 procedure TFVectSettings.BaselinesBoxClick(Sender: TObject);
 var I, StatI, j :integer;
+  Sol:TSolutionId;
 begin
   if BaselinesBox.ItemIndex = -1 then
     exit;
 
-  isInit := true;
   I := BaselinesBox.ItemIndex;
+  if I < 0 then
+    exit;
+
+  isInit := true;
   StatI := GNSSVectors[VectorsN[I]].StatusQ;
   if StatI < 0 then
     StatI := -1;
 
   isItmAc.Checked := GNSSVectors[VectorsN[I]].StatusQ >= 0;
-  
+
+  VectRepI.Enabled := (GNSSVectors[VectorsN[I]].StatusQ > 0) and
+    (GNSSVectors[VectorsN[I]].StatusQ <> 8);
+
+  SolTypeI.Caption := StatList[StatI];
+
+  SolBtnI.Glyph.Assign(nil);
+  j := 30;
+  if (StatI > 0) and (StatI < 6) then
+  begin
+    SolTypeI.Cursor := crHandPoint;
+    Sol := GetGNSSSolutionForVector(VectorsN[I]);
+    if (Sol.SessionId <> '') and (Sol.SolutionN <> -1) then
+    begin
+      j := GNSSSessions[GetGNSSSessionNumber(Sol.SessionId)].
+        Solutions[Sol.SolutionN].SolutionQ
+        + 7*GetSolutionSubStatus(GetGNSSSessionNumber(Sol.SessionId),
+            Sol.SolutionN) + 30;
+    end;
+
+  end
+  else
+    SolTypeI.Cursor := crDefault;
+
+  ImgList.GetBitmap(j, SolBtnI.Glyph);
+
+  j := GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].BaseID);
+  if j >= 0 then
+    BEditI.Text := GNSSSessions[j].MaskName;
+  j := GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].RoverID);
+  if j >= 0 then
+    REditI.Text := GNSSSessions[j].MaskName;
+
   Memo2.Clear;
   Memo2.Lines.Add(BaselinesBox.Items[I]);
   Memo2.Lines.Add(StatList[StatI]);
@@ -284,7 +351,6 @@ begin
   else
       ImgList.GetBitmap(93,ProcVectI.Glyph);
 
-  VectRepI.Enabled := GNSSVectors[VectorsN[I]].StatusQ > 0;
 
   isInit := false;
 end;
@@ -324,6 +390,20 @@ inherited;
     end;
 
   end;
+end;
+
+procedure TFVectSettings.BEditDblClick(Sender: TObject);
+var I:Integer;
+    F2  :TFGNSSSessionOptions;
+begin
+
+  I := GetGNSSSessionNumber(BEdit.Text);
+
+  F2 := TFGNSSSessionOptions.Create(nil);
+  F2.ShowGNSSSessionInfo(I, Form1.IcoList);
+  F2.Release;
+  RefreshVectorSettings;
+
 end;
 
 procedure TFVectSettings.Button1Click(Sender: TObject);
@@ -444,6 +524,48 @@ begin
     Showmodal;
   end;
 
+end;
+
+procedure TFVectSettings.SolBtnIClick(Sender: TObject);
+var Sol :TSolutionId; I:Integer;
+    F2  :TFGNSSSessionOptions;
+begin
+  if BaselinesBox.ItemIndex = -1 then
+    exit;
+  I := BaselinesBox.ItemIndex;
+
+  Sol := GetGNSSSolutionForVector(VectorsN[I]);
+  if (Sol.SessionId <> '') and (Sol.SolutionN <> -1) then
+  begin
+     F2 := TFGNSSSessionOptions.Create(nil);
+     F2.ShowGNSSSessionInfo(GetGNSSSessionNumber(Sol.SessionId), Form1.IcoList, Sol.SolutionN);
+     F2.Release;
+     RefreshVectorSettings;
+  end;
+end;
+
+procedure TFVectSettings.SolTypeIClick(Sender: TObject);
+begin
+  if VectRepI.Enabled then
+    SolBtnI.Click;
+end;
+
+procedure TFVectSettings.SolTypeIMouseEnter(Sender: TObject);
+begin
+  if VectRepI.Enabled then
+  begin
+    if not (fsUnderline in SoltypeI.Font.Style) then
+      SoltypeI.Font.Style := SoltypeI.Font.Style + [fsUnderline];
+  end
+  else
+    if fsUnderline in SoltypeI.Font.Style then
+      SoltypeI.Font.Style := SoltypeI.Font.Style - [fsUnderline];
+end;
+
+procedure TFVectSettings.SolTypeIMouseLeave(Sender: TObject);
+begin
+    if fsUnderline in SoltypeI.Font.Style then
+      SoltypeI.Font.Style := SoltypeI.Font.Style - [fsUnderline];
 end;
 
 procedure TFVectSettings.RevVectClick(Sender: TObject);

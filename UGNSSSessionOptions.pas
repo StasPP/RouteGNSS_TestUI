@@ -157,6 +157,9 @@ type
     procedure CSboxChange(Sender: TObject);
     procedure ChangeGeoidClick(Sender: TObject);
     procedure VectBtnClick(Sender: TObject);
+    procedure ChoosedSolClick(Sender: TObject);
+    procedure ChoosedSolMouseEnter(Sender: TObject);
+    procedure ChoosedSolMouseLeave(Sender: TObject);
   private
     { Private declarations }
 
@@ -300,6 +303,30 @@ begin
      end;
   end;
 
+end;
+
+procedure TFGNSSSessionOptions.ChoosedSolClick(Sender: TObject);
+begin
+  if VectBtn.Visible then
+    VectBtn.Click;
+end;
+
+procedure TFGNSSSessionOptions.ChoosedSolMouseEnter(Sender: TObject);
+begin
+  if VectBtn.Visible then
+  begin
+    if not (fsUnderline in ChoosedSol.Font.Style) then
+      ChoosedSol.Font.Style := ChoosedSol.Font.Style + [fsUnderline];
+  end
+  else
+    if fsUnderline in ChoosedSol.Font.Style then
+      ChoosedSol.Font.Style := ChoosedSol.Font.Style - [fsUnderline];
+end;
+
+procedure TFGNSSSessionOptions.ChoosedSolMouseLeave(Sender: TObject);
+begin
+   if fsUnderline in ChoosedSol.Font.Style then
+      ChoosedSol.Font.Style := ChoosedSol.Font.Style - [fsUnderline];
 end;
 
 procedure TFGNSSSessionOptions.ChangeGeoidClick(Sender: TObject);
@@ -906,6 +933,11 @@ begin
             sqrt(sqr(StDevs[1]) + sqr(StDevs[2]) + sqr(StDevs[3])));
 
         VectBtn.Visible := Solutions[AvSol.ItemIndex].SolutionKind = 2;
+        if VectBtn.Visible then
+          ChoosedSol.Cursor := crHandPoint
+        else
+          ChoosedSol.Cursor := crDefault;
+
         if VectBtn.Visible  then
           ChoosedSol.Left := VectBtn.Left + VectBtn.Width + 2
         else

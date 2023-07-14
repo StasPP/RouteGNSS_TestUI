@@ -3,7 +3,7 @@ object FVectSettings: TFVectSettings
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Vector Settings'
-  ClientHeight = 259
+  ClientHeight = 307
   ClientWidth = 461
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -364,7 +364,7 @@ object FVectSettings: TFVectSettings
     Left = 4
     Top = 58
     Width = 450
-    Height = 193
+    Height = 241
     ActivePage = TabSheet2
     Style = tsButtons
     TabOrder = 0
@@ -372,7 +372,7 @@ object FVectSettings: TFVectSettings
       Caption = 'TabSheet1'
       TabVisible = False
       object RevVect: TSpeedButton
-        Left = 272
+        Left = 337
         Top = 26
         Width = 97
         Height = 21
@@ -403,7 +403,7 @@ object FVectSettings: TFVectSettings
         OnClick = RevVectClick
       end
       object Label1: TLabel
-        Left = 123
+        Left = 188
         Top = 29
         Width = 22
         Height = 13
@@ -419,16 +419,16 @@ object FVectSettings: TFVectSettings
         Caption = 'Info:'
       end
       object ProcVect: TSpeedButton
-        Left = 6
-        Top = 158
+        Left = 3
+        Top = 203
         Width = 134
         Height = 25
         Caption = 'Process'
         OnClick = Button4Click
       end
       object VectRep: TSpeedButton
-        Left = 146
-        Top = 158
+        Left = 143
+        Top = 203
         Width = 141
         Height = 25
         Caption = 'Report'
@@ -442,6 +442,15 @@ object FVectSettings: TFVectSettings
           DD00DD7F77777787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFFF7
           DD00DD7777777777DD00DDDDDDDDDDDDDD00}
       end
+      object Label5: TLabel
+        Left = 6
+        Top = 29
+        Width = 59
+        Height = 13
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Sessions:'
+      end
       object isAc: TCheckBox
         Left = 6
         Top = 3
@@ -452,7 +461,7 @@ object FVectSettings: TFVectSettings
         OnClick = isAcClick
       end
       object BEdit: TEdit
-        Left = 6
+        Left = 71
         Top = 26
         Width = 118
         Height = 21
@@ -461,7 +470,7 @@ object FVectSettings: TFVectSettings
         Text = 'Base'
       end
       object REdit: TEdit
-        Left = 142
+        Left = 207
         Top = 26
         Width = 124
         Height = 21
@@ -473,14 +482,14 @@ object FVectSettings: TFVectSettings
         Left = 6
         Top = 74
         Width = 431
-        Height = 73
+        Height = 123
         ReadOnly = True
         ScrollBars = ssVertical
         TabOrder = 3
       end
       object Button6: TButton
-        Left = 294
-        Top = 158
+        Left = 291
+        Top = 203
         Width = 143
         Height = 25
         Caption = 'Close'
@@ -500,8 +509,8 @@ object FVectSettings: TFVectSettings
         Caption = 'Available vectors'
       end
       object SpeedButton2: TSpeedButton
-        Left = 82
-        Top = 111
+        Left = 78
+        Top = 170
         Width = 87
         Height = 23
         Caption = 'Reverse All'
@@ -531,8 +540,8 @@ object FVectSettings: TFVectSettings
         OnClick = SpeedButton2Click
       end
       object RepAll: TSpeedButton
-        Left = 146
-        Top = 158
+        Left = 141
+        Top = 203
         Width = 141
         Height = 25
         Caption = 'Report for All'
@@ -547,9 +556,9 @@ object FVectSettings: TFVectSettings
           7D00D7FFFFFFFF7DDD00D7777777777DDD00}
       end
       object ProcAll: TSpeedButton
-        Left = 6
-        Top = 158
-        Width = 134
+        Left = 3
+        Top = 203
+        Width = 132
         Height = 25
         Caption = 'Process the Batch'
         Glyph.Data = {
@@ -582,10 +591,10 @@ object FVectSettings: TFVectSettings
         OnClick = Button3Click
       end
       object BaselinesBox: TListBox
-        Left = 6
+        Left = 3
         Top = 24
         Width = 163
-        Height = 81
+        Height = 140
         Style = lbOwnerDrawFixed
         ItemHeight = 16
         TabOrder = 0
@@ -593,8 +602,8 @@ object FVectSettings: TFVectSettings
         OnDrawItem = BaselinesBoxDrawItem
       end
       object Button1: TButton
-        Left = 294
-        Top = 158
+        Left = 289
+        Top = 203
         Width = 143
         Height = 25
         Caption = 'Close'
@@ -605,7 +614,7 @@ object FVectSettings: TFVectSettings
         Left = 175
         Top = 5
         Width = 264
-        Height = 147
+        Height = 192
         ActivePage = TabSheet4
         Style = tsButtons
         TabOrder = 2
@@ -626,7 +635,7 @@ object FVectSettings: TFVectSettings
           TabVisible = False
           object ProcVectI: TSpeedButton
             Left = 0
-            Top = 100
+            Top = 159
             Width = 120
             Height = 23
             Caption = 'Process the Vector'
@@ -669,7 +678,7 @@ object FVectSettings: TFVectSettings
           end
           object VectRepI: TSpeedButton
             Left = 126
-            Top = 100
+            Top = 159
             Width = 127
             Height = 23
             Caption = 'Single Vector Report'
@@ -683,6 +692,53 @@ object FVectSettings: TFVectSettings
               DD00DD7F77777787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFFF7
               DD00DD7777777777DD00DDDDDDDDDDDDDD00}
           end
+          object SolTypeI: TLabel
+            Left = 168
+            Top = 4
+            Width = 42
+            Height = 13
+            Caption = 'SolTypeI'
+            OnClick = SolTypeIClick
+            OnMouseEnter = SolTypeIMouseEnter
+            OnMouseLeave = SolTypeIMouseLeave
+          end
+          object SolBtnI: TSpeedButton
+            Left = 142
+            Top = 0
+            Width = 23
+            Height = 22
+            Flat = True
+            Glyph.Data = {
+              42020000424D4202000000000000420000002800000010000000100000000100
+              10000300000000020000120B0000120B00000000000000000000007C0000E003
+              00001F000000FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7F8D47DA6FFF7FFF7FFF7FFE7F4D4FC22EC22E4D4FFE7F
+              FF7FFF7FFF7FFF7FFF7F652B6223B153FF7FFF7F4D4FA026A026A026A0264E4F
+              FF7FFF7FFF7FFF7FFF7F642B611F611F8733D96FC22EA026A026A026A026C22E
+              FF7FFF7FFF7FFF7FFF7F6327611F611F6327B257C22EA026A026A026A026C22E
+              FF7FFF7FFF7FFF7FFF7F63276223AE47FD77FF7F4D4FA026A026A026A0264E4F
+              FF7FFF7FFF7FFF7FFF7F8B3FDA6FFF7FFF7FFF7FFE7F4D4FC22EC22E4D4FFE7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7F}
+            OnClick = SolBtnIClick
+          end
+          object Label6: TLabel
+            Left = 114
+            Top = 29
+            Width = 22
+            Height = 13
+            Alignment = taCenter
+            AutoSize = False
+            Caption = '->'
+          end
           object isItmAc: TCheckBox
             Left = 0
             Top = 3
@@ -694,12 +750,30 @@ object FVectSettings: TFVectSettings
           end
           object Memo2: TMemo
             Left = 0
-            Top = 26
+            Top = 53
             Width = 253
-            Height = 68
+            Height = 100
             ReadOnly = True
             ScrollBars = ssVertical
             TabOrder = 1
+          end
+          object BEditI: TEdit
+            Left = 0
+            Top = 26
+            Width = 115
+            Height = 21
+            ReadOnly = True
+            TabOrder = 2
+            Text = 'Base'
+          end
+          object REditI: TEdit
+            Left = 135
+            Top = 26
+            Width = 120
+            Height = 21
+            ReadOnly = True
+            TabOrder = 3
+            Text = 'Rover'
           end
         end
       end

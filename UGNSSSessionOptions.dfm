@@ -2188,6 +2188,9 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
             Font.Name = 'Tahoma'
             Font.Style = [fsBold]
             ParentFont = False
+            OnClick = ChoosedSolClick
+            OnMouseEnter = ChoosedSolMouseEnter
+            OnMouseLeave = ChoosedSolMouseLeave
           end
           object DelSol: TSpeedButton
             Left = 3

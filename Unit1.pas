@@ -86,6 +86,7 @@ type
     Button6: TButton;
     ShowTree: TSpeedButton;
     SpeedButton2: TSpeedButton;
+    ImprortRIN: TSpeedButton;
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -133,6 +134,7 @@ type
     procedure ShowTreeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
+    procedure ImprortRINClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -887,6 +889,11 @@ end;
 procedure TForm1.FormShow(Sender: TObject);
 begin
   ShowTree.Click;
+end;
+
+procedure TForm1.ImprortRINClick(Sender: TObject);
+begin
+  FMainTree.ImprortRIN.Click;
 end;
 
 procedure TForm1.Invert1Click(Sender: TObject);

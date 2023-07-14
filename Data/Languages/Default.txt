@@ -1,7 +1,7 @@
 
 //
 Form1
-RouteNav: Геокалькулятор v.0.8
+Геокалькулятор v.0.8
 
 Label12
 Геоид:
@@ -1046,5 +1046,29 @@ Label15
 23
 
 LangBox
+
+//
+FABOUT
+About
+
+Image1
+
+Label14
+RedStar Geocalc Utility   
+
+Label15
+Based on RouteNav GeoCalc by Stanislav Shevchuk
+
+Label16
+2023, All rigths reserved
+
+Label1
+Version: 
+
+Label2
+0.8
+
+Button1
+OK
 
 //

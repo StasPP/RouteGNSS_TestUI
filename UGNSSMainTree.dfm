@@ -4,7 +4,7 @@ object FMainTree: TFMainTree
   BorderStyle = bsSizeToolWin
   Caption = 'Objects'
   ClientHeight = 327
-  ClientWidth = 278
+  ClientWidth = 247
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,13 +18,15 @@ object FMainTree: TFMainTree
   PixelsPerInch = 96
   TextHeight = 13
   object BtnPan: TPanel
-    Left = 227
+    Left = 196
     Top = 0
     Width = 51
     Height = 327
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 0
+    Visible = False
+    ExplicitLeft = 227
     object ImprortRIN: TSpeedButton
       Left = 6
       Top = 8
@@ -52,15 +54,16 @@ object FMainTree: TFMainTree
   object MainPan: TPanel
     Left = 0
     Top = 0
-    Width = 227
+    Width = 196
     Height = 327
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 227
     object DataCat: TComboBox
       Left = 0
       Top = 0
-      Width = 227
+      Width = 196
       Height = 22
       Align = alTop
       Style = csOwnerDrawFixed
@@ -73,11 +76,12 @@ object FMainTree: TFMainTree
       Items.Strings = (
         ' Points/Tracks'
         ' GNSS Vectors')
+      ExplicitWidth = 227
     end
     object TreeView: TTreeView
       Left = 0
       Top = 22
-      Width = 227
+      Width = 196
       Height = 305
       Align = alClient
       Indent = 19
@@ -89,6 +93,7 @@ object FMainTree: TFMainTree
       OnDblClick = TreeViewDblClick
       OnMouseMove = TreeViewMouseMove
       OnMouseUp = TreeViewMouseUp
+      ExplicitWidth = 227
     end
   end
   object OpenDialog: TOpenDialog
