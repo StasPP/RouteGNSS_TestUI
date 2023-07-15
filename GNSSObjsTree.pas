@@ -82,6 +82,9 @@ procedure OutputCoords(X, Y, Z : Double; CS1, CS2, WGSCS:Integer;
 begin
     XEd.Text := '';  YEd.Text := '';  ZEd.Text := '';
 
+    if GeoidIdx > Length(GeoidList)-1 then
+      GeoidIdx := Length(GeoidList)-1;
+
     if (CS2 = -1) or (CS1 = -1) then
       exit;
 

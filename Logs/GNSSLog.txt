@@ -1,17 +1,8 @@
-12:55:14 PM Loaded session: karg219e20
-12:55:14 PM Added new Point: KARG for Session: karg219e20
-12:55:14 PM Adding Session: karg219e20_4404918 to Point: KARG
-12:55:14 PM Refreshing Point: KARG
-12:55:14 PM Setting Coordinates for Point: KARG  from RINEX headers
-12:55:14 PM Assigned:  from RINEX headers
-12:55:14 PM Checking Points... 
-12:55:14 PM Checking Points is DONE! 
-12:55:14 PM Loaded session: ubin219e20
-12:55:14 PM Added new Point: UBIN for Session: ubin219e20
-12:55:14 PM Adding Session: ubin219e20_4404918 to Point: UBIN
-12:55:14 PM Refreshing Point: UBIN
-12:55:14 PM Setting Coordinates for Point: UBIN  from RINEX headers
-12:55:14 PM Assigned:  from RINEX headers
-12:55:14 PM Checking Points... 
-12:55:14 PM Checking Points is DONE! 
-12:55:14 PM Added Vector: karg219e20 -> ubin219e20
+12:37:35 PM Loaded session: karg219f20
+12:37:35 PM Added new Point: KARG for Session: karg219f20
+12:37:35 PM Adding Session: karg219f20_4404922 to Point: KARG
+12:37:35 PM Refreshing Point: KARG
+12:37:35 PM Setting Coordinates for Point: KARG  from RINEX headers
+12:37:35 PM Assigned:  from RINEX headers
+12:37:35 PM Checking Points... 
+12:37:35 PM Checking Points is DONE! 
