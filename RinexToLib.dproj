@@ -61,8 +61,14 @@
     <DCCReference Include="Unit1.pas">
       <Form>Form1</Form>
     </DCCReference>
+    <DCCReference Include="UOutRep.pas">
+      <Form>OutRep</Form>
+    </DCCReference>
     <DCCReference Include="UProjCsys.pas">
       <Form>FProjCsys</Form>
+    </DCCReference>
+    <DCCReference Include="USetPaths.pas">
+      <Form>FProcSet</Form>
     </DCCReference>
     <DCCReference Include="UStartProcessing.pas">
       <Form>FStartProcessing</Form>

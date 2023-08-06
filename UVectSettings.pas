@@ -17,11 +17,9 @@ type
     TabSheet1: TTabSheet;
     RevVect: TSpeedButton;
     Label1: TLabel;
-    Label2: TLabel;
     isAc: TCheckBox;
     BEdit: TEdit;
     REdit: TEdit;
-    Memo1: TMemo;
     TabSheet2: TTabSheet;
     BaselinesBox: TListBox;
     Label3: TLabel;
@@ -48,6 +46,67 @@ type
     BEditI: TEdit;
     Label6: TLabel;
     REditI: TEdit;
+    VLPC: TPageControl;
+    TabSheet5: TTabSheet;
+    TabSheet6: TTabSheet;
+    TabSheet7: TTabSheet;
+    Label7: TLabel;
+    aLength: TEdit;
+    XLabel: TLabel;
+    AdN: TEdit;
+    Label9: TLabel;
+    Label10: TLabel;
+    adU: TEdit;
+    Label8: TLabel;
+    A3D: TEdit;
+    Label11: TLabel;
+    adE: TEdit;
+    TabSheet8: TTabSheet;
+    Label12: TLabel;
+    AmN: TEdit;
+    Label13: TLabel;
+    AmE: TEdit;
+    Label14: TLabel;
+    AmU: TEdit;
+    A11: TEdit;
+    A21: TEdit;
+    A31: TEdit;
+    A32: TEdit;
+    A22: TEdit;
+    A12: TEdit;
+    A33: TEdit;
+    A23: TEdit;
+    A13: TEdit;
+    VLPC0: TPageControl;
+    TabSheet9: TTabSheet;
+    Label2: TLabel;
+    TabSheet10: TTabSheet;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    BLength: TEdit;
+    BdN: TEdit;
+    BdU: TEdit;
+    BdE: TEdit;
+    Label20: TLabel;
+    BmN: TEdit;
+    Label21: TLabel;
+    BmE: TEdit;
+    Label22: TLabel;
+    BmU: TEdit;
+    Label19: TLabel;
+    B3D: TEdit;
+    GroupBox1: TGroupBox;
+    B11: TEdit;
+    B12: TEdit;
+    B13: TEdit;
+    B23: TEdit;
+    B22: TEdit;
+    B21: TEdit;
+    B31: TEdit;
+    B32: TEdit;
+    B33: TEdit;
     procedure Button6Click(Sender: TObject);
     procedure isAcClick(Sender: TObject);
     procedure RevVectClick(Sender: TObject);
@@ -206,26 +265,62 @@ begin
       if StatI < 0 then
         StatI := -1;
 
-      Memo1.Clear;
-      if (StatI > 0) and (StatI <> 8) then
+//      Memo1.Clear;
+//      if (StatI > 0) and (StatI <> 8) then
+//      with GNSSVectors[VectorN] do
+//      begin
+//        Memo1.Lines.Add('Vector length: '+FormatFloat('### ### ##0.000',
+//                        SQRT(sqr(dX) + sqr(dY) + sqr(dZ)) ) + ' m;');
+//
+//        Memo1.Lines.Add('dX: '+ FormatFloat('### ### ##0.000', dX)  + ' m;  ' +
+//                        'dY: '+ FormatFloat('### ### ##0.000', dY)  + ' m;  ' +
+//                        'dZ: '+ FormatFloat('### ### ##0.000', dZ)  + ' m.');
+//        Memo1.Lines.Add('StDevs / Covariation matrix elements:');
+//        Memo1.Lines.Add('mX: '+ FormatFloat('0.0000', StDevs[1])  + ' m;  ' +
+//                        'mY: '+ FormatFloat('0.0000', StDevs[2])  + ' m;  ' +
+//                        'mZ: '+ FormatFloat('0.0000', StDevs[3])  + ' m;');
+//        Memo1.Lines.Add('mXY: '+ FormatFloat('0.0000', StDevs[4]) + ' m;  ' +
+//                        'mYZ: '+ FormatFloat('0.0000', StDevs[5]) + ' m;  ' +
+//                        'mZX: '+ FormatFloat('0.0000', StDevs[6]) + ' m.');
+//      end
+//      else
+//        Memo1.Lines.Add('No processing info yet');
+
+    if (StatI > 0) and (StatI <> 8) then
+    begin
+      VLPC0.ActivePageIndex := 1;
       with GNSSVectors[VectorN] do
       begin
-        Memo1.Lines.Add('Vector length: '+FormatFloat('### ### ##0.000',
-                        SQRT(sqr(dX) + sqr(dY) + sqr(dZ)) ) + ' m;');
+        BLength.Text :=  FormatFloat('### ### ##0.000',
+                     SQRT(sqr(dX) + sqr(dY) + sqr(dZ)) );
 
-        Memo1.Lines.Add('dX: '+ FormatFloat('### ### ##0.000', dX)  + ' m;  ' +
-                        'dY: '+ FormatFloat('### ### ##0.000', dY)  + ' m;  ' +
-                        'dZ: '+ FormatFloat('### ### ##0.000', dZ)  + ' m.');
-        Memo1.Lines.Add('StDevs / Covariation matrix elements:');
-        Memo1.Lines.Add('mX: '+ FormatFloat('0.0000', StDevs[1])  + ' m;  ' +
-                        'mY: '+ FormatFloat('0.0000', StDevs[2])  + ' m;  ' +
-                        'mZ: '+ FormatFloat('0.0000', StDevs[3])  + ' m;');
-        Memo1.Lines.Add('mXY: '+ FormatFloat('0.0000', StDevs[4]) + ' m;  ' +
-                        'mYZ: '+ FormatFloat('0.0000', StDevs[5]) + ' m;  ' +
-                        'mZX: '+ FormatFloat('0.0000', StDevs[6]) + ' m.');
-      end
-      else
-        Memo1.Lines.Add('No processing info yet');
+        BdN.Text :=  FormatFloat('### ### ##0.000', dX);  // ToDo!!!  XYZ => NEU
+        BdE.Text :=  FormatFloat('### ### ##0.000', dY);
+        BdU.Text :=  FormatFloat('### ### ##0.000', dZ);
+
+        B3D.Text :=  FormatFloat('0.0000',
+                     SQRT(sqr(StDevs[1]) + sqr(StDevs[2]) + sqr(StDevs[3])) );
+
+        BmN.Text :=  FormatFloat('0.0000', StDevs[1]);  // ToDo!!! XYZ => NEU
+        BmE.Text :=  FormatFloat('0.0000', StDevs[2]);
+        BmU.Text :=  FormatFloat('0.0000', StDevs[3]);
+
+        B11.Text :=  FormatFloat('0.0000', StDevs[1]);
+        B12.Text :=  FormatFloat('0.0000', StDevs[4]);
+        B13.Text :=  FormatFloat('0.0000', StDevs[6]);
+
+        B22.Text :=  FormatFloat('0.0000', StDevs[4]);
+        B22.Text :=  FormatFloat('0.0000', StDevs[2]);
+        B22.Text :=  FormatFloat('0.0000', StDevs[5]);
+
+        B31.Text :=  FormatFloat('0.0000', StDevs[5]);
+        B33.Text :=  FormatFloat('0.0000', StDevs[6]);
+        B33.Text :=  FormatFloat('0.0000', StDevs[3]);
+      end;
+    end
+    else
+      VLPC0.ActivePageIndex := 0;
+
     end;
 
     VectLabel.Caption  := BaseId;
@@ -233,7 +328,7 @@ begin
 
     VectLabel2.Left    := VectLabel.Left  + VectLabel.Width;
     VectLabel3.Left    := VectLabel2.Left + VectLabel2.Width;
-    
+
     if (StatI >= -1) and (StatI < 100) then
       StatusLabel.Caption := StatList[StatI]
     else
@@ -320,29 +415,76 @@ begin
   if j >= 0 then
     REditI.Text := GNSSSessions[j].MaskName;
 
-  Memo2.Clear;
-  Memo2.Lines.Add(BaselinesBox.Items[I]);
-  Memo2.Lines.Add(StatList[StatI]);
+//  Memo2.Clear;
+//  Memo2.Lines.Add(BaselinesBox.Items[I]);
+//  Memo2.Lines.Add(StatList[StatI]);
+//  if (StatI > 0) and (StatI <> 8) then
+//  with GNSSVectors[VectorsN[I]] do
+//  begin
+//    Memo2.Lines.Add('Vector length: '+FormatFloat('### ### ##0.000',
+//                        SQRT(sqr(dX) + sqr(dY) + sqr(dZ)) ) + ' m;');
+//
+//    Memo2.Lines.Add('dX: '+ FormatFloat('### ### ##0.000', dX)  + ' m;');
+//    Memo2.Lines.Add('dY: '+ FormatFloat('### ### ##0.000', dY)  + ' m;');
+//    Memo2.Lines.Add('dZ: '+ FormatFloat('### ### ##0.000', dZ)  + ' m.');
+//
+//    Memo2.Lines.Add('StDevs / Covariation matrix elements:');
+//    Memo2.Lines.Add('mX: '+ FormatFloat('0.0000', StDevs[1])  + ' m; ' +
+//                    'mY: '+ FormatFloat('0.0000', StDevs[2])  + ' m; ' +
+//                    'mZ: '+ FormatFloat('0.0000', StDevs[3])  + ' m;');
+//    Memo2.Lines.Add('mXY: '+ FormatFloat('0.0000', StDevs[4]) + ' m; ' +
+//                    'mYZ: '+ FormatFloat('0.0000', StDevs[5]) + ' m; ' +
+//                    'mZX: '+ FormatFloat('0.0000', StDevs[6]) + ' m.');
+//  end
+//  else
+//    Memo2.Lines.Add('No processing info yet');
+
+
   if (StatI > 0) and (StatI <> 8) then
-  with GNSSVectors[VectorsN[I]] do
   begin
-    Memo2.Lines.Add('Vector length: '+FormatFloat('### ### ##0.000',
-                        SQRT(sqr(dX) + sqr(dY) + sqr(dZ)) ) + ' m;');
+    VLPC.Pages[1].TabVisible := true;
+    VLPC.Pages[2].TabVisible := true;
+    VLPC.Pages[3].TabVisible := true;
+    VLPC.ActivePageIndex := 1;
+    with GNSSVectors[VectorsN[I]] do
+    begin
+      aLength.Text :=  FormatFloat('### ### ##0.000',
+                     SQRT(sqr(dX) + sqr(dY) + sqr(dZ)) );
 
-    Memo2.Lines.Add('dX: '+ FormatFloat('### ### ##0.000', dX)  + ' m;');
-    Memo2.Lines.Add('dY: '+ FormatFloat('### ### ##0.000', dY)  + ' m;');
-    Memo2.Lines.Add('dZ: '+ FormatFloat('### ### ##0.000', dZ)  + ' m.');
+      adN.Text :=  FormatFloat('### ### ##0.000', dX);  // ToDo!!!  XYZ => NEU
+      adE.Text :=  FormatFloat('### ### ##0.000', dY);
+      adU.Text :=  FormatFloat('### ### ##0.000', dZ);
 
-    Memo2.Lines.Add('StDevs / Covariation matrix elements:');
-    Memo2.Lines.Add('mX: '+ FormatFloat('0.0000', StDevs[1])  + ' m; ' +
-                    'mY: '+ FormatFloat('0.0000', StDevs[2])  + ' m; ' + 
-                    'mZ: '+ FormatFloat('0.0000', StDevs[3])  + ' m;');
-    Memo2.Lines.Add('mXY: '+ FormatFloat('0.0000', StDevs[4]) + ' m; ' +
-                    'mYZ: '+ FormatFloat('0.0000', StDevs[5]) + ' m; ' + 
-                    'mZX: '+ FormatFloat('0.0000', StDevs[6]) + ' m.');
+      a3D.Text :=  FormatFloat('0.0000',
+                     SQRT(sqr(StDevs[1]) + sqr(StDevs[2]) + sqr(StDevs[3])) );
+
+      amN.Text :=  FormatFloat('0.0000', StDevs[1]);  // ToDo!!! XYZ => NEU
+      amE.Text :=  FormatFloat('0.0000', StDevs[2]);
+      amU.Text :=  FormatFloat('0.0000', StDevs[3]);
+
+      a11.Text :=  FormatFloat('0.0000', StDevs[1]);
+      a12.Text :=  FormatFloat('0.0000', StDevs[4]);
+      a13.Text :=  FormatFloat('0.0000', StDevs[6]);
+
+      a22.Text :=  FormatFloat('0.0000', StDevs[4]);
+      a22.Text :=  FormatFloat('0.0000', StDevs[2]);
+      a22.Text :=  FormatFloat('0.0000', StDevs[5]);
+
+      a31.Text :=  FormatFloat('0.0000', StDevs[5]);
+      a33.Text :=  FormatFloat('0.0000', StDevs[6]);
+      a33.Text :=  FormatFloat('0.0000', StDevs[3]);
+    end;
   end
   else
-    Memo2.Lines.Add('No processing info yet');
+  begin
+    VLPC.Pages[1].TabVisible := false;
+    VLPC.Pages[2].TabVisible := false;
+    VLPC.Pages[3].TabVisible := false;
+    VLPC.ActivePageIndex := 0;
+  end;
+
+
+
 
   ProcVectI.Glyph.Assign(nil);
   ProcVectI.Enabled := GNSSVectors[VectorsN[I]].StatusQ >= 0;

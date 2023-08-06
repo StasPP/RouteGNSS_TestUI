@@ -365,7 +365,7 @@ object FVectSettings: TFVectSettings
     Top = 58
     Width = 450
     Height = 241
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Style = tsButtons
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -410,13 +410,6 @@ object FVectSettings: TFVectSettings
         Alignment = taCenter
         AutoSize = False
         Caption = '-> '
-      end
-      object Label2: TLabel
-        Left = 6
-        Top = 55
-        Width = 24
-        Height = 13
-        Caption = 'Info:'
       end
       object ProcVect: TSpeedButton
         Left = 3
@@ -478,23 +471,310 @@ object FVectSettings: TFVectSettings
         TabOrder = 2
         Text = 'Rover'
       end
-      object Memo1: TMemo
-        Left = 6
-        Top = 74
-        Width = 431
-        Height = 123
-        ReadOnly = True
-        ScrollBars = ssVertical
-        TabOrder = 3
-      end
       object Button6: TButton
         Left = 291
         Top = 203
         Width = 143
         Height = 25
         Caption = 'Close'
-        TabOrder = 4
+        TabOrder = 3
         OnClick = Button6Click
+      end
+      object VLPC0: TPageControl
+        Left = 3
+        Top = 55
+        Width = 438
+        Height = 136
+        ActivePage = TabSheet10
+        Style = tsButtons
+        TabOrder = 4
+        object TabSheet9: TTabSheet
+          Caption = 'TabSheet5'
+          TabVisible = False
+          ExplicitTop = 27
+          ExplicitWidth = 245
+          ExplicitHeight = 72
+          object Label2: TLabel
+            Left = 0
+            Top = 0
+            Width = 430
+            Height = 126
+            Align = alClient
+            Alignment = taCenter
+            Caption = 'No processing data'
+            Layout = tlCenter
+            ExplicitWidth = 92
+            ExplicitHeight = 13
+          end
+        end
+        object TabSheet10: TTabSheet
+          Caption = 'Length'
+          ImageIndex = 1
+          TabVisible = False
+          object Label15: TLabel
+            Left = -4
+            Top = 4
+            Width = 80
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Full length, m:'
+          end
+          object Label16: TLabel
+            Left = 2
+            Top = 56
+            Width = 34
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'dN, m:'
+          end
+          object Label17: TLabel
+            Left = 2
+            Top = 105
+            Width = 34
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'dU, m:'
+          end
+          object Label18: TLabel
+            Left = 2
+            Top = 81
+            Width = 34
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'dE, m:'
+          end
+          object Label20: TLabel
+            Left = 123
+            Top = 56
+            Width = 34
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'mN, m:'
+          end
+          object Label21: TLabel
+            Left = 123
+            Top = 81
+            Width = 34
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'mE, m:'
+          end
+          object Label22: TLabel
+            Left = 123
+            Top = 105
+            Width = 34
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'mU, m:'
+          end
+          object Label19: TLabel
+            Left = 6
+            Top = 29
+            Width = 70
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'StDev 3D, m:'
+          end
+          object BLength: TEdit
+            Left = 82
+            Top = 1
+            Width = 104
+            Height = 21
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 0
+            Text = '0'
+          end
+          object BdN: TEdit
+            Left = 42
+            Top = 53
+            Width = 75
+            Height = 21
+            ReadOnly = True
+            TabOrder = 1
+            Text = '0'
+          end
+          object BdU: TEdit
+            Left = 42
+            Top = 102
+            Width = 75
+            Height = 21
+            ReadOnly = True
+            TabOrder = 2
+            Text = '0'
+          end
+          object BdE: TEdit
+            Left = 42
+            Top = 78
+            Width = 75
+            Height = 21
+            ReadOnly = True
+            TabOrder = 3
+            Text = '0'
+          end
+          object BmN: TEdit
+            Left = 163
+            Top = 53
+            Width = 59
+            Height = 21
+            ReadOnly = True
+            TabOrder = 4
+            Text = '0'
+          end
+          object BmE: TEdit
+            Left = 163
+            Top = 78
+            Width = 59
+            Height = 21
+            ReadOnly = True
+            TabOrder = 5
+            Text = '0'
+          end
+          object BmU: TEdit
+            Left = 163
+            Top = 102
+            Width = 59
+            Height = 21
+            ReadOnly = True
+            TabOrder = 6
+            Text = '0'
+          end
+          object B3D: TEdit
+            Left = 82
+            Top = 26
+            Width = 104
+            Height = 21
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 7
+            Text = '0'
+          end
+          object GroupBox1: TGroupBox
+            Left = 229
+            Top = 7
+            Width = 195
+            Height = 101
+            Caption = 'Covariation Matrix'
+            TabOrder = 8
+            object B11: TEdit
+              Left = 4
+              Top = 21
+              Width = 60
+              Height = 21
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ReadOnly = True
+              TabOrder = 0
+              Text = '0'
+            end
+            object B12: TEdit
+              Left = 67
+              Top = 21
+              Width = 60
+              Height = 21
+              ReadOnly = True
+              TabOrder = 1
+              Text = '0'
+            end
+            object B13: TEdit
+              Left = 130
+              Top = 21
+              Width = 60
+              Height = 21
+              ReadOnly = True
+              TabOrder = 2
+              Text = '0'
+            end
+            object B23: TEdit
+              Left = 130
+              Top = 46
+              Width = 60
+              Height = 21
+              ReadOnly = True
+              TabOrder = 3
+              Text = '0'
+            end
+            object B22: TEdit
+              Left = 67
+              Top = 46
+              Width = 60
+              Height = 21
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ReadOnly = True
+              TabOrder = 4
+              Text = '0'
+            end
+            object B21: TEdit
+              Left = 4
+              Top = 46
+              Width = 60
+              Height = 21
+              ReadOnly = True
+              TabOrder = 5
+              Text = '0'
+            end
+            object B31: TEdit
+              Left = 4
+              Top = 71
+              Width = 60
+              Height = 21
+              ReadOnly = True
+              TabOrder = 6
+              Text = '0'
+            end
+            object B32: TEdit
+              Left = 67
+              Top = 71
+              Width = 60
+              Height = 21
+              ReadOnly = True
+              TabOrder = 7
+              Text = '0'
+            end
+            object B33: TEdit
+              Left = 130
+              Top = 71
+              Width = 60
+              Height = 21
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ReadOnly = True
+              TabOrder = 8
+              Text = '0'
+            end
+          end
+        end
       end
     end
     object TabSheet2: TTabSheet
@@ -756,6 +1036,7 @@ object FVectSettings: TFVectSettings
             ReadOnly = True
             ScrollBars = ssVertical
             TabOrder = 1
+            Visible = False
           end
           object BEditI: TEdit
             Left = 0
@@ -774,6 +1055,288 @@ object FVectSettings: TFVectSettings
             ReadOnly = True
             TabOrder = 3
             Text = 'Rover'
+          end
+          object VLPC: TPageControl
+            Left = 0
+            Top = 53
+            Width = 253
+            Height = 103
+            ActivePage = TabSheet6
+            Style = tsButtons
+            TabOrder = 4
+            object TabSheet5: TTabSheet
+              Caption = 'TabSheet5'
+              TabVisible = False
+              object Label7: TLabel
+                Left = 0
+                Top = 0
+                Width = 245
+                Height = 72
+                Align = alClient
+                Alignment = taCenter
+                Caption = 'No processing data'
+                Layout = tlCenter
+                ExplicitLeft = 80
+                ExplicitTop = 32
+                ExplicitWidth = 92
+                ExplicitHeight = 13
+              end
+            end
+            object TabSheet6: TTabSheet
+              Caption = 'Length'
+              ImageIndex = 1
+              object XLabel: TLabel
+                Left = 19
+                Top = 3
+                Width = 80
+                Height = 13
+                Alignment = taRightJustify
+                AutoSize = False
+                Caption = 'Full length, m:'
+              end
+              object Label9: TLabel
+                Left = 3
+                Top = 28
+                Width = 34
+                Height = 13
+                Alignment = taRightJustify
+                AutoSize = False
+                Caption = 'dN, m:'
+              end
+              object Label10: TLabel
+                Left = 129
+                Top = 28
+                Width = 34
+                Height = 13
+                Alignment = taRightJustify
+                AutoSize = False
+                Caption = 'dU, m:'
+              end
+              object Label11: TLabel
+                Left = 3
+                Top = 53
+                Width = 34
+                Height = 13
+                Alignment = taRightJustify
+                AutoSize = False
+                Caption = 'dE, m:'
+              end
+              object aLength: TEdit
+                Left = 105
+                Top = 0
+                Width = 104
+                Height = 21
+                ReadOnly = True
+                TabOrder = 0
+                Text = '0'
+              end
+              object AdN: TEdit
+                Left = 43
+                Top = 25
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 1
+                Text = '0'
+              end
+              object adU: TEdit
+                Left = 169
+                Top = 25
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 2
+                Text = '0'
+              end
+              object adE: TEdit
+                Left = 43
+                Top = 50
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 3
+                Text = '0'
+              end
+            end
+            object TabSheet7: TTabSheet
+              Caption = 'StDev'
+              ImageIndex = 2
+              object Label8: TLabel
+                Left = 36
+                Top = 4
+                Width = 70
+                Height = 13
+                Alignment = taRightJustify
+                AutoSize = False
+                Caption = 'StDev 3D, m:'
+              end
+              object Label12: TLabel
+                Left = 3
+                Top = 28
+                Width = 34
+                Height = 13
+                Alignment = taRightJustify
+                AutoSize = False
+                Caption = 'mN, m:'
+              end
+              object Label13: TLabel
+                Left = 3
+                Top = 53
+                Width = 34
+                Height = 13
+                Alignment = taRightJustify
+                AutoSize = False
+                Caption = 'mE, m:'
+              end
+              object Label14: TLabel
+                Left = 129
+                Top = 28
+                Width = 34
+                Height = 13
+                Alignment = taRightJustify
+                AutoSize = False
+                Caption = 'mU, m:'
+              end
+              object A3D: TEdit
+                Left = 112
+                Top = 1
+                Width = 77
+                Height = 21
+                ReadOnly = True
+                TabOrder = 0
+                Text = '0'
+              end
+              object AmN: TEdit
+                Left = 43
+                Top = 26
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 1
+                Text = '0'
+              end
+              object AmE: TEdit
+                Left = 43
+                Top = 50
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 2
+                Text = '0'
+              end
+              object AmU: TEdit
+                Left = 169
+                Top = 25
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 3
+                Text = '0'
+              end
+            end
+            object TabSheet8: TTabSheet
+              Caption = 'Covariation Matrix'
+              ImageIndex = 3
+              object A11: TEdit
+                Left = 6
+                Top = 1
+                Width = 75
+                Height = 21
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+                ReadOnly = True
+                TabOrder = 0
+                Text = '0'
+              end
+              object A21: TEdit
+                Left = 6
+                Top = 26
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 1
+                Text = '0'
+              end
+              object A31: TEdit
+                Left = 6
+                Top = 51
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 2
+                Text = '0'
+              end
+              object A32: TEdit
+                Left = 86
+                Top = 51
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 3
+                Text = '0'
+              end
+              object A22: TEdit
+                Left = 86
+                Top = 26
+                Width = 75
+                Height = 21
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+                ReadOnly = True
+                TabOrder = 4
+                Text = '0'
+              end
+              object A12: TEdit
+                Left = 86
+                Top = 1
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 5
+                Text = '0'
+              end
+              object A33: TEdit
+                Left = 166
+                Top = 51
+                Width = 75
+                Height = 21
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+                ReadOnly = True
+                TabOrder = 6
+                Text = '0'
+              end
+              object A23: TEdit
+                Left = 166
+                Top = 26
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 7
+                Text = '0'
+              end
+              object A13: TEdit
+                Left = 166
+                Top = 1
+                Width = 75
+                Height = 21
+                ReadOnly = True
+                TabOrder = 8
+                Text = '0'
+              end
+            end
           end
         end
       end

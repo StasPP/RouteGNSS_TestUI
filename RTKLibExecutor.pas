@@ -278,6 +278,7 @@ begin
     N := Length(GNSSSessions[I].Solutions);
     SetLength(GNSSSessions[I].Solutions, N+1);
     GNSSSessions[I].Solutions[N].SolutionKind := RTKLibMethod;
+    GNSSSessions[I].Solutions[N].SolFileName  := ResultFile;
     GNSSSessions[I].Solutions[N].BaseID := BaseID;
   end;
 

@@ -62,6 +62,8 @@ type
     //StDevs       :array[1..6] of Double;
     StDevs       :TStDevs;
 
+    SolFileName  :String;
+
     // Kinematic
     //Track        :TTrack;
   end;
@@ -1769,6 +1771,8 @@ begin
          DebugMSG('Rewersing...');
        End;
 
+       CheckGNSSVectorsForSession(SessionN);
+
        DebugMSG('Added Vector: '+ BareId(GNSSVectors[j].BaseID) +' -> '+
             BareId(GNSSVectors[j].RoverID))
 
@@ -1856,7 +1860,7 @@ end;
 procedure AddSolutionFromVector(VectorN:integer);
 var I, j, SessN, SessBaseN :Integer;
 begin
-   if GNSSVectors[VectorN].StatusQ <= 0 then
+   if (GNSSVectors[VectorN].StatusQ <= 0) or (GNSSVectors[VectorN].StatusQ = 8) then
      exit;
 
    if GetGNSSSolutionForVector(VectorN).SolutionN > -1 then
@@ -2079,7 +2083,7 @@ begin
    begin
      InvertOneVector(VectorN);
      DelSolutionFromVector(VectorN, true);
-     AddSolutionFromVector(VectorN);
+     AddSolutionFromVector(VectorN);   
    end
    else
    begin
@@ -2118,7 +2122,8 @@ begin
 end;
 
 procedure CheckGNSSVectorsForSession(SessionId:string);  overload
-var I, N1, N2, SessionN :Integer;
+var I, j, N1, N2, SessionN :Integer;
+    BID, RID: integer;
 begin
    DebugMSG('Checking directions of Vectors for: '+BareId(SessionId));
 
@@ -2134,9 +2139,32 @@ begin
         continue;
 
      if NeedRewerse(N1, N2) then
-        InvertGNSSVector(I);
+        InvertGNSSVector(I, false);
+
    end;
-     
+
+   /// Searching for the other Vectors of the same points to invert!
+   /// Additional check
+   for I := 0 to Length(GNSSVectors) - 1 do
+   begin
+
+     RID := GetGNSSSessionNumber(GNSSVectors[I].RoverID);
+     BID := GetGNSSSessionNumber(GNSSVectors[I].BaseID);
+
+     for j := I+1 to Length(GNSSVectors) - 1 do
+     begin
+        N2 := GetGNSSSessionNumber(GNSSVectors[j].RoverID);
+        N1 := GetGNSSSessionNumber(GNSSVectors[j].BaseID);
+
+        if (GNSSSessions[BID].Station = GNSSSessions[N2].Station) and
+           (GNSSSessions[RID].Station = GNSSSessions[N1].Station) then
+          InvertGNSSVector(j, false);
+     end;
+   end;
+
+
+
+
 end;
 
 procedure CheckGNSSVectorsForSession(SessionN:integer);  overload

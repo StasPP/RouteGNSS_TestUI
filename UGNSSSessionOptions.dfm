@@ -766,9 +766,9 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Caption = 'Mode:'
       end
       object GetSingle: TSpeedButton
-        Left = 12
+        Left = 11
         Top = 168
-        Width = 166
+        Width = 167
         Height = 22
         Caption = 'Single Point Processing'
         Enabled = False
@@ -784,9 +784,9 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         OnClick = GetPPPClick
       end
       object RinAnalyse: TSpeedButton
-        Left = 351
+        Left = 329
         Top = 24
-        Width = 151
+        Width = 173
         Height = 22
         Caption = 'Reread RINEX'
         Glyph.Data = {
@@ -866,6 +866,23 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         Caption = 'Process All Baselines'
         Enabled = False
         OnClick = ProcAllBLClick
+      end
+      object SpeedButton1: TSpeedButton
+        Left = 329
+        Top = 52
+        Width = 172
+        Height = 22
+        Caption = 'Download PPP files...'
+        Enabled = False
+        Glyph.Data = {
+          E6000000424DE60000000000000076000000280000000D0000000E0000000100
+          0400000000007000000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+          F000CCCCCCCCCCCCC0000000000000000000FFFFF04FFFFFF000FFFF0CC4FFFF
+          F000FFF0CCCC4FFFF000FF0CCCCCC4FFF000F0CCCCCCCC4FF00000000CC44444
+          F000FFFF0CC4FFFFF000FFFF0CC4FFFFF000FFFF0CC4FFFFF000FFFF0CC4FFFF
+          F000FFFF0000FFFFF000}
       end
       object ModeBox: TComboBox
         Left = 11
@@ -2037,8 +2054,8 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       object CustAnt: TSpeedButton
         Left = 287
         Top = 20
-        Width = 25
-        Height = 25
+        Width = 27
+        Height = 27
         Flat = True
         Glyph.Data = {
           26040000424D2604000000000000360000002800000012000000120000000100
@@ -2614,7 +2631,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object DelNav: TSpeedButton
         Left = 476
-        Top = 46
+        Top = 43
         Width = 23
         Height = 22
         Enabled = False
@@ -2631,7 +2648,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object AddNav: TSpeedButton
         Left = 476
-        Top = 22
+        Top = 19
         Width = 23
         Height = 22
         Glyph.Data = {
@@ -2650,14 +2667,14 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object Label14: TLabel
         Left = 11
-        Top = 106
+        Top = 100
         Width = 117
         Height = 13
         Caption = 'Precise clock/orbits files:'
       end
       object AddPPP: TSpeedButton
         Left = 476
-        Top = 123
+        Top = 117
         Width = 23
         Height = 22
         Glyph.Data = {
@@ -2676,7 +2693,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object DelPPP: TSpeedButton
         Left = 476
-        Top = 147
+        Top = 163
         Width = 23
         Height = 22
         Enabled = False
@@ -2691,11 +2708,27 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
           1FF0FFF1FFFFFFF1FFF0FFFFFFFFFFFFFFF0}
         OnClick = DelPPPClick
       end
+      object DownloadPPP: TSpeedButton
+        Left = 476
+        Top = 140
+        Width = 23
+        Height = 22
+        Enabled = False
+        Glyph.Data = {
+          E6000000424DE60000000000000076000000280000000D0000000E0000000100
+          0400000000007000000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+          F000CCCCCCCCCCCCC0000000000000000000FFFFF04FFFFFF000FFFF0CC4FFFF
+          F000FFF0CCCC4FFFF000FF0CCCCCC4FFF000F0CCCCCCCC4FF00000000CC44444
+          F000FFFF0CC4FFFFF000FFFF0CC4FFFFF000FFFF0CC4FFFFF000FFFF0CC4FFFF
+          F000FFFF0000FFFFF000}
+      end
       object NavFiles: TListBox
-        Left = 13
-        Top = 24
-        Width = 457
-        Height = 73
+        Left = 11
+        Top = 21
+        Width = 460
+        Height = 70
         Style = lbOwnerDrawFixed
         ItemHeight = 17
         TabOrder = 0
@@ -2704,9 +2737,9 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
       end
       object PPPFiles: TListBox
         Left = 11
-        Top = 123
-        Width = 457
-        Height = 63
+        Top = 117
+        Width = 459
+        Height = 68
         Style = lbOwnerDrawFixed
         ItemHeight = 17
         TabOrder = 1
@@ -2717,112 +2750,266 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     object TabSheet6: TTabSheet
       Caption = 'Stops'
       ImageIndex = 5
+      object SpeedButton2: TSpeedButton
+        Left = 11
+        Top = 164
+        Width = 150
+        Height = 22
+        Caption = 'Report'
+        Glyph.Data = {
+          EE000000424DEE0000000000000076000000280000000E0000000F0000000100
+          0400000000007800000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
+          DD00DDDDDDDDDDDDDD00DDDDD7777777DD00DDDD77888887DD00DDD7F7FFFF87
+          DD00DD7777F77787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFF87
+          DD00DD7F77777787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFFF7
+          DD00DD7777777777DD00DDDDDDDDDDDDDD00}
+      end
       object ListBox2: TListBox
         Left = 11
         Top = 11
-        Width = 171
-        Height = 175
+        Width = 150
+        Height = 147
         ItemHeight = 13
         TabOrder = 0
       end
-      object GroupBox2: TGroupBox
-        Left = 190
-        Top = 11
-        Width = 309
-        Height = 175
+      object StopResults: TPageControl
+        Left = 176
+        Top = 6
+        Width = 321
+        Height = 180
+        ActivePage = TabSheet10
         TabOrder = 1
-        Visible = False
-        object Label10: TLabel
-          Left = 39
-          Top = 116
-          Width = 70
-          Height = 13
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = 'Method:'
+        object TabSheet10: TTabSheet
+          Caption = 'Settings'
+          ExplicitWidth = 281
+          ExplicitHeight = 165
+          object Label10: TLabel
+            Left = 141
+            Top = 63
+            Width = 70
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Method:'
+          end
+          object Label20: TLabel
+            Left = 141
+            Top = 37
+            Width = 70
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Ant. Height:'
+          end
+          object Label21: TLabel
+            Left = 0
+            Top = 37
+            Width = 45
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'dN:'
+          end
+          object Label22: TLabel
+            Left = 1
+            Top = 63
+            Width = 44
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'dE:'
+          end
+          object Label23: TLabel
+            Left = 0
+            Top = 10
+            Width = 45
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Name:'
+          end
+          object ComboBox1: TComboBox
+            Left = 217
+            Top = 60
+            Width = 86
+            Height = 22
+            Style = csOwnerDrawFixed
+            Enabled = False
+            ItemHeight = 16
+            ItemIndex = 0
+            TabOrder = 0
+            Text = 'Vertical: BGP'
+            Items.Strings = (
+              'Vertical: BGP'
+              'Vertical: ARP'
+              'Slant')
+          end
+          object Edit1: TEdit
+            Left = 49
+            Top = 34
+            Width = 86
+            Height = 21
+            TabOrder = 1
+            Text = '0'
+          end
+          object Edit2: TEdit
+            Left = 49
+            Top = 61
+            Width = 86
+            Height = 21
+            TabOrder = 2
+            Text = '0'
+          end
+          object Edit3: TEdit
+            Left = 217
+            Top = 34
+            Width = 86
+            Height = 21
+            TabOrder = 3
+            Text = '0'
+          end
+          object Edit4: TEdit
+            Left = 49
+            Top = 7
+            Width = 147
+            Height = 21
+            TabOrder = 4
+          end
         end
-        object Label20: TLabel
-          Left = 39
-          Top = 91
-          Width = 70
-          Height = 13
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = 'Ant. Height:'
-        end
-        object Label21: TLabel
-          Left = 5
-          Top = 40
-          Width = 45
-          Height = 13
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = 'dN:'
-        end
-        object Label22: TLabel
-          Left = 6
-          Top = 66
-          Width = 44
-          Height = 13
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = 'dE:'
-        end
-        object Label23: TLabel
-          Left = 5
-          Top = 13
-          Width = 45
-          Height = 13
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = 'Name:'
-        end
-        object Edit1: TEdit
-          Left = 54
-          Top = 37
-          Width = 86
-          Height = 21
-          TabOrder = 0
-          Text = '0'
-        end
-        object Edit2: TEdit
-          Left = 54
-          Top = 63
-          Width = 86
-          Height = 21
-          TabOrder = 1
-          Text = '0'
-        end
-        object Edit3: TEdit
-          Left = 115
-          Top = 88
-          Width = 86
-          Height = 21
-          TabOrder = 2
-          Text = '0'
-        end
-        object ComboBox1: TComboBox
-          Left = 115
-          Top = 113
-          Width = 86
-          Height = 22
-          Style = csOwnerDrawFixed
-          Enabled = False
-          ItemHeight = 16
-          ItemIndex = 0
-          TabOrder = 3
-          Text = 'Vertical: BGP'
-          Items.Strings = (
-            'Vertical: BGP'
-            'Vertical: ARP'
-            'Slant')
-        end
-        object Edit4: TEdit
-          Left = 54
-          Top = 10
-          Width = 147
-          Height = 21
-          TabOrder = 4
+        object TabSheet11: TTabSheet
+          Caption = 'Coordinates'
+          ImageIndex = 1
+          ExplicitWidth = 281
+          ExplicitHeight = 165
+          object Image5: TImage
+            Left = 27
+            Top = 4
+            Width = 16
+            Height = 16
+            Picture.Data = {
+              07544269746D617042020000424D420200000000000042000000280000001000
+              000010000000010010000300000000020000120B0000120B0000000000000000
+              0000007C0000E00300001F000000FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FDF7B3C5FBB4A7A427A42
+              BB4A3C5FDF7BFF7FFF7FFF7FFF7FFF7FFF7FFF7F7D6B9A427A427A427A427A42
+              7A427A429A427D6BFF7FFF7FFF7FFF7FFF7F7E6B9A427A427A427A427A427A42
+              7A427A427A429A427E6BFF7FFF7FFF7FDF7BBB467B425C3E5C3E5C3E5C3E5C3E
+              5C3E5C3E5B3E7B42BB46DF7BFF7FFF7F5D639B425C3E5B191B111B111B113B15
+              3B153B197B215C3E9B423D5FFF7FFF7FDC4E9B467C42FC35FB0CFB0CFB0CFB0C
+              FB0CFB0CFC319C429B46DC4EFF7FFF7FBC46BC46BC467C427B1DFB0CFB0CFB0C
+              FB0C7B217C42BC46BC46BC4AFF7FFF7FBC4ABC46BC469C461C36FB10FB0CFB0C
+              1B113C3ABC46BC46BC46BC4AFF7FFF7FFD52DD4ADD4ADD4A7C429B21FB0CFB0C
+              DC2D9C46DD4ADD4ADD4AFD52FF7FFF7F7E67DD4EDD4EFD4EDD4E3C3A1B115B1D
+              7C42FD4EFD4EDD4EDD4E5E63FF7FFF7FDF7BFD52FD52FD52FD529D4ABC291C36
+              DD4EFD52FD52FD52FD52DF7BFF7FFF7FFF7F9E6FFD521D571D571D57BD4AFD52
+              1D571D571D57FD529E6FFF7FFF7FFF7FFF7FFF7FBE731D5B1D571D5B1D5B1D5B
+              1D5B1D571D5BBE73FF7FFF7FFF7FFF7FFF7FFF7FFF7FDF7B7E6B5E5F3D5B3D5B
+              5E5F7E6BDF7BFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7F}
+            Transparent = True
+          end
+          object Label11: TLabel
+            Left = 46
+            Top = 5
+            Width = 65
+            Height = 13
+            Caption = 'ChoosedSol'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+            OnClick = ChoosedSolClick
+            OnMouseEnter = ChoosedSolMouseEnter
+            OnMouseLeave = ChoosedSolMouseLeave
+          end
+          object Label26: TLabel
+            Left = 17
+            Top = 54
+            Width = 135
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'X, m:'
+          end
+          object Label27: TLabel
+            Left = 17
+            Top = 79
+            Width = 135
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Y, m:'
+          end
+          object Label28: TLabel
+            Left = 17
+            Top = 104
+            Width = 135
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Z, m:'
+          end
+          object Label29: TLabel
+            Left = 17
+            Top = 129
+            Width = 135
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'StDev 3D, m:'
+          end
+          object ComboBox2: TComboBox
+            Left = 27
+            Top = 25
+            Width = 263
+            Height = 22
+            Style = csOwnerDrawFixed
+            ItemHeight = 16
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 0
+            OnChange = CSboxChange
+          end
+          object Edit6: TEdit
+            Left = 156
+            Top = 51
+            Width = 134
+            Height = 21
+            ReadOnly = True
+            TabOrder = 1
+            Text = '0'
+          end
+          object Edit7: TEdit
+            Left = 156
+            Top = 76
+            Width = 134
+            Height = 21
+            ReadOnly = True
+            TabOrder = 2
+            Text = '0'
+          end
+          object Edit8: TEdit
+            Left = 156
+            Top = 101
+            Width = 134
+            Height = 21
+            ReadOnly = True
+            TabOrder = 3
+            Text = '0'
+          end
+          object Edit9: TEdit
+            Left = 156
+            Top = 126
+            Width = 134
+            Height = 21
+            ReadOnly = True
+            TabOrder = 4
+            Text = '0'
+          end
         end
       end
     end

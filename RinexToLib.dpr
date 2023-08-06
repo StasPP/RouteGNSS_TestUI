@@ -17,7 +17,9 @@ uses
   UGNSSMainTree in 'UGNSSMainTree.pas' {FMainTree},
   UGNSSProject in 'UGNSSProject.pas',
   UProjCsys in 'UProjCsys.pas' {FProjCsys},
-  CoordSysFmNew in 'CoordSysFmNew.pas' {CSFormNew};
+  CoordSysFmNew in 'CoordSysFmNew.pas' {CSFormNew},
+  USetPaths in 'USetPaths.pas' {FProcSet},
+  UOutRep in 'UOutRep.pas' {OutRep};
 
 {$R *.res}
 
@@ -35,5 +37,7 @@ begin
   Application.CreateForm(TFMainTree, FMainTree);
   Application.CreateForm(TFProjCsys, FProjCsys);
   Application.CreateForm(TCSFormNew, CSFormNew);
+  Application.CreateForm(TFProcSet, FProcSet);
+  Application.CreateForm(TOutRep, OutRep);
   Application.Run;
 end.

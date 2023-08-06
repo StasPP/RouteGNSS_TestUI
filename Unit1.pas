@@ -87,6 +87,9 @@ type
     ShowTree: TSpeedButton;
     SpeedButton2: TSpeedButton;
     ImprortRIN: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    SpeedButton4: TSpeedButton;
+    SpeedButton5: TSpeedButton;
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -135,6 +138,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure ImprortRINClick(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -156,7 +160,7 @@ var
 implementation
 
 uses FProcGNSS, UGNSSSessionOptions, FLoader, UStartProcessing,
-  UGNSSPointSettings, UVectSettings, UGNSSMainTree;
+  UGNSSPointSettings, UVectSettings, UGNSSMainTree, USetPaths;
 
 {$R *.dfm}
 
@@ -1025,6 +1029,11 @@ end;
 procedure TForm1.SpeedButton2Click(Sender: TObject);
 begin
   FProjCsys.ShowProjCsys(IcoList); 
+end;
+
+procedure TForm1.SpeedButton3Click(Sender: TObject);
+begin
+  FProcSet.Showmodal;
 end;
 
 procedure TForm1.BaselinesBoxClick(Sender: TObject);
