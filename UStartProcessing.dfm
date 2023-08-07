@@ -1146,14 +1146,15 @@ object FStartProcessing: TFStartProcessing
   object SetPC: TPageControl
     Left = 16
     Top = 149
-    Width = 572
+    Width = 385
     Height = 49
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     Style = tsButtons
     TabOrder = 4
     object TabSheet1: TTabSheet
       Caption = 'Single Processing'
       TabVisible = False
+      ExplicitWidth = 564
       object Label2: TLabel
         Left = 3
         Top = 5
@@ -1195,6 +1196,7 @@ object FStartProcessing: TFStartProcessing
       Caption = 'PPP'
       ImageIndex = 2
       TabVisible = False
+      ExplicitWidth = 564
       object Label1: TLabel
         Left = 3
         Top = 5
@@ -1215,5 +1217,23 @@ object FStartProcessing: TFStartProcessing
     Caption = 'Cancel'
     TabOrder = 5
     OnClick = CancelButtonClick
+  end
+  object CheckBox1: TCheckBox
+    Left = 456
+    Top = 153
+    Width = 128
+    Height = 17
+    Caption = 'Precise Orbits'
+    TabOrder = 6
+    Visible = False
+  end
+  object CheckBox2: TCheckBox
+    Left = 456
+    Top = 176
+    Width = 128
+    Height = 17
+    Caption = 'Ionosphere IONEX'
+    TabOrder = 7
+    Visible = False
   end
 end

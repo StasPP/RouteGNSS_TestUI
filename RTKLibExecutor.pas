@@ -288,7 +288,7 @@ begin
      PointPos.X := A[0].X;
      PointPos.Y := A[0].Y;
      PointPos.Z := A[0].Z;
-     SolutionQ := A[0].Q;
+     SolutionQ :=  A[0].Q;
      StDevs[1] :=  A[0].sdX;   StDevs[2] :=  A[0].sdY;   StDevs[3] :=  A[0].sdZ;
      StDevs[4] :=  A[0].sdXY;  StDevs[5] :=  A[0].sdYZ;  StDevs[6] :=  A[0].sdZX;
   End;
@@ -301,10 +301,10 @@ begin
   end
   else
   begin
-     
+
 
      // ToDo: FindAVG
-  end; 
+  end;
 
   RefreshGNSSSolution(I, N, True);
 

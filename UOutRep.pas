@@ -15,11 +15,24 @@ type
     Panel1: TPanel;
     ListBox1: TListBox;
     ImageList1: TImageList;
-    PageControl1: TPageControl;
+    OCS: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
+    CSbox: TComboBox;
+    Label1: TLabel;
+    ComboBox1: TComboBox;
+    Label2: TLabel;
+    Label3: TLabel;
+    ComboBox2: TComboBox;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
+    CheckBox3: TCheckBox;
+    Image3: TImage;
+    SessionLabel: TLabel;
+    StatusLabel: TLabel;
     procedure Button1Click(Sender: TObject);
+    procedure OpenRepWindow(RepKind:Integer; RepObj, RepObj2: Integer);
   private
     { Private declarations }
   public
@@ -36,6 +49,13 @@ implementation
 procedure TOutRep.Button1Click(Sender: TObject);
 begin
   close;
+end;
+
+procedure TOutRep.OpenRepWindow(RepKind:Integer; RepObj, RepObj2: Integer);
+begin
+  ///
+  ///
+  Showmodal;
 end;
 
 end.

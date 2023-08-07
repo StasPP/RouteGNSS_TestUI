@@ -40,6 +40,8 @@ type
     Label2: TLabel;
     isDGNSS: TCheckBox;
     ProcButton: TSpeedButton;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
     procedure Cb_GNSSSystemsChange(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
     procedure ProcButtonClick(Sender: TObject);

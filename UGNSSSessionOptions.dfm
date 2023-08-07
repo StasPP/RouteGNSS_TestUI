@@ -245,8 +245,8 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     Transparent = True
   end
   object SessionLabel: TLabel
-    Left = 72
-    Top = 4
+    Left = 64
+    Top = 5
     Width = 164
     Height = 29
     Caption = 'Selected Session'
@@ -258,7 +258,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     ParentFont = False
   end
   object StatusLabel: TLabel
-    Left = 91
+    Left = 83
     Top = 37
     Width = 38
     Height = 13
@@ -721,7 +721,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     Visible = False
   end
   object StatImg: TImage
-    Left = 71
+    Left = 63
     Top = 36
     Width = 16
     Height = 16
@@ -2783,8 +2783,6 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         TabOrder = 1
         object TabSheet10: TTabSheet
           Caption = 'Settings'
-          ExplicitWidth = 281
-          ExplicitHeight = 165
           object Label10: TLabel
             Left = 141
             Top = 63
@@ -2881,8 +2879,6 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
         object TabSheet11: TTabSheet
           Caption = 'Coordinates'
           ImageIndex = 1
-          ExplicitWidth = 281
-          ExplicitHeight = 165
           object Image5: TImage
             Left = 27
             Top = 4

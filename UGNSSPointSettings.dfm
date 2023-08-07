@@ -305,7 +305,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     Transparent = True
   end
   object SessionLabel: TLabel
-    Left = 72
+    Left = 64
     Top = 4
     Width = 223
     Height = 29
@@ -318,7 +318,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     ParentFont = False
   end
   object StatusLabel: TLabel
-    Left = 91
+    Left = 83
     Top = 37
     Width = 38
     Height = 13
@@ -912,7 +912,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     Caption = 'Source'
   end
   object StatImg: TImage
-    Left = 71
+    Left = 63
     Top = 36
     Width = 16
     Height = 16
@@ -1091,19 +1091,11 @@ object FGNSSPointSettings: TFGNSSPointSettings
     object TabSheet1: TTabSheet
       Caption = '0'
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabSheet2: TTabSheet
       Caption = '1'
       ImageIndex = 1
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object SolPan: TPanel
         Left = 0
         Top = 0
@@ -1156,10 +1148,6 @@ object FGNSSPointSettings: TFGNSSPointSettings
       Caption = '2'
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object SpeedButton1: TSpeedButton
         Left = 87
         Top = 3

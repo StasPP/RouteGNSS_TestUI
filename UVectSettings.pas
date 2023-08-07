@@ -309,12 +309,12 @@ begin
         B12.Text :=  FormatFloat('0.0000', StDevs[4]);
         B13.Text :=  FormatFloat('0.0000', StDevs[6]);
 
-        B22.Text :=  FormatFloat('0.0000', StDevs[4]);
+        B21.Text :=  FormatFloat('0.0000', StDevs[4]);
         B22.Text :=  FormatFloat('0.0000', StDevs[2]);
-        B22.Text :=  FormatFloat('0.0000', StDevs[5]);
+        B23.Text :=  FormatFloat('0.0000', StDevs[5]);
 
         B31.Text :=  FormatFloat('0.0000', StDevs[5]);
-        B33.Text :=  FormatFloat('0.0000', StDevs[6]);
+        B32.Text :=  FormatFloat('0.0000', StDevs[6]);
         B33.Text :=  FormatFloat('0.0000', StDevs[3]);
       end;
     end
@@ -466,12 +466,12 @@ begin
       a12.Text :=  FormatFloat('0.0000', StDevs[4]);
       a13.Text :=  FormatFloat('0.0000', StDevs[6]);
 
-      a22.Text :=  FormatFloat('0.0000', StDevs[4]);
+      a21.Text :=  FormatFloat('0.0000', StDevs[4]);
       a22.Text :=  FormatFloat('0.0000', StDevs[2]);
-      a22.Text :=  FormatFloat('0.0000', StDevs[5]);
+      a23.Text :=  FormatFloat('0.0000', StDevs[5]);
 
       a31.Text :=  FormatFloat('0.0000', StDevs[5]);
-      a33.Text :=  FormatFloat('0.0000', StDevs[6]);
+      a32.Text :=  FormatFloat('0.0000', StDevs[6]);
       a33.Text :=  FormatFloat('0.0000', StDevs[3]);
     end;
   end
