@@ -1,0 +1,2 @@
+ID	Category(0 - Common; 1 - Sol; 2 - Vect; 3 - Point)	NAME	Description	ImageIdx	TXT	HTML	XLS	POS	(reserved1)	(reserved2)	CanChangeCS	CanSeparate	Set1_name	Set2_name	Set3_name	Set4_name	Set5_name	Set6_name
+0	1	GNSS Processor Report	RTK Lip POS file with the results of the processing	

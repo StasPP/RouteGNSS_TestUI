@@ -2216,10 +2216,10 @@ begin
   X0 := Orig.XYZ[1];    Y0 := Orig.XYZ[2];      Z0 := Orig.XYZ[3];
   N  := NEH[1];         E  := NEH[2];           H  := NEH[3] + H0;
 
-  B0 := B0*pi/180;      L0 := L0*pi/180;        {Градусы в радианы}       // ... ОШИБКА
+  B0 := B0*pi/180;      L0 := L0*pi/180;        {Градусы в радианы}
 
   Result[1] := X0 - E*sin(L0) - N*sin(B0)*cos(L0) + H*cos(B0)*cos(L0);    {X}
-  Result[2] := Y0 + E*cos(L0) - N*sin(B0)*sin(L0) + H*cos(B0)*sin(L0);    {Y}
+  Result[2] := Y0 + E*cos(B0) - N*sin(B0)*sin(L0) + H*cos(B0)*sin(L0);    {Y}
   Result[3] := Z0 + N*cos(B0) + H*sin(B0);                                {Z}
 end;
 

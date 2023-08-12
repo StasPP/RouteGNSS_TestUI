@@ -4,7 +4,8 @@ interface
 
 uses
   SysUtils, Windows, Variants, Classes, Dialogs, ShellApi, ComCtrls, StdCtrls,
-  Messages, Forms, TabFunctions, DateUtils, GNSSObjects, GeoString, GeoTime;
+  Messages, Forms, TabFunctions, DateUtils, GNSSObjects, GeoString, GeoTime,
+  GeoClasses, GeoFunctions;
 
 type
 
@@ -84,6 +85,8 @@ var
   RTKSettings      :TRTKProcSettings;
 
   RTKCancelled     :Boolean = false;
+
+  DiffENU          :Boolean = true;  /// FOR SHALOMITSKY
 const
   RTKLogStart = 'Starting the process...';
   RTKLogEnd   = 'Done!';
@@ -181,6 +184,9 @@ var S   :TStringList;
     I, j, N:Integer;
     A:Array of TRTKLibSolutionLine;
 
+    TOrg: TTopoOrigin;  El:TEllipsoid;  /// ENU -> XYZ for Diff Mode
+    newXYZ: TCoord3D;
+
     WaitForStart: Boolean;
 begin
   if RTKLibMethod = 0 then
@@ -191,6 +197,15 @@ begin
 
   WaitForStart := true;
   j := 0;
+
+  if (RTKLibMethod = 2) and (DiffENU) then
+  begin
+    El := EllipsoidList[FindEllipsoid('WGS84')];
+    I  := GetGNSSSessionNumber(BaseId);
+    TOrg := GetTopoOriginFromXYZ(Coord3D(GNSSSessions[I].AppliedPos), false, El);
+  end;
+
+
   for I := 0 to S.Count - 1 do
   begin
 
@@ -224,6 +239,34 @@ begin
     A[j].sdXY := StrToFloat2(GetCols(S[I], 10,1, ' ', false));
     A[j].sdYZ := StrToFloat2(GetCols(S[I], 11,1, ' ', false));
     A[j].sdZX := StrToFloat2(GetCols(S[I], 12,1, ' ', false));
+
+
+    if (RTKLibMethod = 2) and (DiffENU) then
+    begin
+      newXYZ := NEHToXYZ(Coord3D(A[j].Y, A[j].X, A[j].Z), El, TOrg);
+      A[j].X := newXYZ[1];
+      A[j].Y := newXYZ[2];
+      A[j].Z := newXYZ[3];
+    end;
+//     else
+//    BEGIN ///DEL
+//
+//      El := EllipsoidList[FindEllipsoid('WGS84')];
+//      n  := GetGNSSSessionNumber(BaseId);
+//      TOrg := GetTopoOriginFromXYZ(Coord3D(GNSSSessions[n].AppliedPos), false, El);
+//      newXYZ := XYZToNEH(Coord3D(A[j].X, A[j].Y, A[j].Z), El, TOrg);
+//
+//      showmessage(FloatToStr(A[j].X)+ '  '+
+//                  FloatToStr(A[j].Y)+ '  '+
+//                  FloatToStr(A[j].Z));
+//      showmessage(FloatToStr(newXYZ[1])+ '  '+
+//                  FloatToStr(newXYZ[2])+ '  '+
+//                  FloatToStr(newXYZ[3]));
+//      newXYZ := NEHToXYZ(newXYZ, El, TOrg);
+//      showmessage(FloatToStr(newXYZ[1])+ '  '+
+//                  FloatToStr(newXYZ[2])+ '  '+
+//                  FloatToStr(newXYZ[3]));
+//    END;
 
     inc(j);
   end;
@@ -579,7 +622,13 @@ begin
      end;
 
      if Pos('out-solformat', S[I]) =1 then
-       S[I] := 'out-solformat      =xyz';
+     begin
+       If (DiffENU) and (Mode >=1) and (Mode <=4) then
+         S[I] := 'out-solformat      =enu'
+       else
+         S[I] := 'out-solformat      =xyz';
+     end;
+
 
      if Pos('file-rcvantfile', S[I]) =1 then
        S[I] := 'file-rcvantfile    =' + PCVFilePath;
