@@ -2,10 +2,10 @@ object OutRep: TOutRep
   Left = 0
   Top = 0
   Caption = 'Output Report'
-  ClientHeight = 266
-  ClientWidth = 560
+  ClientHeight = 311
+  ClientWidth = 583
   Color = clBtnFace
-  Constraints.MinHeight = 250
+  Constraints.MinHeight = 350
   Constraints.MinWidth = 550
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,18 +14,19 @@ object OutRep: TOutRep
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel3: TPanel
     Left = 0
-    Top = 230
-    Width = 560
+    Top = 275
+    Width = 583
     Height = 36
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
     object Panel4: TPanel
-      Left = 306
+      Left = 329
       Top = 0
       Width = 254
       Height = 36
@@ -35,15 +36,15 @@ object OutRep: TOutRep
       object Button6: TButton
         Left = 6
         Top = 5
-        Width = 115
+        Width = 124
         Height = 27
         Caption = 'Output'
         TabOrder = 0
       end
       object Button1: TButton
-        Left = 127
-        Top = 5
-        Width = 121
+        Left = 136
+        Top = 6
+        Width = 112
         Height = 27
         Caption = 'Close'
         TabOrder = 1
@@ -54,7 +55,7 @@ object OutRep: TOutRep
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 560
+    Width = 583
     Height = 57
     Align = alTop
     BevelOuter = bvNone
@@ -361,27 +362,68 @@ object OutRep: TOutRep
       ParentFont = False
     end
     object StatusLabel: TLabel
-      Left = 72
+      Left = 90
       Top = 35
       Width = 28
       Height = 13
       Caption = '(Kind)'
     end
+    object StatImg: TImage
+      Left = 71
+      Top = 34
+      Width = 16
+      Height = 16
+      Picture.Data = {
+        07544269746D617042020000424D420200000000000042000000280000001000
+        000010000000010010000300000000020000120B0000120B0000000000000000
+        0000007C0000E00300001F000000FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+        FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FDF7B3C5FBB4A7A427A42
+        BB4A3C5FDF7BFF7FFF7FFF7FFF7FFF7FFF7FFF7F7D6B9A427A427A427A427A42
+        7A427A429A427D6BFF7FFF7FFF7FFF7FFF7F7E6B9A427A427A427A427A427A42
+        7A427A427A429A427E6BFF7FFF7FFF7FDF7BBB467B425C3E5C3E5C3E5C3E5C3E
+        5C3E5C3E5B3E7B42BB46DF7BFF7FFF7F5D639B425C3E5B191B111B111B113B15
+        3B153B197B215C3E9B423D5FFF7FFF7FDC4E9B467C42FC35FB0CFB0CFB0CFB0C
+        FB0CFB0CFC319C429B46DC4EFF7FFF7FBC46BC46BC467C427B1DFB0CFB0CFB0C
+        FB0C7B217C42BC46BC46BC4AFF7FFF7FBC4ABC46BC469C461C36FB10FB0CFB0C
+        1B113C3ABC46BC46BC46BC4AFF7FFF7FFD52DD4ADD4ADD4A7C429B21FB0CFB0C
+        DC2D9C46DD4ADD4ADD4AFD52FF7FFF7F7E67DD4EDD4EFD4EDD4E3C3A1B115B1D
+        7C42FD4EFD4EDD4EDD4E5E63FF7FFF7FDF7BFD52FD52FD52FD529D4ABC291C36
+        DD4EFD52FD52FD52FD52DF7BFF7FFF7FFF7F9E6FFD521D571D571D57BD4AFD52
+        1D571D571D57FD529E6FFF7FFF7FFF7FFF7FFF7FBE731D5B1D571D5B1D5B1D5B
+        1D5B1D571D5BBE73FF7FFF7FFF7FFF7FFF7FFF7FFF7FDF7B7E6B5E5F3D5B3D5B
+        5E5F7E6BDF7BFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+        FF7FFF7FFF7FFF7FFF7FFF7FFF7F}
+      Transparent = True
+    end
+    object ObjLabel: TLabel
+      Left = 124
+      Top = 35
+      Width = 19
+      Height = 13
+      Caption = 'Obj'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
   end
-  object ListBox1: TListBox
+  object RepList: TListBox
     Left = 0
     Top = 57
-    Width = 347
-    Height = 173
+    Width = 374
+    Height = 218
     Align = alClient
     ItemHeight = 13
     TabOrder = 2
+    OnClick = RepListClick
   end
   object OCS: TPageControl
-    Left = 347
+    Left = 374
     Top = 57
-    Width = 213
-    Height = 173
+    Width = 209
+    Height = 218
     ActivePage = TabSheet1
     Align = alRight
     Style = tsButtons
@@ -395,10 +437,10 @@ object OutRep: TOutRep
         Height = 13
         Caption = 'File format'
       end
-      object CSbox: TComboBox
+      object Fbox: TComboBox
         Left = 2
         Top = 27
-        Width = 191
+        Width = 195
         Height = 22
         Style = csOwnerDrawFixed
         ItemHeight = 16
@@ -407,28 +449,44 @@ object OutRep: TOutRep
         TabOrder = 0
       end
       object CheckBox1: TCheckBox
-        Left = 2
-        Top = 59
+        Left = 10
+        Top = 67
         Width = 97
         Height = 17
         Caption = 'Setting1'
         TabOrder = 1
       end
       object CheckBox2: TCheckBox
-        Left = 2
-        Top = 81
+        Left = 10
+        Top = 89
         Width = 97
         Height = 17
         Caption = 'Setting2'
         TabOrder = 2
       end
       object CheckBox3: TCheckBox
-        Left = 2
-        Top = 103
+        Left = 10
+        Top = 111
         Width = 97
         Height = 17
         Caption = 'Setting3'
         TabOrder = 3
+      end
+      object CheckBox4: TCheckBox
+        Left = 10
+        Top = 134
+        Width = 97
+        Height = 17
+        Caption = 'Setting4'
+        TabOrder = 4
+      end
+      object CheckBox5: TCheckBox
+        Left = 10
+        Top = 155
+        Width = 97
+        Height = 17
+        Caption = 'Setting5'
+        TabOrder = 5
       end
     end
     object TabSheet2: TTabSheet
@@ -448,32 +506,67 @@ object OutRep: TOutRep
         Height = 13
         Caption = 'Heights'
       end
-      object ComboBox1: TComboBox
+      object CSBox: TComboBox
         Left = 2
         Top = 27
-        Width = 190
+        Width = 195
         Height = 22
         Style = csOwnerDrawFixed
         ItemHeight = 16
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
+        OnDrawItem = CSBoxDrawItem
       end
-      object ComboBox2: TComboBox
+      object GeoidBox: TComboBox
         Left = 2
         Top = 77
-        Width = 190
+        Width = 195
         Height = 22
         Style = csOwnerDrawFixed
         ItemHeight = 16
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
+        OnDrawItem = GeoidBoxDrawItem
       end
     end
     object TabSheet3: TTabSheet
       Caption = 'Advanced'
       ImageIndex = 2
+      object CheckBox7: TCheckBox
+        Left = 11
+        Top = 11
+        Width = 166
+        Height = 17
+        Caption = 'Separate on several files'
+        TabOrder = 0
+      end
+      object CheckBox6: TCheckBox
+        Left = 11
+        Top = 34
+        Width = 97
+        Height = 17
+        Caption = 'Setting6'
+        TabOrder = 1
+      end
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'TabSheet4'
+      ImageIndex = 3
+      TabVisible = False
+      object Label7: TLabel
+        Left = 0
+        Top = 0
+        Width = 201
+        Height = 187
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'Nothing is choosed'
+        Layout = tlCenter
+        ExplicitWidth = 90
+        ExplicitHeight = 13
+      end
     end
   end
   object ImageList1: TImageList

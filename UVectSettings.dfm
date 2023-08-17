@@ -365,7 +365,7 @@ object FVectSettings: TFVectSettings
     Top = 58
     Width = 450
     Height = 241
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Style = tsButtons
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -434,6 +434,7 @@ object FVectSettings: TFVectSettings
           DD00DD7777F77787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFF87
           DD00DD7F77777787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFFF7
           DD00DD7777777777DD00DDDDDDDDDDDDDD00}
+        OnClick = VectRepClick
       end
       object Label5: TLabel
         Left = 6
@@ -491,19 +492,17 @@ object FVectSettings: TFVectSettings
         object TabSheet9: TTabSheet
           Caption = 'TabSheet5'
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 27
-          ExplicitWidth = 245
-          ExplicitHeight = 72
           object Label2: TLabel
             Left = 0
             Top = 0
-            Width = 92
-            Height = 13
+            Width = 430
+            Height = 126
             Align = alClient
             Alignment = taCenter
             Caption = 'No processing data'
             Layout = tlCenter
+            ExplicitWidth = 92
+            ExplicitHeight = 13
           end
         end
         object TabSheet10: TTabSheet
@@ -780,10 +779,6 @@ object FVectSettings: TFVectSettings
       Caption = 'TabSheet2'
       ImageIndex = 1
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label3: TLabel
         Left = 6
         Top = 5
@@ -837,6 +832,7 @@ object FVectSettings: TFVectSettings
           7D00DD7F7FFFF8787D00D7777F7778787D00D7FFFFFFF8787D00D7F777777878
           7D00D7FFFFFFF8787D00D7F7777778787D00D7FFFFFFF87F7D00D7F777777877
           7D00D7FFFFFFFF7DDD00D7777777777DDD00}
+        OnClick = RepAllClick
       end
       object ProcAll: TSpeedButton
         Left = 3
@@ -904,10 +900,6 @@ object FVectSettings: TFVectSettings
         object TabSheet3: TTabSheet
           Caption = 'TabSheet3'
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label4: TLabel
             Left = 56
             Top = 55
@@ -920,10 +912,6 @@ object FVectSettings: TFVectSettings
           Caption = 'TabSheet4'
           ImageIndex = 1
           TabVisible = False
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object ProcVectI: TSpeedButton
             Left = 0
             Top = 159
@@ -982,6 +970,7 @@ object FVectSettings: TFVectSettings
               DD00DD7777F77787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFF87
               DD00DD7F77777787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFFF7
               DD00DD7777777777DD00DDDDDDDDDDDDDD00}
+            OnClick = VectRepIClick
           end
           object SolTypeI: TLabel
             Left = 168
@@ -1078,28 +1067,22 @@ object FVectSettings: TFVectSettings
             object TabSheet5: TTabSheet
               Caption = 'TabSheet5'
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Label7: TLabel
                 Left = 0
                 Top = 0
-                Width = 92
-                Height = 13
+                Width = 245
+                Height = 72
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'No processing data'
                 Layout = tlCenter
+                ExplicitWidth = 92
+                ExplicitHeight = 13
               end
             end
             object TabSheet6: TTabSheet
               Caption = 'Length'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object XLabel: TLabel
                 Left = 19
                 Top = 3
@@ -1176,10 +1159,6 @@ object FVectSettings: TFVectSettings
             object TabSheet7: TTabSheet
               Caption = 'StDev'
               ImageIndex = 2
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Label8: TLabel
                 Left = 36
                 Top = 4
@@ -1256,10 +1235,6 @@ object FVectSettings: TFVectSettings
             object TabSheet8: TTabSheet
               Caption = 'Covariation Matrix'
               ImageIndex = 3
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object A11: TEdit
                 Left = 6
                 Top = 1

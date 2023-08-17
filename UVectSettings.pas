@@ -133,6 +133,9 @@ type
     procedure SolTypeIClick(Sender: TObject);
     procedure BEditDblClick(Sender: TObject);
     procedure REditChange(Sender: TObject);
+    procedure VectRepClick(Sender: TObject);
+    procedure RepAllClick(Sender: TObject);
+    procedure VectRepIClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -168,7 +171,7 @@ const
                                       /// ToDo : Translate
 implementation
 
-uses UStartProcessing, UGNSSSessionOptions, Unit1;
+uses UStartProcessing, UGNSSSessionOptions, Unit1, UOutRep;
 
 {$R *.dfm}
 
@@ -341,6 +344,7 @@ begin
       I := 15;
       case StatI of
          -1..2 : I := 15 + StatI;
+         3..7: I := 18;
          8 : I := 19;
          110 : I := 101;
          112 : I := 102;
@@ -365,6 +369,11 @@ begin
 
 end;
 
+procedure TFVectSettings.RepAllClick(Sender: TObject);
+begin
+  OutRep.OpenRepWindow(2, GetGNSSPointNumber(BaseId), GetGNSSPointNumber(RoverId), StatImg.Picture.Bitmap);
+end;
+
 procedure TFVectSettings.BaselinesBoxClick(Sender: TObject);
 var I, StatI, j :integer;
   Sol:TSolutionId;
@@ -376,6 +385,9 @@ begin
   if I < 0 then
     exit;
 
+  if length(VectorsN) < 2 then
+    exit;
+    
   isInit := true;
   StatI := GNSSVectors[VectorsN[I]].StatusQ;
   if StatI < 0 then
@@ -414,30 +426,6 @@ begin
   j := GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].RoverID);
   if j >= 0 then
     REditI.Text := GNSSSessions[j].MaskName;
-
-//  Memo2.Clear;
-//  Memo2.Lines.Add(BaselinesBox.Items[I]);
-//  Memo2.Lines.Add(StatList[StatI]);
-//  if (StatI > 0) and (StatI <> 8) then
-//  with GNSSVectors[VectorsN[I]] do
-//  begin
-//    Memo2.Lines.Add('Vector length: '+FormatFloat('### ### ##0.000',
-//                        SQRT(sqr(dX) + sqr(dY) + sqr(dZ)) ) + ' m;');
-//
-//    Memo2.Lines.Add('dX: '+ FormatFloat('### ### ##0.000', dX)  + ' m;');
-//    Memo2.Lines.Add('dY: '+ FormatFloat('### ### ##0.000', dY)  + ' m;');
-//    Memo2.Lines.Add('dZ: '+ FormatFloat('### ### ##0.000', dZ)  + ' m.');
-//
-//    Memo2.Lines.Add('StDevs / Covariation matrix elements:');
-//    Memo2.Lines.Add('mX: '+ FormatFloat('0.0000', StDevs[1])  + ' m; ' +
-//                    'mY: '+ FormatFloat('0.0000', StDevs[2])  + ' m; ' +
-//                    'mZ: '+ FormatFloat('0.0000', StDevs[3])  + ' m;');
-//    Memo2.Lines.Add('mXY: '+ FormatFloat('0.0000', StDevs[4]) + ' m; ' +
-//                    'mYZ: '+ FormatFloat('0.0000', StDevs[5]) + ' m; ' +
-//                    'mZX: '+ FormatFloat('0.0000', StDevs[6]) + ' m.');
-//  end
-//  else
-//    Memo2.Lines.Add('No processing info yet');
 
 
   if (StatI > 0) and (StatI <> 8) then
@@ -804,6 +792,42 @@ procedure TFVectSettings.VectLabelMouseLeave(Sender: TObject);
 begin
   if fsUnderline in VectLabel.Font.Style then
     VectLabel.Font.Style := VectLabel.Font.Style - [fsUnderline];
+end;
+
+procedure TFVectSettings.VectRepClick(Sender: TObject);
+begin
+   OutRep.OpenRepWindow(2, -1, VectorN, StatImg.Picture.Bitmap);
+end;
+
+procedure TFVectSettings.VectRepIClick(Sender: TObject);
+//var I, BaseI, RoverI : Integer;
+var I, Im:Integer; B:TBitMap;
+begin
+  I := BaseLinesBox.ItemIndex;
+//  BaseI  := GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].BaseID);
+//  RoverI := GetGNSSSessionNumber(GNSSVectors[VectorsN[I]].RoverID);
+//  OutRep.OpenRepWindow(2, BaseI, RoverI, StatImg.Picture.Bitmap);
+
+  try
+    Im := GNSSVectors[VectorsN[I]].StatusQ
+  except
+    Im := 8;
+  end;
+
+    if Im < 0 then
+       Im := -1
+    else
+    case I of
+       0..2  : Im := Im;
+       3..7  : Im := 3;
+       8     : Im := 4;
+       11..12: Im := Im - 6;
+    end;
+
+  B:= TBitMap.Create;
+  ImgList.GetBitmap(Im+15, B);
+  OutRep.OpenRepWindow(2, -1, VectorsN[I], StatImg.Picture.Bitmap);
+  B.Free;
 end;
 
 procedure TFVectSettings.ProcVectIClick(Sender: TObject);

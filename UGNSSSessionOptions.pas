@@ -176,6 +176,9 @@ type
     procedure ChoosedSolClick(Sender: TObject);
     procedure ChoosedSolMouseEnter(Sender: TObject);
     procedure ChoosedSolMouseLeave(Sender: TObject);
+    procedure CSboxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
+      State: TOwnerDrawState);
+    procedure VectRepIClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -197,11 +200,11 @@ type
     Method :byte;
   end;
 var
-  FGNSSSessionOptions: TFGNSSSessionOptions;
-  ActiveGNSSSessions:Array of Integer;
+  FGNSSSessionOptions:TFGNSSSessionOptions;
+  ActiveGNSSSessions :Array of Integer;
 
   Reloaded :Boolean = true;
-  EditableStopPoints:array of StopPointN;
+  EditableStopPoints :array of StopPointN;
 
   AvProcArr :Array of TProcArr;
 
@@ -210,7 +213,8 @@ var
   GeoidIdx :integer = -1;
 implementation
 
-uses FLoader, UStartProcessing, UGNSSPointSettings, UAntProp, GeoClasses;
+uses FLoader, UStartProcessing, UGNSSPointSettings, UAntProp, GeoClasses,
+  UOutRep;
 
 {$R *.dfm}
 
@@ -1078,6 +1082,45 @@ begin
   OutPutCoordinates;
 end;
 
+procedure TFGNSSSessionOptions.CSboxDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+var
+  ComboBox: TComboBox;
+  bitmap: TBitmap;
+  I: Integer;
+begin
+  ComboBox := (Control as TComboBox);
+  Bitmap := TBitmap.Create;
+  try
+    I := CoordinateSystemList[PrjCS[Index]].ProjectionType;
+    case I of
+       0: I := 110;
+       1: I := 111;
+       2..5: I := 112
+    end;
+    ImgList.GetBitmap(I, Bitmap);
+    with ComboBox.Canvas do
+    begin
+
+      if Bitmap.Handle <> 0 then
+      begin
+        Bitmap.Transparent := true;
+        Draw(Rect.Left, Rect.Top, Bitmap);
+        Rect := Bounds(Rect.Left + Bitmap.Width, Rect.Top,
+                     Rect.Right - Rect.Left -Bitmap.Width, Rect.Bottom - Rect.Top);
+      end;
+      FillRect(Rect);
+      Rect := Bounds(Rect.Left + 2, Rect.Top,
+                     Rect.Right -2, Rect.Bottom - Rect.Top);
+
+      DrawText(handle, PChar(ComboBox.Items[Index]), length(ComboBox.Items[index]), Rect, DT_VCENTER+DT_SINGLELINE);
+    end;
+  finally
+    Bitmap.Free;
+  end;
+
+end;
+
 procedure TFGNSSSessionOptions.CustomAntClick(Sender: TObject);
 var I, j, SolN, SessionN :integer;
     WarnMe: boolean;
@@ -1754,6 +1797,11 @@ begin
       end;
       
    end;
+end;
+
+procedure TFGNSSSessionOptions.VectRepIClick(Sender: TObject);
+begin
+  OutRep.OpenRepWindow(1, ActiveGNSSSessions[0], AvSol.ItemIndex, SolStatImg.Picture.Bitmap); 
 end;
 
 end.

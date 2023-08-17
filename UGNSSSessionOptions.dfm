@@ -2315,9 +2315,9 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
             Transparent = True
           end
           object VectRepI: TSpeedButton
-            Left = 199
+            Left = 198
             Top = 151
-            Width = 75
+            Width = 76
             Height = 22
             Caption = 'Report'
             Glyph.Data = {
@@ -2329,6 +2329,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
               DD00DD7777F77787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFF87
               DD00DD7F77777787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFFF7
               DD00DD7777777777DD00DDDDDDDDDDDDDD00}
+            OnClick = VectRepIClick
           end
           object ZLabel: TLabel
             Left = 1
@@ -2412,6 +2413,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
             ShowHint = True
             TabOrder = 3
             OnChange = CSboxChange
+            OnDrawItem = CSboxDrawItem
           end
           object Edit5: TEdit
             Left = 140

@@ -85,11 +85,13 @@ type
     Panel4: TPanel;
     Button6: TButton;
     ShowTree: TSpeedButton;
-    SpeedButton2: TSpeedButton;
+    CSSet: TSpeedButton;
     ImprortRIN: TSpeedButton;
-    SpeedButton3: TSpeedButton;
-    SpeedButton4: TSpeedButton;
+    ProgrSet: TSpeedButton;
+    ProjReport: TSpeedButton;
     SpeedButton5: TSpeedButton;
+    ProcessAll: TSpeedButton;
+    ReProcessAll: TSpeedButton;
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -136,10 +138,12 @@ type
     procedure BaselinesBoxDblClick(Sender: TObject);
     procedure ShowTreeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure SpeedButton2Click(Sender: TObject);
+    procedure CSSetClick(Sender: TObject);
     procedure ImprortRINClick(Sender: TObject);
-    procedure SpeedButton3Click(Sender: TObject);
-    procedure SpeedButton4Click(Sender: TObject);
+    procedure ProgrSetClick(Sender: TObject);
+    procedure ProjReportClick(Sender: TObject);
+    procedure ProcessAllClick(Sender: TObject);
+    procedure ReProcessAllClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -850,6 +854,25 @@ begin
     Gb_GNSSSystems.Visible := Cb_GNSSSystems.ItemIndex = 3;
 end;
 
+procedure TForm1.ReProcessAllClick(Sender: TObject);
+var I:Integer;
+    A :Array of byte; B, C :Array of Integer;
+begin
+  if Length(GNSSVectors) > 0 then
+  begin
+    I := Length(GNSSVectors);
+    SetLength(A, I); SetLength(B, I); SetLength(C, I);
+    for I := 0 to Length(GNSSVectors) - 1 do
+    begin
+      A[I] := 2;
+      B[I] := GetGNSSSessionNumber(GNSSVectors[I].RoverID);
+      C[I] := GetGNSSSessionNumber(GNSSVectors[I].BaseID);
+    end;
+    FStartProcessing.ShowMultiProcOptions(A,B,C);
+  end;
+  FMainTree.OnShow(nil);
+end;
+
 procedure TForm1.RTKLibPathEdChange(Sender: TObject);
 begin
   RTKLibDest := MyDir + RTKLibPathEd.Text;
@@ -1027,19 +1050,45 @@ begin
   end;
 end;
 
-procedure TForm1.SpeedButton2Click(Sender: TObject);
+procedure TForm1.CSSetClick(Sender: TObject);
 begin
   FProjCsys.ShowProjCsys(IcoList); 
 end;
 
-procedure TForm1.SpeedButton3Click(Sender: TObject);
+procedure TForm1.ProcessAllClick(Sender: TObject);
+var I, j :Integer;
+    A :Array of byte; B, C :Array of Integer;
+begin
+  if Length(GNSSVectors) > 0 then
+  begin
+    I := Length(GNSSVectors);
+    SetLength(A, 0); SetLength(B, 0); SetLength(C, 0);
+    for I := 0 to Length(GNSSVectors) - 1 do
+    if GNSSVectors[I].StatusQ = 0 then
+    begin
+      j := Length(A);
+      SetLength(A, j+1);
+      SetLength(B, j+1);
+      SetLength(C, j+1);
+      
+      A[j] := 2;
+      B[j] := GetGNSSSessionNumber(GNSSVectors[I].RoverID);
+      C[j] := GetGNSSSessionNumber(GNSSVectors[I].BaseID);
+    end;
+    if length(A) > 0 then
+      FStartProcessing.ShowMultiProcOptions(A,B,C);
+  end;
+  FMainTree.OnShow(nil);
+end;
+
+procedure TForm1.ProgrSetClick(Sender: TObject);
 begin
   FProcSet.Showmodal;
 end;
 
-procedure TForm1.SpeedButton4Click(Sender: TObject);
+procedure TForm1.ProjReportClick(Sender: TObject);
 begin
-  OutRep.OpenRepWindow(0, 0, 0);
+  OutRep.OpenRepWindow(0, 0, 0, ProjReport.Glyph);
 end;
 
 procedure TForm1.BaselinesBoxClick(Sender: TObject);

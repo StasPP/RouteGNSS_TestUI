@@ -55,6 +55,7 @@ type
     GeoidPopup: TPopupMenu;
     GeoidP: TPanel;
     ChangeGeoid: TSpeedButton;
+    VectRepI: TSpeedButton;
     procedure SessBoxChange(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
     procedure SolSrcBoxChange(Sender: TObject);
@@ -84,6 +85,7 @@ type
       Rect: TRect; State: TOwnerDrawState);
     procedure ChangeGeoidClick(Sender: TObject);
     procedure GeoidPopupPopup(Sender: TObject);
+    procedure VectRepIClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -128,7 +130,7 @@ const
 
 implementation
 
-uses UGNSSSessionOptions, Unit1, UStartProcessing;
+uses UGNSSSessionOptions, Unit1, UStartProcessing, UOutRep;
 
 {$R *.dfm}
 
@@ -970,6 +972,11 @@ begin
     else
       DelGNSSVectorsForSession(GNSSPoints[N].Sessions[I]);
   end;
+end;
+
+procedure TFGNSSPointSettings.VectRepIClick(Sender: TObject);
+begin
+  OutRep.OpenRepWindow(3, StationN, 0, StatImg.Picture.Bitmap);
 end;
 
 procedure TFGNSSPointSettings.View1Click(Sender: TObject);
