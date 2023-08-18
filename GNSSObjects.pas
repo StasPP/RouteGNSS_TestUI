@@ -115,6 +115,7 @@ type
 
   TSolutionId = record
       SessionId :String;
+      SessionN :integer;
       SolutionN :integer;
   end;
 
@@ -1058,6 +1059,7 @@ begin
             GNSSVectors[VectorN].BaseID then
       begin
         result.SessionId := GNSSSessions[SessionN].SessionID;
+        result.SessionN  := SessionN;
         result.SolutionN := j;
         Break;
       end;

@@ -365,7 +365,7 @@ object FVectSettings: TFVectSettings
     Top = 58
     Width = 450
     Height = 241
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Style = tsButtons
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -482,10 +482,10 @@ object FVectSettings: TFVectSettings
         OnClick = Button6Click
       end
       object VLPC0: TPageControl
-        Left = 3
-        Top = 55
+        Left = 2
+        Top = 54
         Width = 438
-        Height = 136
+        Height = 143
         ActivePage = TabSheet10
         Style = tsButtons
         TabOrder = 4
@@ -496,7 +496,7 @@ object FVectSettings: TFVectSettings
             Left = 0
             Top = 0
             Width = 430
-            Height = 126
+            Height = 133
             Align = alClient
             Alignment = taCenter
             Caption = 'No processing data'
@@ -580,6 +580,45 @@ object FVectSettings: TFVectSettings
             Alignment = taRightJustify
             AutoSize = False
             Caption = 'StDev 3D, m:'
+          end
+          object SolBtn: TSpeedButton
+            Left = 224
+            Top = 1
+            Width = 23
+            Height = 22
+            Flat = True
+            Glyph.Data = {
+              42020000424D4202000000000000420000002800000010000000100000000100
+              10000300000000020000120B0000120B00000000000000000000007C0000E003
+              00001F000000FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7F8D47DA6FFF7FFF7FFF7FFE7F4D4FC22EC22E4D4FFE7F
+              FF7FFF7FFF7FFF7FFF7F652B6223B153FF7FFF7F4D4FA026A026A026A0264E4F
+              FF7FFF7FFF7FFF7FFF7F642B611F611F8733D96FC22EA026A026A026A026C22E
+              FF7FFF7FFF7FFF7FFF7F6327611F611F6327B257C22EA026A026A026A026C22E
+              FF7FFF7FFF7FFF7FFF7F63276223AE47FD77FF7F4D4FA026A026A026A0264E4F
+              FF7FFF7FFF7FFF7FFF7F8B3FDA6FFF7FFF7FFF7FFE7F4D4FC22EC22E4D4FFE7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7FFF7F
+              FF7FFF7FFF7F}
+            OnClick = SolBtnClick
+          end
+          object SolType: TLabel
+            Left = 250
+            Top = 5
+            Width = 38
+            Height = 13
+            Cursor = crHandPoint
+            Caption = 'SolType'
+            OnClick = SolTypeClick
+            OnMouseEnter = SolTypeMouseEnter
+            OnMouseLeave = SolTypeMouseLeave
           end
           object BLength: TEdit
             Left = 82
@@ -666,10 +705,10 @@ object FVectSettings: TFVectSettings
             Text = '0'
           end
           object GroupBox1: TGroupBox
-            Left = 229
-            Top = 7
+            Left = 228
+            Top = 31
             Width = 195
-            Height = 101
+            Height = 99
             Caption = 'Covariation Matrix'
             TabOrder = 8
             object B11: TEdit

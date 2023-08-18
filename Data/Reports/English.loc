@@ -3,4 +3,6 @@ ID	Category(0 - Common; 1 - Sol; 2 - Vect; 3 - Point)	NAME	Description	ImageIdx	
 1	1	GNSS Processor Report	RTK Lip POS file with the results of the processing	1	1	0	0	1	0	0	0	1	0	0	0	0	0	0
 2	2	GNSS Processor Report	RTK Lip POS file with the results of the processing	1	1	0	0	1	0	0	0	1	0	0	0	0	0	0
 3	2	Vector Short Report 	Short report for the vector (or group of vectors) 	1	1	1	0	0	0	0	1	0	Add Header	0	0	0	0	0
-4	3	Points Catalogue (List)	Full list of points in the project	2	1	1	1	0	0	0	1	0	Coordintaes source	StDevs	0	0	0	0
+4	2	Vectors Catalogue (List)	Vectors Table 	1	1	1	1	0	0	0	1	0	Table Header Row	0	0	0	0	0
+5	3	Point Short Report	Single Point Report 	1	1	1	0	0	0	0	1	0	Add Header	0	0	0	0	0
+6	3	Points Catalogue (List)	Full list of points in the project	2	1	1	1	0	0	0	1	0	Coordintaes source	StDevs	0	0	0	0

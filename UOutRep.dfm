@@ -2,7 +2,7 @@ object OutRep: TOutRep
   Left = 0
   Top = 0
   Caption = 'Output Report'
-  ClientHeight = 311
+  ClientHeight = 340
   ClientWidth = 583
   Color = clBtnFace
   Constraints.MinHeight = 350
@@ -19,7 +19,7 @@ object OutRep: TOutRep
   TextHeight = 13
   object Panel3: TPanel
     Left = 0
-    Top = 275
+    Top = 304
     Width = 583
     Height = 36
     Align = alBottom
@@ -40,6 +40,7 @@ object OutRep: TOutRep
         Height = 27
         Caption = 'Output'
         TabOrder = 0
+        OnClick = Button6Click
       end
       object Button1: TButton
         Left = 136
@@ -413,7 +414,7 @@ object OutRep: TOutRep
     Left = 0
     Top = 57
     Width = 374
-    Height = 218
+    Height = 247
     Align = alClient
     ItemHeight = 13
     TabOrder = 2
@@ -423,7 +424,7 @@ object OutRep: TOutRep
     Left = 374
     Top = 57
     Width = 209
-    Height = 218
+    Height = 247
     ActivePage = TabSheet1
     Align = alRight
     Style = tsButtons
@@ -431,16 +432,16 @@ object OutRep: TOutRep
     object TabSheet1: TTabSheet
       Caption = 'Main'
       object Label1: TLabel
-        Left = 3
+        Left = 10
         Top = 8
-        Width = 51
+        Width = 87
         Height = 13
         Caption = 'File format'
       end
       object Fbox: TComboBox
-        Left = 2
+        Left = 9
         Top = 27
-        Width = 195
+        Width = 180
         Height = 22
         Style = csOwnerDrawFixed
         ItemHeight = 16
@@ -454,6 +455,8 @@ object OutRep: TOutRep
         Width = 97
         Height = 17
         Caption = 'Setting1'
+        Checked = True
+        State = cbChecked
         TabOrder = 1
       end
       object CheckBox2: TCheckBox
@@ -462,6 +465,8 @@ object OutRep: TOutRep
         Width = 97
         Height = 17
         Caption = 'Setting2'
+        Checked = True
+        State = cbChecked
         TabOrder = 2
       end
       object CheckBox3: TCheckBox
@@ -470,22 +475,28 @@ object OutRep: TOutRep
         Width = 97
         Height = 17
         Caption = 'Setting3'
+        Checked = True
+        State = cbChecked
         TabOrder = 3
       end
       object CheckBox4: TCheckBox
         Left = 10
-        Top = 134
+        Top = 133
         Width = 97
         Height = 17
         Caption = 'Setting4'
+        Checked = True
+        State = cbChecked
         TabOrder = 4
       end
       object CheckBox5: TCheckBox
         Left = 10
-        Top = 155
+        Top = 154
         Width = 97
         Height = 17
         Caption = 'Setting5'
+        Checked = True
+        State = cbChecked
         TabOrder = 5
       end
     end
@@ -493,35 +504,43 @@ object OutRep: TOutRep
       Caption = 'Coordinates'
       ImageIndex = 1
       object Label2: TLabel
-        Left = 3
+        Left = 10
         Top = 8
         Width = 90
         Height = 13
         Caption = 'Coordinate system'
       end
       object Label3: TLabel
-        Left = 3
+        Left = 10
         Top = 58
         Width = 36
         Height = 13
         Caption = 'Heights'
       end
+      object Label6: TLabel
+        Left = 10
+        Top = 111
+        Width = 86
+        Height = 13
+        Caption = 'Decimal separator'
+      end
       object CSBox: TComboBox
-        Left = 2
-        Top = 27
-        Width = 195
+        Left = 9
+        Top = 23
+        Width = 180
         Height = 22
         Style = csOwnerDrawFixed
         ItemHeight = 16
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
+        OnChange = CSBoxChange
         OnDrawItem = CSBoxDrawItem
       end
       object GeoidBox: TComboBox
-        Left = 2
-        Top = 77
-        Width = 195
+        Left = 9
+        Top = 74
+        Width = 180
         Height = 22
         Style = csOwnerDrawFixed
         ItemHeight = 16
@@ -529,6 +548,161 @@ object OutRep: TOutRep
         ShowHint = True
         TabOrder = 1
         OnDrawItem = GeoidBoxDrawItem
+      end
+      object FC: TPageControl
+        Left = 8
+        Top = 136
+        Width = 190
+        Height = 70
+        ActivePage = TabSheet5
+        Style = tsButtons
+        TabOrder = 2
+        object TabSheet5: TTabSheet
+          Caption = 'TabSheet5'
+          TabVisible = False
+          object Label5: TLabel
+            Left = -3
+            Top = 10
+            Width = 69
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Decimal digits'
+          end
+          object ComboBox1: TComboBox
+            Left = 72
+            Top = 7
+            Width = 105
+            Height = 22
+            Style = csOwnerDrawFixed
+            ItemHeight = 16
+            ItemIndex = 0
+            TabOrder = 0
+            Text = 'Default'
+            Items.Strings = (
+              'Default'
+              '%'
+              '%.1'
+              '%.2'
+              '%.3'
+              '%.4'
+              '%.5'
+              '%.6'
+              '%.7'
+              '%.8'
+              '%.9'
+              '%.10'
+              '%.11'
+              '%.12'
+              '%.13'
+              '%.14'
+              '%.15'
+              '%.16')
+          end
+          object CheckBox8: TCheckBox
+            Left = 3
+            Top = 35
+            Width = 150
+            Height = 17
+            Caption = 'Separate each three digits'
+            TabOrder = 1
+          end
+        end
+        object TabSheet6: TTabSheet
+          Caption = 'TabSheet6'
+          ImageIndex = 1
+          TabVisible = False
+          object Label4: TLabel
+            Left = 0
+            Top = 36
+            Width = 69
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Decimal digits'
+          end
+          object CheckBox9: TCheckBox
+            Left = 4
+            Top = 5
+            Width = 65
+            Height = 17
+            Caption = 'N/S/E/W'
+            TabOrder = 0
+          end
+          object ComboBox2: TComboBox
+            Left = 73
+            Top = 5
+            Width = 104
+            Height = 22
+            Style = csOwnerDrawFixed
+            Color = clInfoBk
+            Font.Charset = RUSSIAN_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ItemHeight = 16
+            ItemIndex = 0
+            ParentFont = False
+            TabOrder = 1
+            Text = 'D,ddd'
+            Items.Strings = (
+              'D,ddd'
+              'D,ddd'#176' '
+              'D M,mmm'
+              'D'#176' M,mmm'#39
+              'D M S,sss'
+              'D'#176' M'#39' S,sss"')
+          end
+          object ComboBox7: TComboBox
+            Left = 73
+            Top = 33
+            Width = 104
+            Height = 22
+            Style = csOwnerDrawFixed
+            ItemHeight = 16
+            ItemIndex = 0
+            TabOrder = 2
+            Text = 'Default'
+            Items.Strings = (
+              'Default'
+              '%'
+              '%.1'
+              '%.2'
+              '%.3'
+              '%.4'
+              '%.5'
+              '%.6'
+              '%.7'
+              '%.8'
+              '%.9'
+              '%.10'
+              '%.11'
+              '%.12'
+              '%.13'
+              '%.14'
+              '%.15'
+              '%.16')
+          end
+        end
+      end
+      object RB1: TRadioButton
+        Left = 112
+        Top = 110
+        Width = 34
+        Height = 17
+        Caption = '.'
+        Checked = True
+        TabOrder = 3
+        TabStop = True
+      end
+      object RB2: TRadioButton
+        Left = 152
+        Top = 110
+        Width = 34
+        Height = 17
+        Caption = ','
+        TabOrder = 4
       end
     end
     object TabSheet3: TTabSheet
@@ -559,7 +733,7 @@ object OutRep: TOutRep
         Left = 0
         Top = 0
         Width = 201
-        Height = 187
+        Height = 216
         Align = alClient
         Alignment = taCenter
         Caption = 'Nothing is choosed'
@@ -570,6 +744,11 @@ object OutRep: TOutRep
     end
   end
   object ImageList1: TImageList
-    Left = 368
+    Left = 384
+    Top = 8
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 416
+    Top = 8
   end
 end

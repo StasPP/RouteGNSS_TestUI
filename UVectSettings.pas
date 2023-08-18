@@ -107,6 +107,8 @@ type
     B31: TEdit;
     B32: TEdit;
     B33: TEdit;
+    SolBtn: TSpeedButton;
+    SolType: TLabel;
     procedure Button6Click(Sender: TObject);
     procedure isAcClick(Sender: TObject);
     procedure RevVectClick(Sender: TObject);
@@ -136,6 +138,10 @@ type
     procedure VectRepClick(Sender: TObject);
     procedure RepAllClick(Sender: TObject);
     procedure VectRepIClick(Sender: TObject);
+    procedure SolTypeClick(Sender: TObject);
+    procedure SolTypeMouseEnter(Sender: TObject);
+    procedure SolTypeMouseLeave(Sender: TObject);
+    procedure SolBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -197,6 +203,7 @@ var I, j, N:integer;
 begin
     SetLength(VectorsN, 0);
     isInit := true;
+
     for I := 0 to Length(GNSSVectors) - 1 do
     Begin
      BS :=  GetGNSSVectorPoint(I, true);
@@ -606,6 +613,23 @@ begin
   RefreshVectorSettings;  
 end;
 
+procedure TFVectSettings.SolTypeClick(Sender: TObject);
+begin
+   SolBtn.OnClick(nil);
+end;
+
+procedure TFVectSettings.SolTypeMouseEnter(Sender: TObject);
+begin
+    if not (fsUnderline in Soltype.Font.Style) then
+      Soltype.Font.Style := Soltype.Font.Style + [fsUnderline];
+end;
+
+procedure TFVectSettings.SolTypeMouseLeave(Sender: TObject);
+begin
+ if fsUnderline in Soltype.Font.Style then
+      Soltype.Font.Style := Soltype.Font.Style - [fsUnderline];
+end;
+
 procedure TFVectSettings.isAcClick(Sender: TObject);
 begin
 
@@ -654,6 +678,20 @@ begin
     Showmodal;
   end;
 
+end;
+
+procedure TFVectSettings.SolBtnClick(Sender: TObject);
+var F2 : TFGNSSSessionOptions; Sol :TSolutionId; 
+begin
+
+  Sol := GetGNSSSolutionForVector(VectorN);
+  if (Sol.SessionId <> '') and (Sol.SolutionN <> -1) then
+  begin
+     F2 := TFGNSSSessionOptions.Create(nil);
+     F2.ShowGNSSSessionInfo(GetGNSSSessionNumber(Sol.SessionId), Form1.IcoList, Sol.SolutionN);
+     F2.Release;
+     RefreshVectorSettings;
+  end;
 end;
 
 procedure TFVectSettings.SolBtnIClick(Sender: TObject);
