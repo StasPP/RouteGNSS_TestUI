@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, ImgList, RTKLibExecutor, TabFunctions,
-  GeoString, GeoClasses, UGNSSProject, Geoid, GNSSObjects;
+  GeoString, GeoClasses, UGNSSProject, Geoid, GNSSObjects, ShellAPI;
 
 type
 
@@ -64,6 +64,7 @@ type
     RB2: TRadioButton;
     CheckBox8: TCheckBox;
     SaveDialog1: TSaveDialog;
+    Label8: TLabel;
     procedure Button1Click(Sender: TObject);
 
     procedure OpenRepWindow(RepKind:Integer; RepObj, RepObj2: Integer; P:TBitMap);
@@ -110,6 +111,17 @@ uses Unit1;
 
 {$R *.dfm}
 
+function Ed(s:string):string;
+  var I: integer;
+begin
+   result := '';
+   for I := 1 to length(s)  do
+   case s[I] of
+     '/', '\', ':', '*', '?', '"', '<', '>', '|', ' ', #$D, #$A, #9: continue;
+     else result := result + s[i];
+   end;
+end;
+
 procedure TOutRep.AddLine(var S: TStringList; str: string; fmt: byte);
 var I, j:Integer;
 begin
@@ -129,7 +141,7 @@ begin
 end;
 
 procedure TOutRep.Button6Click(Sender: TObject);
-var S: TStringList;
+var S, F: TStringList;
     I, j, fmt :Integer;
     FName:String;
 begin
@@ -144,7 +156,8 @@ begin
 
   SaveDialog1.Filter := FormatSt[fmt] +'|*'+ FormatExt[fmt];
 
-  SaveDialog1.FileName := Ed(ObjLabel.Caption)+ FormatExt[fmt];
+  if ObjLabel.Caption<>'' then
+    SaveDialog1.FileName := Ed(ObjLabel.Caption)+ FormatExt[fmt];
 
   if not SaveDialog1.Execute() then
     exit;
@@ -157,13 +170,28 @@ begin
       exit;
 
   S := TStringList.Create;
-  FmtStrings(RKind, S);
+  F := TStringList.Create;
+  FmtStrings(Reports[RepList.ItemIndex].ID, S);
   if fmt = 2 then
   begin
      // ToDo: XLS save
   end
   else
-    S.SaveToFile(FName);
+    begin
+      if (CheckBox7.Checked) and (OCS.Pages[2].TabVisible) then
+        // ToDo: MultiSave
+      else
+      begin
+        S.SaveToFile(FName);
+        F.Add(FName);
+      end;
+    end;
+
+  // ToDo: Translate
+  If MessageDlg('Open the saved file?', mtConfirmation, [mbYes, mbNo], 0) = 6 Then
+   For I := 0 to F.Count-1 do
+     ShellExecute(Handle, 'open', PChar(F[I]),nil,nil,SW_SHOWNORMAL) ;
+
   S.Free;
 //
 end;
@@ -228,7 +256,7 @@ end;
 
 procedure TOutRep.FmtStrings(FID: byte; var S:TStringList);
 var S2 :TStringList;
-    I, j :integer;
+    I, j, BN, RN :integer;
     Sol :TSolutionId;
 begin
   case FID of
@@ -250,7 +278,11 @@ begin
          Sol := GetGNSSSolutionForVector(Vectors[I]);
          S2 := TStringList.Create;
          S2.LoadFromFile(GNSSSessions[Sol.SessionN].Solutions[Sol.SolutionN].SolFileName);
-         S.Assign(S2);
+
+         S.Add('-- ' + GNSSSolutionName(Sol.SessionN, Sol.SolutionN));
+
+         for j := 0 to S2.Count - 1 do
+            S.Add(S2[j]);
          S2.Free;
        End;
 
@@ -268,6 +300,49 @@ begin
     end;
     6: begin
      // Point List
+    end;
+    7: begin
+      // SHALOMITSKY!!!!!!!!!
+       for I := 0 to Length(GNSSVectors) - 1 do
+          if (GNSSVectors[I].StatusQ > 0) and (GNSSVectors[I].StatusQ <> 8) then
+          begin
+//            Sol := GetGNSSSolutionForVector(GNSSVectors[I]);
+
+            try
+              BN := GetGNSSSessionNumber(GNSSVectors[I].BaseID);
+              RN := GetGNSSSessionNumber(GNSSVectors[I].RoverID);
+
+              if (BN = -1) or (RN = -1) then
+                continue;
+
+              S.Add(
+              GNSSSessions[BN].Station  + #9 +
+              GNSSSessions[RN].Station  + #9 +
+              FormatFloat('0.000', GNSSSessions[BN].AntHgt.Hant)  + #9 +
+              FormatFloat('0.000', GNSSSessions[RN].AntHgt.Hant)  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].dX)  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].dY)  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].dZ)  + #9 +
+
+              // ToDO: if Necessary - To XYZ
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + #9 +
+
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[4])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[6])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[4])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[2])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[5])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[6])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[5])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[3])   
+              )
+            except
+            end;
+          end;
+
     end;
   end;
 
@@ -397,15 +472,7 @@ begin
     1:
     begin
       st := '';
-      case GNSSSessions[RPar1].Solutions[RPar2].SolutionKind of
-          0: st := 'RINEX Approx position';                                     ////// ToDo:Translate
-          1: st := 'Single solution';
-          2: st := '('+GNSSSessions[GetGNSSSessionNumber(
-                    GNSSSessions[RPar1].Solutions[RPar2].BaseID) ].MaskName
-                    + ' -> ' + GNSSSessions[RPar1].MaskName +')';
-          3: st := 'PPP solution';
-      end;
-      ObjLabel.Caption := GNSSSessions[RPar1].MaskName + ' - ' + st;
+      ObjLabel.Caption := GNSSSolutionName(RPar1, RPar2);
     end;
     2:
     begin
@@ -471,7 +538,10 @@ begin
    begin
       OCS.Pages[0].TabVisible := true;
       OCS.Pages[1].TabVisible := CSAllowed;
-      OCS.Pages[2].TabVisible := (SplitAllowed) or (Settings[6] <> '0');
+      OCS.Pages[2].TabVisible := ((SplitAllowed) or (Settings[6] <> '0'));
+
+      if RKind = 2 then
+        OCS.Pages[2].TabVisible :=  (OCS.Pages[2].TabVisible) and (length(Vectors)>1);
 
       CheckBox1.Caption := Settings[1];
       CheckBox1.Visible := Settings[1] <> '0';

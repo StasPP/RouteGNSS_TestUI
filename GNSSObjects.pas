@@ -104,7 +104,7 @@ type
   end;
 
   TGNSSVector = record
-     StatusQ  :integer; // 0-not done, 1 - Fixed, 2 - Float, ... (RTKLib)
+     StatusQ  :integer; // 0-not done, 1 - Fixed, 2 - Float, ...
 
      BaseID   :string; // SessionID
      RoverID  :string; // SessionID
@@ -177,6 +177,7 @@ type
   procedure RefreshGNSSSolution(SessionN, SolutionN:integer;
     ChangeVectors:Boolean);  // Change all connected data (sessions, Vector status, points)
   procedure DeleteGNSSSolution(SessionN, SolutionN:integer);   // Change all connected data (sessions, Vector status, points)
+  function GNSSSolutionName(SessionN, SolutionN:integer):string;
 
   procedure AddGNSSVectorsForSession(SessionId:string);  overload
   procedure AddGNSSVectorsForSession(SessionN:integer);  overload
@@ -1176,7 +1177,30 @@ begin
     then
       RefreshGNSSPoint(j);
   end
-  else DebugMSG('Point not found: '+ GNSSSessions[SessionN].Station); 
+  else DebugMSG('Point not found: '+ GNSSSessions[SessionN].Station);
+end;
+
+function GNSSSolutionName(SessionN, SolutionN:integer):string;
+begin
+
+  result := 'ERROR';
+
+  if (SessionN = -1) or (SolutionN = -1) then
+    exit;
+
+  if SolutionN >= Length(GNSSSessions[SessionN].Solutions)  then
+    exit;
+
+  result := GNSSSessions[SessionN].MaskName;
+
+  case GNSSSessions[SessionN].Solutions[SolutionN].SolutionKind of
+    0 : result := result + ' - RINEX Approx position';
+    1 : result := result + ' - Single';
+    2 : result := GNSSSessions[GetGNSSSessionNumber(
+                    GNSSSessions[SessionN].Solutions[SolutionN].BaseID) ].MaskName
+                    + ' -> ' + result;
+    3:  result := result + ' - PPP';
+  end;
 end;
 
 ////////////////// ADJUSTMENT --------------------------------------------------

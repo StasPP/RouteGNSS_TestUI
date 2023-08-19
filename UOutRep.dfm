@@ -2,10 +2,10 @@ object OutRep: TOutRep
   Left = 0
   Top = 0
   Caption = 'Output Report'
-  ClientHeight = 340
+  ClientHeight = 351
   ClientWidth = 583
   Color = clBtnFace
-  Constraints.MinHeight = 350
+  Constraints.MinHeight = 390
   Constraints.MinWidth = 550
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,12 +19,13 @@ object OutRep: TOutRep
   TextHeight = 13
   object Panel3: TPanel
     Left = 0
-    Top = 304
+    Top = 315
     Width = 583
     Height = 36
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 304
     object Panel4: TPanel
       Left = 329
       Top = 0
@@ -414,27 +415,30 @@ object OutRep: TOutRep
     Left = 0
     Top = 57
     Width = 374
-    Height = 247
+    Height = 258
     Align = alClient
     ItemHeight = 13
     TabOrder = 2
     OnClick = RepListClick
+    ExplicitHeight = 247
   end
   object OCS: TPageControl
     Left = 374
     Top = 57
     Width = 209
-    Height = 247
+    Height = 258
     ActivePage = TabSheet1
     Align = alRight
     Style = tsButtons
     TabOrder = 3
+    ExplicitHeight = 247
     object TabSheet1: TTabSheet
       Caption = 'Main'
+      ExplicitHeight = 216
       object Label1: TLabel
         Left = 10
         Top = 8
-        Width = 87
+        Width = 51
         Height = 13
         Caption = 'File format'
       end
@@ -503,6 +507,7 @@ object OutRep: TOutRep
     object TabSheet2: TTabSheet
       Caption = 'Coordinates'
       ImageIndex = 1
+      ExplicitHeight = 216
       object Label2: TLabel
         Left = 10
         Top = 8
@@ -554,7 +559,7 @@ object OutRep: TOutRep
         Top = 136
         Width = 190
         Height = 70
-        ActivePage = TabSheet5
+        ActivePage = TabSheet6
         Style = tsButtons
         TabOrder = 2
         object TabSheet5: TTabSheet
@@ -601,7 +606,7 @@ object OutRep: TOutRep
           end
           object CheckBox8: TCheckBox
             Left = 3
-            Top = 35
+            Top = 39
             Width = 150
             Height = 17
             Caption = 'Separate each three digits'
@@ -614,7 +619,7 @@ object OutRep: TOutRep
           TabVisible = False
           object Label4: TLabel
             Left = 0
-            Top = 36
+            Top = 39
             Width = 69
             Height = 13
             Alignment = taRightJustify
@@ -656,7 +661,7 @@ object OutRep: TOutRep
           end
           object ComboBox7: TComboBox
             Left = 73
-            Top = 33
+            Top = 36
             Width = 104
             Height = 22
             Style = csOwnerDrawFixed
@@ -708,6 +713,14 @@ object OutRep: TOutRep
     object TabSheet3: TTabSheet
       Caption = 'Advanced'
       ImageIndex = 2
+      ExplicitHeight = 216
+      object Label8: TLabel
+        Left = 40
+        Top = 72
+        Width = 110
+        Height = 13
+        Caption = 'NOT AVAILABLE YET!!!'
+      end
       object CheckBox7: TCheckBox
         Left = 11
         Top = 11
@@ -729,11 +742,12 @@ object OutRep: TOutRep
       Caption = 'TabSheet4'
       ImageIndex = 3
       TabVisible = False
+      ExplicitHeight = 216
       object Label7: TLabel
         Left = 0
         Top = 0
         Width = 201
-        Height = 216
+        Height = 227
         Align = alClient
         Alignment = taCenter
         Caption = 'Nothing is choosed'
