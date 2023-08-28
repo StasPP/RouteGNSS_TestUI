@@ -25,7 +25,6 @@ object OutRep: TOutRep
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 304
     object Panel4: TPanel
       Left = 329
       Top = 0
@@ -420,7 +419,6 @@ object OutRep: TOutRep
     ItemHeight = 13
     TabOrder = 2
     OnClick = RepListClick
-    ExplicitHeight = 247
   end
   object OCS: TPageControl
     Left = 374
@@ -431,16 +429,22 @@ object OutRep: TOutRep
     Align = alRight
     Style = tsButtons
     TabOrder = 3
-    ExplicitHeight = 247
     object TabSheet1: TTabSheet
       Caption = 'Main'
-      ExplicitHeight = 216
       object Label1: TLabel
-        Left = 10
+        Left = 9
         Top = 8
         Width = 51
         Height = 13
         Caption = 'File format'
+      end
+      object SepLabel: TLabel
+        Left = 9
+        Top = 61
+        Width = 63
+        Height = 13
+        Caption = 'Separator'
+        Visible = False
       end
       object Fbox: TComboBox
         Left = 9
@@ -454,9 +458,9 @@ object OutRep: TOutRep
         TabOrder = 0
       end
       object CheckBox1: TCheckBox
-        Left = 10
-        Top = 67
-        Width = 97
+        Left = 9
+        Top = 87
+        Width = 184
         Height = 17
         Caption = 'Setting1'
         Checked = True
@@ -464,9 +468,9 @@ object OutRep: TOutRep
         TabOrder = 1
       end
       object CheckBox2: TCheckBox
-        Left = 10
-        Top = 89
-        Width = 97
+        Left = 9
+        Top = 109
+        Width = 184
         Height = 17
         Caption = 'Setting2'
         Checked = True
@@ -474,9 +478,9 @@ object OutRep: TOutRep
         TabOrder = 2
       end
       object CheckBox3: TCheckBox
-        Left = 10
-        Top = 111
-        Width = 97
+        Left = 9
+        Top = 131
+        Width = 184
         Height = 17
         Caption = 'Setting3'
         Checked = True
@@ -484,9 +488,9 @@ object OutRep: TOutRep
         TabOrder = 3
       end
       object CheckBox4: TCheckBox
-        Left = 10
-        Top = 133
-        Width = 97
+        Left = 9
+        Top = 153
+        Width = 184
         Height = 17
         Caption = 'Setting4'
         Checked = True
@@ -494,20 +498,38 @@ object OutRep: TOutRep
         TabOrder = 4
       end
       object CheckBox5: TCheckBox
-        Left = 10
-        Top = 154
-        Width = 97
+        Left = 9
+        Top = 175
+        Width = 184
         Height = 17
         Caption = 'Setting5'
         Checked = True
         State = cbChecked
         TabOrder = 5
       end
+      object SepBox: TComboBox
+        Left = 79
+        Top = 58
+        Width = 110
+        Height = 21
+        ItemHeight = 13
+        ItemIndex = 1
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 6
+        Text = 'Tab'
+        Visible = False
+        Items.Strings = (
+          'Space'
+          'Tab'
+          '.'
+          ','
+          ';')
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'Coordinates'
       ImageIndex = 1
-      ExplicitHeight = 216
       object Label2: TLabel
         Left = 10
         Top = 8
@@ -713,7 +735,6 @@ object OutRep: TOutRep
     object TabSheet3: TTabSheet
       Caption = 'Advanced'
       ImageIndex = 2
-      ExplicitHeight = 216
       object Label8: TLabel
         Left = 40
         Top = 72
@@ -742,7 +763,6 @@ object OutRep: TOutRep
       Caption = 'TabSheet4'
       ImageIndex = 3
       TabVisible = False
-      ExplicitHeight = 216
       object Label7: TLabel
         Left = 0
         Top = 0

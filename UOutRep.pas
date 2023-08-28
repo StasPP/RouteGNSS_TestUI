@@ -13,7 +13,7 @@ type
     ID, Img  :Integer;
     Name, Description :String;
     Formats   :array[1..6] of Boolean;
-    Settings  :array[1..6] of String;
+    Settings  :array[1..7] of String;
     CSAllowed     :boolean;
     SplitAllowed  :boolean;
   end;
@@ -65,9 +65,13 @@ type
     CheckBox8: TCheckBox;
     SaveDialog1: TSaveDialog;
     Label8: TLabel;
+    SepBox: TComboBox;
+    SepLabel: TLabel;
     procedure Button1Click(Sender: TObject);
 
     procedure OpenRepWindow(RepKind:Integer; RepObj, RepObj2: Integer; P:TBitMap);
+    function getSep:char;
+
 
     procedure RepListClick(Sender: TObject);
     procedure CSBoxDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
@@ -258,7 +262,10 @@ procedure TOutRep.FmtStrings(FID: byte; var S:TStringList);
 var S2 :TStringList;
     I, j, BN, RN :integer;
     Sol :TSolutionId;
+    Sep :char;
 begin
+  Sep := getSep; 
+
   case FID of
     0: begin
       // Common Report
@@ -315,29 +322,31 @@ begin
               if (BN = -1) or (RN = -1) then
                 continue;
 
+              Sep := ';';//#9
+
               S.Add(
-              GNSSSessions[BN].Station  + #9 +
-              GNSSSessions[RN].Station  + #9 +
-              FormatFloat('0.000', GNSSSessions[BN].AntHgt.Hant)  + #9 +
-              FormatFloat('0.000', GNSSSessions[RN].AntHgt.Hant)  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].dX)  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].dY)  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].dZ)  + #9 +
+              GNSSSessions[BN].Station  + Sep +
+              GNSSSessions[RN].Station  + Sep +
+              FormatFloat('0.000', GNSSSessions[BN].AntHgt.Hant)  + Sep +
+              FormatFloat('0.000', GNSSSessions[RN].AntHgt.Hant)  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].dX)  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].dY)  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].dZ)  + Sep +
 
               // ToDO: if Necessary - To XYZ
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + #9 +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + Sep +
 
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[4])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[6])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[4])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[2])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[5])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[6])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[5])  + #9 +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[3])   
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[4])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[6])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[4])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[2])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[5])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[6])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[5])  + Sep +
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[3])
               )
             except
             end;
@@ -376,7 +385,7 @@ begin
     j := Geoidbox.Items.Count-1;
   GeoidBox.ItemIndex := j;
 //  GeoidBox.OnChange(nil);
-
+  RepList.OnClick(nil);
 end;
 
 procedure TOutRep.GeoidBoxDrawItem(Control: TWinControl; Index: Integer;
@@ -418,6 +427,21 @@ begin
 
 end;
 
+function TOutRep.getSep: char;
+begin
+  case SepBox.ItemIndex of
+    0: result := ' ';
+    1: result := #9;
+    else
+     try
+       result := SepBox.Text[1];
+     except
+       result := ' ';
+     end;
+  end;
+
+end;
+
 procedure TOutRep.OpenRepWindow(RepKind:Integer; RepObj, RepObj2: Integer;
     P:TBitmap);
 var S: TStringList;
@@ -448,7 +472,7 @@ begin
     Reports[j].CSAllowed := Trunc(StrToFloat2(GetCols(S[I], 11, 1, 1, False))) = 1;
     Reports[j].SplitAllowed := Trunc(StrToFloat2(GetCols(S[I], 12, 1, 1, False))) = 1;
 
-    for k := 1 to 6 do
+    for k := 1 to 7 do
        Reports[j].Settings[k]  := GetCols(S[I], 12+k, 1, 1, False);
 
   end;
@@ -543,18 +567,35 @@ begin
       if RKind = 2 then
         OCS.Pages[2].TabVisible :=  (OCS.Pages[2].TabVisible) and (length(Vectors)>1);
 
+      Repaint;
+
+      CheckBox1.Visible := true;  CheckBox4.Visible := true;
+      CheckBox2.Visible := true;  CheckBox5.Visible := true;
+      CheckBox3.Visible := true;  CheckBox6.Visible := true;
+      SepBox.Visible := true;     SepLabel.Visible := true;
+
+
       CheckBox1.Caption := Settings[1];
       CheckBox1.Visible := Settings[1] <> '0';
+      
       CheckBox2.Caption := Settings[2];
       CheckBox2.Visible := Settings[2] <> '0';
+
       CheckBox3.Caption := Settings[3];
       CheckBox3.Visible := Settings[3] <> '0';
+
       CheckBox4.Caption := Settings[4];
       CheckBox4.Visible := Settings[4] <> '0';
+
       CheckBox5.Caption := Settings[5];
       CheckBox5.Visible := Settings[5] <> '0';
+
       CheckBox6.Caption := Settings[6];
       CheckBox6.Visible := Settings[6] <> '0';
+
+      SepBox.Visible    := Settings[7] <> '0';
+      SepLabel.Visible  := Settings[7] <> '0';
+
 
       FBox.Items.Clear;
       for I := 1 to 6 do     /// ToDo: Translate!
@@ -563,6 +604,8 @@ begin
       FBox.ItemIndex := 0;
    end;
       OCS.ActivePageIndex := 0;
+
+   Repaint;
 end;
 
 end.
