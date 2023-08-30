@@ -26,7 +26,6 @@ object FMainTree: TFMainTree
     BevelOuter = bvNone
     TabOrder = 0
     Visible = False
-    ExplicitLeft = 227
     object ImprortRIN: TSpeedButton
       Left = 6
       Top = 8
@@ -59,7 +58,6 @@ object FMainTree: TFMainTree
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 227
     object DataCat: TComboBox
       Left = 0
       Top = 0
@@ -76,7 +74,6 @@ object FMainTree: TFMainTree
       Items.Strings = (
         ' Points/Tracks'
         ' GNSS Vectors')
-      ExplicitWidth = 227
     end
     object TreeView: TTreeView
       Left = 0
@@ -93,7 +90,6 @@ object FMainTree: TFMainTree
       OnDblClick = TreeViewDblClick
       OnMouseMove = TreeViewMouseMove
       OnMouseUp = TreeViewMouseUp
-      ExplicitWidth = 227
     end
   end
   object OpenDialog: TOpenDialog

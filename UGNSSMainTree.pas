@@ -266,8 +266,9 @@ begin
      OpenRinex(OpenDialog.Files[I], FLoadGPS.ProgressBar1);
 
     FLoadGPS.close;
+
     MainTreeDraw;
-    ShowNewSessions(j);
+    //ShowNewSessions(j);
   end;
 
   MainTreeDraw;

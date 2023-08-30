@@ -916,12 +916,13 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
-  ShowTree.Click;
+//  ShowTree.Click;
 end;
 
 procedure TForm1.ImprortRINClick(Sender: TObject);
 begin
   FMainTree.ImprortRIN.Click;
+  ShowTree.OnClick(nil);
 end;
 
 procedure TForm1.Invert1Click(Sender: TObject);

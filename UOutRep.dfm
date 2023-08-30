@@ -441,7 +441,7 @@ object OutRep: TOutRep
       object SepLabel: TLabel
         Left = 9
         Top = 61
-        Width = 63
+        Width = 48
         Height = 13
         Caption = 'Separator'
         Visible = False

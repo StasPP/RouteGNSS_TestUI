@@ -1515,6 +1515,9 @@ begin
   GNSSPoints[PointN].Position.X := X;
   GNSSPoints[PointN].Position.Y := Y;
   GNSSPoints[PointN].Position.Z := Z;
+  for I := 1 to 6 do
+    GNSSPoints[PointN].Quality[I] := 0;
+
   GNSSPoints[PointN].Status := 13;
 
   if  (OldXYZ.X <> GNSSPoints[PointN].Position.X) or

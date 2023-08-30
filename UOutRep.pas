@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, ImgList, RTKLibExecutor, TabFunctions,
-  GeoString, GeoClasses, UGNSSProject, Geoid, GNSSObjects, ShellAPI;
+  GeoString, GeoClasses, UGNSSProject, Geoid, GNSSObjects, ShellAPI,
+  GeoFunctions;
 
 type
 
@@ -263,6 +264,11 @@ var S2 :TStringList;
     I, j, BN, RN :integer;
     Sol :TSolutionId;
     Sep :char;
+
+    TOrg: TTopoOrigin;  El:TEllipsoid;  /// ENU -> XYZ for Diff Mode
+    newXYZ: TCoord3D;
+    CS: TCoordinateSystem;
+    OutPt: Boolean;
 begin
   Sep := getSep; 
 
@@ -310,6 +316,63 @@ begin
     end;
     7: begin
       // SHALOMITSKY!!!!!!!!!
+       if Length(GNSSVectors) = 0 then
+       begin
+         S.Add('NO VECTOR DATA HERE');
+       end;  
+
+       Sep := ';';//#9
+       S.Add('--COORDINATE SYSTEM');
+       j := FindCoordinateSystem('WGS84_ECEF');
+       El := EllipsoidList[FindEllipsoid('WGS84')];  /// CoordinateSystemList[j].Ellipsoid
+       S.Add('WGS84' + Sep +  // CoordinateSystemList[j].Name
+             El.Name + Sep +
+             FloatToStr(El.a) + Sep +
+             FloatToStr(El.alpha) + Sep +
+             '0' + Sep +    /// IntToStr(CoordinateSystemList[j].ProjectionType)
+             '0' + Sep +  '0' + Sep +  '0' + Sep +
+
+             '0' + Sep +  '0' + Sep +  '0' + Sep +
+             '0' + Sep +  '0' + Sep +  '0' + Sep +
+             '0' + Sep +  '0' + Sep +  '0' );
+
+       S.Add('--POINT COORDINATES');
+       
+       for I := 0 to Length(GNSSPoints)-1 do
+       begin
+         OutPt := false; // TEST IF I NEED TO OUTPUT THIS POINT (ONLY OF IT HAS VECTOR!)
+         for j := 0 to Length(GNSSVectors) - 1 do
+         if (GNSSVectors[j].StatusQ > 0) and (GNSSVectors[j].StatusQ <> 8) then
+         begin
+           BN := GetGNSSSessionNumber(GNSSVectors[j].BaseID);
+           RN := GetGNSSSessionNumber(GNSSVectors[j].RoverID);
+
+           if (BN<>-1) and (GNSSSessions[BN].Station = GNSSPoints[I].PointName) then
+           begin
+             OutPt := true;
+             break;
+           end
+           else
+           if (RN<>-1) and (GNSSSessions[RN].Station = GNSSPoints[I].PointName) then
+           begin
+             OutPt := true;
+             break;
+           end
+         end;
+         if OutPt then
+         S.Add(GNSSPoints[I].PointName + Sep +
+              FormatFloat('0.0000', GNSSPoints[I].Position.X)  + Sep +
+              FormatFloat('0.0000', GNSSPoints[I].Position.Y)  + Sep +
+              FormatFloat('0.0000', GNSSPoints[I].Position.Z)  + Sep +
+              FormatFloat('0.0000', GNSSPoints[I].Quality[1])  + Sep +
+              FormatFloat('0.0000', GNSSPoints[I].Quality[2])  + Sep +
+              FormatFloat('0.0000', GNSSPoints[I].Quality[3])
+         );
+       end;
+
+       S.Add('--VECTORS');
+
+
        for I := 0 to Length(GNSSVectors) - 1 do
           if (GNSSVectors[I].StatusQ > 0) and (GNSSVectors[I].StatusQ <> 8) then
           begin
@@ -322,21 +385,35 @@ begin
               if (BN = -1) or (RN = -1) then
                 continue;
 
-              Sep := ';';//#9
-
+              // ToDO: if Necessary - To XYZ
+              
+              if DiffENU then
+              begin
+                El := EllipsoidList[FindEllipsoid('WGS84')];
+                j  := GetGNSSSessionNumber(GNSSVectors[I].BaseId);
+                TOrg := GetTopoOriginFromXYZ(Coord3D(GNSSSessions[j].AppliedPos),
+                   false, El);
+                newXYZ := NEHToXYZ(Coord3D(GNSSVectors[I].StDevs[2],
+                                           GNSSVectors[I].StDevs[1],
+                                           GNSSVectors[I].StDevs[3]), El, TOrg);
+              end
+              else
+                newXYZ := Coord3D(GNSSVectors[I].StDevs[1],
+                                  GNSSVectors[I].StDevs[2],
+                                  GNSSVectors[I].StDevs[3]);
               S.Add(
               GNSSSessions[BN].Station  + Sep +
               GNSSSessions[RN].Station  + Sep +
               FormatFloat('0.000', GNSSSessions[BN].AntHgt.Hant)  + Sep +
               FormatFloat('0.000', GNSSSessions[RN].AntHgt.Hant)  + Sep +
+
               FormatFloat('0.0000', GNSSVectors[I].dX)  + Sep +
               FormatFloat('0.0000', GNSSVectors[I].dY)  + Sep +
               FormatFloat('0.0000', GNSSVectors[I].dZ)  + Sep +
 
-              // ToDO: if Necessary - To XYZ
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + Sep +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + Sep +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + Sep +
+              FormatFloat('0.0000', newXYZ[1])  + Sep +
+              FormatFloat('0.0000', newXYZ[2])  + Sep +
+              FormatFloat('0.0000', newXYZ[3])  + Sep +
 
               FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + Sep +
               FormatFloat('0.0000', GNSSVectors[I].StDevs[4])  + Sep +
