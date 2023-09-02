@@ -1,34 +1,17 @@
-11:02:23 AM Loaded session: karg219e20
-11:02:23 AM Added new Point: KARG for Session: karg219e20
-11:02:23 AM Adding Session: karg219e20_4404918 to Point: KARG
-11:02:23 AM Refreshing Point: KARG
-11:02:23 AM Setting Coordinates for Point: KARG  from RINEX headers
-11:02:23 AM Assigned:  from RINEX headers
-11:02:23 AM Checking Points... 
-11:02:23 AM Checking Points is DONE! 
-11:02:23 AM Loaded session: ubin219e20
-11:02:23 AM Added new Point: UBIN for Session: ubin219e20
-11:02:23 AM Adding Session: ubin219e20_4404918 to Point: UBIN
-11:02:23 AM Refreshing Point: UBIN
-11:02:23 AM Setting Coordinates for Point: UBIN  from RINEX headers
-11:02:23 AM Assigned:  from RINEX headers
-11:02:23 AM Checking Points... 
-11:02:23 AM Checking Points is DONE! 
-11:02:23 AM Checking directions of Vectors for: ubin219e20
-11:02:23 AM Added Vector: karg219e20 -> ubin219e20
-11:02:40 AM Loaded session: karg219f20
-11:02:40 AM Adding Session: karg219f20_4404922 to Point: KARG
-11:02:40 AM Refreshing Point: KARG
-11:02:40 AM Setting Coordinates for Point: KARG  from RINEX headers
-11:02:40 AM Assigned:  from RINEX headers
-11:02:40 AM Checking Points... 
-11:02:40 AM Checking Points is DONE! 
-11:02:40 AM Loaded session: ubin219f20
-11:02:40 AM Adding Session: ubin219f20_4404922 to Point: UBIN
-11:02:40 AM Refreshing Point: UBIN
-11:02:40 AM Setting Coordinates for Point: UBIN  from RINEX headers
-11:02:40 AM Assigned:  from RINEX headers
-11:02:40 AM Checking Points... 
-11:02:40 AM Checking Points is DONE! 
-11:02:40 AM Checking directions of Vectors for: ubin219f20
-11:02:40 AM Added Vector: karg219f20 -> ubin219f20
+00:51:52 Loaded session: karg219e20
+00:51:52 Added new Point: KARG for Session: karg219e20
+00:51:52 Adding Session: karg219e20_4404918 to Point: KARG
+00:51:52 Refreshing Point: KARG
+00:51:52 Setting Coordinates for Point: KARG  from RINEX headers
+00:51:52 Assigned:  from RINEX headers
+00:51:52 Checking Points... 
+00:51:52 Checking Points is DONE! 
+00:52:20 Started single processing: karg219e20
+00:52:21 Assigning status for Session : karg219e20 to [Single]
+00:52:21 Refreshing Point: KARG
+00:52:21 Setting Coordinates for Point: KARG  from Single/PPP solutions
+00:52:21 Assigned:  from Solution #1 of Session: karg219e20
+00:52:21 Applying new coordinates for Session: karg219e20 - Stack level: 1
+00:52:21 Refreshing Point: KARG
+00:52:21 Setting Coordinates for Point: KARG  from Single/PPP solutions
+00:52:21 Assigned:  from Solution #1 of Session: karg219e20

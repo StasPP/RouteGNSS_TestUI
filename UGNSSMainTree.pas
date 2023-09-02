@@ -40,6 +40,7 @@ type
     Report1: TMenuItem;
     urnOff1: TMenuItem;
     urnON1: TMenuItem;
+    Report2: TMenuItem;
     procedure ImprortRINClick(Sender: TObject);
     procedure DataCatDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
@@ -71,6 +72,9 @@ type
     procedure Enable1Click(Sender: TObject);
     procedure urnOff1Click(Sender: TObject);
     procedure urnON1Click(Sender: TObject);
+    procedure ProcessingReport1Click(Sender: TObject);
+    procedure Report1Click(Sender: TObject);
+    procedure Report2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -84,7 +88,7 @@ var
 implementation
 
 uses FLoader, Unit1, UGNSSSessionOptions, UGNSSPointSettings, UStartProcessing,
-  UVectSettings;
+  UVectSettings, UOutRep;
 
 {$R *.dfm}
 
@@ -166,12 +170,12 @@ begin
       if Bitmap.Handle <> 0 then
       begin
         Bitmap.Transparent := true;
+        Bitmap.TransparentColor := clwhite;
         Draw(Rect.Left, Rect.Top, Bitmap);
         Rect := Bounds(Rect.Left + Bitmap.Width, Rect.Top,
                      Rect.Right - Rect.Left -Bitmap.Width, Rect.Bottom - Rect.Top);
       end;
       FillRect(Rect);
-
 
       DrawText(handle, PChar(ComboBox.Items[Index]), length(ComboBox.Items[index]), Rect, DT_VCENTER+DT_SINGLELINE);
     end;
@@ -328,6 +332,54 @@ begin
        end;
      end;
      MainTreeDraw;
+end;
+
+procedure TFMainTree.ProcessingReport1Click(Sender: TObject);
+var B: TBitmap;
+begin
+  B := TBitmap.Create;
+  SolPopup.Images.GetBitmap(SolPopup.Items[0].ImageIndex, B);
+  B.Transparent := true;
+  B.TransparentColor := clwhite;
+  OutRep.OpenRepWindow(1, ChosenSession,
+       ChosenSol, B);
+
+  B.Free;
+end;
+
+procedure TFMainTree.Report1Click(Sender: TObject);
+var B: TBitmap; BaseId, RoverId :string;
+begin
+
+  B := TBitmap.Create;
+  
+  VectorPopup.Images.GetBitmap(VectorPopup.Items[0].ImageIndex, B);
+  B.Transparent := true;
+  B.TransparentColor := clwhite;
+  if ChosenVG <> -1 then
+  begin
+    BaseId  := GetGNSSVectorPoint(VectGroups[ChosenVG].Vects[0], true);
+    RoverId := GetGNSSVectorPoint(VectGroups[ChosenVG].Vects[0], false);
+    OutRep.OpenRepWindow(2,  GetGNSSPointNumber(BaseId),
+                             GetGNSSPointNumber(RoverId), B);
+  end
+  else
+    OutRep.OpenRepWindow(2, -1, ChosenVect, B);
+
+  B.Free;
+end;
+
+procedure TFMainTree.Report2Click(Sender: TObject);
+var B: TBitmap;
+begin
+  B := TBitmap.Create;
+  PointPopup.Images.GetBitmap(PointPopup.Items[0].ImageIndex, B);
+  B.Transparent := true;
+  B.TransparentColor := clWhite;
+
+  OutRep.OpenRepWindow(3, ChosenPoint, 0, B);
+
+  B.Free;
 end;
 
 procedure TFMainTree.Sessionsof1Click(Sender: TObject);
@@ -572,7 +624,7 @@ begin
               (GNSSVectors[ChosenVect].StatusQ >= 0);
         VectorPopup.Items[5].Visible := (ChosenVG = -1) and
               (GNSSVectors[ChosenVect].StatusQ < 0);
-        
+
         if (ChosenVG > -1) and (VectGroups[ChosenVG].StatQ > 0)
           or (ChosenVG = -1) and (GNSSVectors[ChosenVect].StatusQ > 0) then
           VectorPopup.Items[1].ImageIndex := 92
@@ -584,6 +636,13 @@ begin
           VectorPopup.Items[1].Visible := false
         else
           VectorPopup.Items[1].Visible := true;
+
+        VectorPopup.Items[2].Enabled := ((ChosenVG = -1) and
+              (GNSSVectors[ChosenVect].StatusQ > 0) and
+              (GNSSVectors[ChosenVect].StatusQ <> 8)) or
+              ((ChosenVG > -1) and
+              (VectGroups[ChosenVG].StatQ > 0) and
+              (VectGroups[ChosenVG].StatQ <> 8));
 
         VectorPopup.Popup(P.x, P.y);
       end;

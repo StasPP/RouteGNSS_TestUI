@@ -1237,8 +1237,8 @@ object FGNSSPointSettings: TFGNSSPointSettings
     end
     object ProcessingReport1: TMenuItem
       Caption = 'Processing Report'
-      Enabled = False
       ImageIndex = 108
+      OnClick = ProcessingReport1Click
     end
     object DeleteSolution1: TMenuItem
       Caption = 'Delete the Solution'

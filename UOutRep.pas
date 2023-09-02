@@ -54,10 +54,10 @@ type
     FC: TPageControl;
     TabSheet5: TTabSheet;
     TabSheet6: TTabSheet;
-    ComboBox1: TComboBox;
+    MDig2: TComboBox;
     CheckBox9: TCheckBox;
     ComboBox2: TComboBox;
-    ComboBox7: TComboBox;
+    DegDig: TComboBox;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
@@ -68,6 +68,8 @@ type
     Label8: TLabel;
     SepBox: TComboBox;
     SepLabel: TLabel;
+    MDig: TComboBox;
+    Label9: TLabel;
     procedure Button1Click(Sender: TObject);
 
     procedure OpenRepWindow(RepKind:Integer; RepObj, RepObj2: Integer; P:TBitMap);
@@ -85,6 +87,7 @@ type
 
     procedure AddLine(var S:TStringList; str: string; fmt: byte);
     procedure FmtStrings(FID: byte; var S:TStringList);
+    procedure FboxChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -259,6 +262,14 @@ begin
 
 end;
 
+procedure TOutRep.FboxChange(Sender: TObject);
+begin
+  SepBox.Visible    := (Reports[RepList.ItemIndex].Settings[7] <> '0')
+                      and ( FormatSt[1] = FBox.Items[FBox.ItemIndex] );
+  SepLabel.Visible  := (Reports[RepList.ItemIndex].Settings[7] <> '0')
+                      and ( FormatSt[1] = FBox.Items[FBox.ItemIndex] );
+end;
+
 procedure TOutRep.FmtStrings(FID: byte; var S:TStringList);
 var S2 :TStringList;
     I, j, BN, RN :integer;
@@ -404,8 +415,8 @@ begin
               S.Add(
               GNSSSessions[BN].Station  + Sep +
               GNSSSessions[RN].Station  + Sep +
-              FormatFloat('0.000', GNSSSessions[BN].AntHgt.Hant)  + Sep +
-              FormatFloat('0.000', GNSSSessions[RN].AntHgt.Hant)  + Sep +
+         //     FormatFloat('0.000', GNSSSessions[BN].AntHgt.Hant)  + Sep +
+         //     FormatFloat('0.000', GNSSSessions[RN].AntHgt.Hant)  + Sep +
 
               FormatFloat('0.0000', GNSSVectors[I].dX)  + Sep +
               FormatFloat('0.0000', GNSSVectors[I].dY)  + Sep +
@@ -413,7 +424,7 @@ begin
 
               FormatFloat('0.0000', newXYZ[1])  + Sep +
               FormatFloat('0.0000', newXYZ[2])  + Sep +
-              FormatFloat('0.0000', newXYZ[3])  + Sep +
+              FormatFloat('0.0000', newXYZ[3])  + Sep {+
 
               FormatFloat('0.0000', GNSSVectors[I].StDevs[1])  + Sep +
               FormatFloat('0.0000', GNSSVectors[I].StDevs[4])  + Sep +
@@ -423,7 +434,7 @@ begin
               FormatFloat('0.0000', GNSSVectors[I].StDevs[5])  + Sep +
               FormatFloat('0.0000', GNSSVectors[I].StDevs[6])  + Sep +
               FormatFloat('0.0000', GNSSVectors[I].StDevs[5])  + Sep +
-              FormatFloat('0.0000', GNSSVectors[I].StDevs[3])
+              FormatFloat('0.0000', GNSSVectors[I].StDevs[3])    }
               )
             except
             end;
@@ -670,9 +681,8 @@ begin
       CheckBox6.Caption := Settings[6];
       CheckBox6.Visible := Settings[6] <> '0';
 
-      SepBox.Visible    := Settings[7] <> '0';
-      SepLabel.Visible  := Settings[7] <> '0';
-
+      SepBox.Visible    := (Settings[7] <> '0') and ( FormatSt[1] = FBox.Items[FBox.ItemIndex] );
+      SepLabel.Visible  := (Settings[7] <> '0') and ( FormatSt[1] = FBox.Items[FBox.ItemIndex] );
 
       FBox.Items.Clear;
       for I := 1 to 6 do     /// ToDo: Translate!

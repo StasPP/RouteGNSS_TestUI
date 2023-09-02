@@ -164,6 +164,7 @@ object FMainTree: TFMainTree
       Caption = 'Report'
       Enabled = False
       ImageIndex = 108
+      OnClick = Report1Click
     end
     object Invert1: TMenuItem
       Caption = 'Invert'
@@ -202,6 +203,11 @@ object FMainTree: TFMainTree
       Caption = 'Turn ON'
       ImageIndex = 96
       OnClick = urnON1Click
+    end
+    object Report2: TMenuItem
+      Caption = 'Report'
+      ImageIndex = 108
+      OnClick = Report2Click
     end
     object DeletePoint1: TMenuItem
       Caption = 'Delete Point'
@@ -246,8 +252,8 @@ object FMainTree: TFMainTree
     end
     object ProcessingReport1: TMenuItem
       Caption = 'Processing Report'
-      Enabled = False
       ImageIndex = 108
+      OnClick = ProcessingReport1Click
     end
     object DeleteSolution1: TMenuItem
       Caption = 'Delete the Solution'

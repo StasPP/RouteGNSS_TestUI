@@ -419,6 +419,8 @@ object OutRep: TOutRep
     ItemHeight = 13
     TabOrder = 2
     OnClick = RepListClick
+    ExplicitLeft = 6
+    ExplicitTop = 56
   end
   object OCS: TPageControl
     Left = 374
@@ -456,6 +458,7 @@ object OutRep: TOutRep
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
+        OnChange = FboxChange
       end
       object CheckBox1: TCheckBox
         Left = 9
@@ -578,15 +581,16 @@ object OutRep: TOutRep
       end
       object FC: TPageControl
         Left = 8
-        Top = 136
+        Top = 135
         Width = 190
-        Height = 70
-        ActivePage = TabSheet6
+        Height = 89
+        ActivePage = TabSheet5
         Style = tsButtons
         TabOrder = 2
         object TabSheet5: TTabSheet
           Caption = 'TabSheet5'
           TabVisible = False
+          ExplicitHeight = 60
           object Label5: TLabel
             Left = -3
             Top = 10
@@ -596,7 +600,7 @@ object OutRep: TOutRep
             AutoSize = False
             Caption = 'Decimal digits'
           end
-          object ComboBox1: TComboBox
+          object MDig2: TComboBox
             Left = 72
             Top = 7
             Width = 105
@@ -639,18 +643,28 @@ object OutRep: TOutRep
           Caption = 'TabSheet6'
           ImageIndex = 1
           TabVisible = False
+          ExplicitHeight = 60
           object Label4: TLabel
             Left = 0
-            Top = 39
-            Width = 69
+            Top = 31
+            Width = 97
             Height = 13
             Alignment = taRightJustify
             AutoSize = False
-            Caption = 'Decimal digits'
+            Caption = 'Decimal digits (deg)'
+          end
+          object Label9: TLabel
+            Left = 0
+            Top = 58
+            Width = 97
+            Height = 13
+            Alignment = taRightJustify
+            AutoSize = False
+            Caption = 'Decimal digits (m)'
           end
           object CheckBox9: TCheckBox
             Left = 4
-            Top = 5
+            Top = 1
             Width = 65
             Height = 17
             Caption = 'N/S/E/W'
@@ -658,7 +672,7 @@ object OutRep: TOutRep
           end
           object ComboBox2: TComboBox
             Left = 73
-            Top = 5
+            Top = 1
             Width = 104
             Height = 22
             Style = csOwnerDrawFixed
@@ -681,10 +695,10 @@ object OutRep: TOutRep
               'D M S,sss'
               'D'#176' M'#39' S,sss"')
           end
-          object ComboBox7: TComboBox
-            Left = 73
-            Top = 36
-            Width = 104
+          object DegDig: TComboBox
+            Left = 103
+            Top = 28
+            Width = 74
             Height = 22
             Style = csOwnerDrawFixed
             ItemHeight = 16
@@ -710,6 +724,25 @@ object OutRep: TOutRep
               '%.14'
               '%.15'
               '%.16')
+          end
+          object MDig: TComboBox
+            Left = 104
+            Top = 55
+            Width = 73
+            Height = 22
+            Style = csOwnerDrawFixed
+            ItemHeight = 16
+            ItemIndex = 0
+            TabOrder = 3
+            Text = 'Default'
+            Items.Strings = (
+              'Default'
+              '%'
+              '%.1'
+              '%.2'
+              '%.3'
+              '%.4'
+              '%.5')
           end
         end
       end

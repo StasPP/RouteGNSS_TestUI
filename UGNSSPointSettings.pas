@@ -86,6 +86,7 @@ type
     procedure ChangeGeoidClick(Sender: TObject);
     procedure GeoidPopupPopup(Sender: TObject);
     procedure VectRepIClick(Sender: TObject);
+    procedure ProcessingReport1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -338,6 +339,18 @@ begin
        end;
      end;
     RefreshPointSettings; 
+end;
+
+procedure TFGNSSPointSettings.ProcessingReport1Click(Sender: TObject);
+var B: TBitmap;
+begin
+  B := TBitmap.Create;
+  B.Transparent := true;
+  SolPopup.Images.GetBitmap(SolPopup.Items[0].ImageIndex, B);
+  OutRep.OpenRepWindow(1, ChosenSession,
+       ChosenSol, B);
+
+  B.Free;
 end;
 
 procedure TFGNSSPointSettings.Button1Click(Sender: TObject);
