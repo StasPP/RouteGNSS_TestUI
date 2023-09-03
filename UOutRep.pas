@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, ImgList, RTKLibExecutor, TabFunctions,
-  GeoString, GeoClasses, UGNSSProject, Geoid, GNSSObjects, ShellAPI,
+  GeoString, GeoClasses, UGNSSProject, Geoid, GNSSObjects, ShellAPI, GNSSObjsTree,
   GeoFunctions;
 
 type
@@ -14,7 +14,7 @@ type
     ID, Img  :Integer;
     Name, Description :String;
     Formats   :array[1..6] of Boolean;
-    Settings  :array[1..7] of String;
+    Settings  :array[1..8] of String;
     CSAllowed     :boolean;
     SplitAllowed  :boolean;
   end;
@@ -63,13 +63,16 @@ type
     Label6: TLabel;
     RB1: TRadioButton;
     RB2: TRadioButton;
-    CheckBox8: TCheckBox;
+    SepMe: TCheckBox;
     SaveDialog1: TSaveDialog;
     Label8: TLabel;
     SepBox: TComboBox;
     SepLabel: TLabel;
     MDig: TComboBox;
     Label9: TLabel;
+    RbSp: TRadioButton;
+    RbAp: TRadioButton;
+    RbCm: TRadioButton;
     procedure Button1Click(Sender: TObject);
 
     procedure OpenRepWindow(RepKind:Integer; RepObj, RepObj2: Integer; P:TBitMap);
@@ -85,9 +88,12 @@ type
     procedure CSBoxChange(Sender: TObject);
     procedure Button6Click(Sender: TObject);
 
-    procedure AddLine(var S:TStringList; str: string; fmt: byte);
-    procedure FmtStrings(FID: byte; var S:TStringList);
+    procedure FmtStrings(FID, fmt: byte; var S:TStringList);
     procedure FboxChange(Sender: TObject);
+    procedure SepMeClick(Sender: TObject);
+    procedure RbCmClick(Sender: TObject);
+    procedure RBdotClick(Sender: TObject);
+    procedure TabSheet2Show(Sender: TObject);
   private
     { Private declarations }
   public
@@ -113,11 +119,148 @@ var
         'Solution Report', 'Vector Report',
         'Point Report', '', '');
 
+  HeaderStr: Array[0..17] of String = (
+        'Point Name', 'Vector', 'Session',
+        'X, m', 'Y, m', 'Z, m',
+        'Latitude, deg', 'Longtitude, deg',
+        'Northing, m', 'Easting, m',
+        'Height MSL, m', 'Ell. Height, m',
+        'StDev 3D, m', 'Coord. Source',
+        '', '', '', '');
 implementation
 
-uses Unit1;
+uses Unit1, UGNSSPointSettings;
 
 {$R *.dfm}
+
+procedure AddString(str: string; head, fmt: byte; var S:TStringList);
+var I, j:Integer;
+begin
+  case fmt of
+    1: begin
+      S.Add(str);
+    end;
+    2: begin
+      if head = 0 then
+        S.Add('<p>'+str+'</p>')
+      else
+        S.Add('<h'+intToStr(head)+'>'+str+'</h'+intToStr(head)+'>') ;
+    end;
+
+    //ToDo: XLS
+
+  end;
+end;
+
+procedure AddTable(fmt, colCount: byte; var S:TStringList);
+begin
+ // if fmt = 2 then
+ //   S.Add()
+ // ToDo: XLS
+end;
+
+procedure CloseTable(fmt: byte; var S:TStringList);
+begin
+  //
+end;
+
+procedure AddTableLine(A: array of String; fmt, len: byte; var S:TStringList);
+var I, j :integer;
+begin
+  j := S.Count;
+  S.Add('');
+
+  for I := 0 to len - 1 do
+  begin
+
+    // line start -----------
+    {case fmt of
+      2: html
+    end;}
+
+    // middle -----------
+    case fmt of
+      1: S[j] := S[j] + A[I] + OutRep.getSep;
+    end;
+
+    // line end  -----------
+
+  end;
+end;
+
+function NumberOutput(X: double; Kind:byte):string;  // 0 - XYZ, 1 - B, 2 - L, 3 - H
+  function repl(s:string; rs: char):string;
+  var i:integer;
+  begin
+     for I := 1 to length(s) do
+      if s[i]<>' ' then
+        result := result + s[I]
+      else
+        if (i>1) and (s[i-1]<>'-') then
+          result := result + rs;
+  end;
+
+var fmt:string;
+   I, j :integer;
+begin
+ result := '';
+ case kind of
+   0: /// XYZ
+   begin
+     if OutRep.Mdig2.ItemIndex <= 0 then
+       j := 3
+     else
+       j := OutRep.Mdig2.ItemIndex -1;
+
+
+     fmt := '0';
+     if j > 0 then
+       fmt := fmt + '.';
+     for I := 0 to j do
+       fmt := fmt + '0';
+
+     if OutRep.SepMe.Checked then
+     begin
+         fmt := '### ### ##'+ fmt;
+     end;
+
+     result := FormatFloat(fmt, X);
+
+     if OutRep.SepMe.Checked then
+     begin
+       if OutRep.RbAp.Checked then
+         result := repl(result, chr($27));
+       //if OutRep.RbDot.Checked then
+       //  result := repl(result, '.');
+       if OutRep.RbAp.Checked then
+         result := repl(result, ',');
+     end;
+   end;
+   1, 2: result := DegToDMS(X, kind = 1, OutRep.ComboBox2.ItemIndex,
+            not OutRep.CheckBox9.Checked, OutRep.DegDig.ItemIndex -1);
+
+   3: begin
+     if OutRep.Mdig.ItemIndex <= 0 then
+       j := 3
+     else
+       j := OutRep.Mdig.ItemIndex -1;
+
+     fmt := '0';
+     if j > 0 then
+       fmt := fmt + '.';
+     for I := 0 to j do
+       fmt := fmt + '0';
+
+     result := FormatFloat(fmt, X);
+   end;
+
+ end;
+
+ if OutRep.Rb2.Checked then
+   result := Comma(result);
+ 
+//    sc
+end;
 
 function Ed(s:string):string;
   var I: integer;
@@ -128,19 +271,6 @@ begin
      '/', '\', ':', '*', '?', '"', '<', '>', '|', ' ', #$D, #$A, #9: continue;
      else result := result + s[i];
    end;
-end;
-
-procedure TOutRep.AddLine(var S: TStringList; str: string; fmt: byte);
-var I, j:Integer;
-begin
-  case fmt of
-    0: begin
-
-    end;
-    1: begin
-
-    end;
-  end;
 end;
 
 procedure TOutRep.Button1Click(Sender: TObject);
@@ -167,6 +297,14 @@ begin
   if ObjLabel.Caption<>'' then
     SaveDialog1.FileName := Ed(ObjLabel.Caption)+ FormatExt[fmt];
 
+
+  if (Reports[RepList.ItemIndex].Settings[8] <> '0') and
+     (Reports[RepList.ItemIndex].Settings[8] <> '')  then
+     SaveDialog1.FileName := Reports[RepList.ItemIndex].Settings[8]
+  else
+  if  (Reports[RepList.ItemIndex].Settings[8] = '1') then
+    SaveDialog1.FileName := Ed(ProjectName)+ FormatExt[fmt];
+
   if not SaveDialog1.Execute() then
     exit;
 
@@ -179,7 +317,7 @@ begin
 
   S := TStringList.Create;
   F := TStringList.Create;
-  FmtStrings(Reports[RepList.ItemIndex].ID, S);
+  FmtStrings(Reports[RepList.ItemIndex].ID, fmt, S);
   if fmt = 2 then
   begin
      // ToDo: XLS save
@@ -204,6 +342,17 @@ begin
 //
 end;
 
+procedure TOutRep.SepMeClick(Sender: TObject);
+begin
+  RbAp.Visible := SepMe.Checked; // RbDot.Visible := SepMe.Checked;
+  RbSp.Visible := SepMe.Checked;  RbCm.Visible  := SepMe.Checked;
+end;
+
+procedure TOutRep.TabSheet2Show(Sender: TObject);
+begin
+  CSBox.OnChange(nil);
+end;
+
 procedure TOutRep.CSBoxChange(Sender: TObject);
 begin
 
@@ -219,8 +368,6 @@ begin
  end;
  Label3.Enabled := GeoidBox.Enabled;
 
-
- 
 end;
 
 procedure TOutRep.CSBoxDrawItem(Control: TWinControl; Index: Integer;
@@ -270,9 +417,9 @@ begin
                       and ( FormatSt[1] = FBox.Items[FBox.ItemIndex] );
 end;
 
-procedure TOutRep.FmtStrings(FID: byte; var S:TStringList);
+procedure TOutRep.FmtStrings(FID, fmt: byte; var S:TStringList);
 var S2 :TStringList;
-    I, j, BN, RN :integer;
+    I, j, k, BN, RN :integer;
     Sol :TSolutionId;
     Sep :char;
 
@@ -280,13 +427,27 @@ var S2 :TStringList;
     newXYZ: TCoord3D;
     CS: TCoordinateSystem;
     OutPt: Boolean;
+
+    A:array of string;
+    ECEFWGS, WGSCS : Integer;
 begin
-  Sep := getSep; 
+  Sep := getSep;
 
   case FID of
     0: begin
       // Common Report
+
+
+
+
+
+
+
     end;
+
+
+
+
     1: begin
      // GNSS Processor Report SOL
       S2 := TStringList.Create;
@@ -294,6 +455,9 @@ begin
       S.Assign(S2);
       S2.Free;
     end;
+
+
+
     2: begin
      // GNSS Processor Report Vect
 
@@ -311,26 +475,143 @@ begin
        End;
 
     end;
+
+
+
     3: begin
      // Vector Short Report
 
 
     end;
+
+
     4: begin
      // Vector List Short Report
+
+
     end;
+
+
+
+
     5: begin
      // Point Short Report
     end;
+
+
+
+
+
     6: begin
      // Point List
+
+     AddTable(fmt, 0, S);
+     ECEFWGS := FindCoordinateSystem('WGS84_ECEF');
+     WGSCS   := FindCoordinateSystem('WGS84_LatLon');
+
+     j := 4;
+     if CheckBox2.Checked then inc(j);
+     if CheckBox3.Checked then inc(j);
+     SetLength(A, j);
+
+     /// ToDo: Translate
+     if CheckBox1.Checked then     ///  TABLE HEAD
+     Begin
+       A[0] := HeaderStr[0];
+       case CoordinateSystemList[PrjCS[CSBox.ItemIndex]].ProjectionType of
+         1: for j := 0 to 2 do
+           A[1+j] := HeaderStr[3+j];
+         0: for j := 0 to 1 do
+           A[1+j] := HeaderStr[6+j];
+         else
+           for j := 0 to 1 do
+             A[1+j] := HeaderStr[8+j];
+       end;
+
+       if CoordinateSystemList[PrjCS[CSBox.ItemIndex]].ProjectionType <> 1 then
+         case GeoidBox.ItemIndex of
+            0: A[3] := HeaderStr[11];
+            1: A[3] := HeaderStr[10];
+         end;
+
+       j := 3;
+       if CheckBox2.Checked then
+       begin
+         inc(j); A[j] :=  HeaderStr[12];
+       end;
+       if CheckBox3.Checked then
+       begin
+         inc(j); A[j] :=  HeaderStr[13];
+       end;
+       
+
+       AddTableLine(A, fmt, length(A), S);
+     End;
+
+     FOR I := 0 TO Length(GNSSPoints) - 1 DO     /// TABLE BODY
+     BEGIN
+
+       A[0] := GNSSPoints[I].PointName;
+
+       with GNSSPoints[I].Position do
+         newXYZ := Coord3D(ConvCoords(X, Y, Z, ECEFWGS, PrjCS[CSBox.ItemIndex],
+             WGSCS, GeoidBox.ItemIndex-1));
+
+       for j := 1 to 3 do
+         if CoordinateSystemList[PrjCS[CSBox.ItemIndex]].ProjectionType = 0 then
+           A[j] := NumberOutput(newXYZ[j], j)    // BLH
+         else
+           A[j] := NumberOutput(newXYZ[j], 0);   // meters
+
+       // ToDo Translate                                     // CoordSource!!!!!!
+       //A[4] := UGNSSPointSettings.StatList[GNSSPoints[I].Status];
+
+       j := 3;
+       if CheckBox2.Checked then
+       begin
+         inc(j);
+         A[j] := FormatFloat('0.0000', Sqrt(sqr(GNSSPoints[I].Quality[1])+
+            sqr(GNSSPoints[I].Quality[2])+ sqr(GNSSPoints[I].Quality[3])));
+         if RB2.Checked then
+            A[j] := Comma(A[j]);
+       end;
+
+       if CheckBox3.Checked then
+       begin
+         inc(j);
+         A[j] := SrcList[GNSSPoints[I].CoordSource];
+         if GNSSPoints[I].CoordSource = 3 then
+         begin
+
+           with GNSSSessions[GNSSPoints[I].SolutionId.SessionN].
+                  Solutions[GNSSPoints[I].SolutionId.SolutionN] do
+           begin
+              A[j] := A[j] + SrcSolList[SolutionKind];
+
+           if  SolutionKind = 2 then
+           begin
+              BN := GetGNSSSessionNumber(BaseId);
+              RN := GNSSPoints[I].SolutionId.SessionN;
+              if BN <> -1 then
+              A[j] := A[j] + GNSSSessions[BN].MaskName + '-' + GNSSSessions[RN].MaskName;
+           end;
+           end;
+
+         end;
+       end;
+
+       AddTableLine(A, fmt, length(A), S);
+     END;
+
+
+     CloseTable(fmt, S);
     end;
     7: begin
       // SHALOMITSKY!!!!!!!!!
        if Length(GNSSVectors) = 0 then
        begin
          S.Add('NO VECTOR DATA HERE');
-       end;  
+       end;
 
        Sep := ';';//#9
        S.Add('--COORDINATE SYSTEM');
@@ -560,7 +841,7 @@ begin
     Reports[j].CSAllowed := Trunc(StrToFloat2(GetCols(S[I], 11, 1, 1, False))) = 1;
     Reports[j].SplitAllowed := Trunc(StrToFloat2(GetCols(S[I], 12, 1, 1, False))) = 1;
 
-    for k := 1 to 7 do
+    for k := 1 to 8 do
        Reports[j].Settings[k]  := GetCols(S[I], 12+k, 1, 1, False);
 
   end;
@@ -634,6 +915,18 @@ begin
   Showmodal;
 end;
 
+procedure TOutRep.RbCmClick(Sender: TObject);
+begin
+  if RbCm.Checked then
+    Rb1.Checked := true;
+end;
+
+procedure TOutRep.RBdotClick(Sender: TObject);
+begin
+//  if RbDot.Checked then
+//    Rb2.Checked;
+end;
+
 procedure TOutRep.RepListClick(Sender: TObject);
 var I:Integer;
 begin
@@ -648,6 +941,7 @@ begin
 
    with Reports[RepList.ItemIndex] do
    begin
+      OCS.ActivePageIndex := 0;
       OCS.Pages[0].TabVisible := true;
       OCS.Pages[1].TabVisible := CSAllowed;
       OCS.Pages[2].TabVisible := ((SplitAllowed) or (Settings[6] <> '0'));

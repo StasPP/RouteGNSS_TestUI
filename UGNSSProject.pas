@@ -22,7 +22,7 @@ implementation
 procedure PrepareNewGNSSProject;
 var I:Integer;
 begin
-  ProjectName := '';
+  ProjectName := 'New';
   ProjectFile := '';
 
   SetLength(PrjCSNames, 2);

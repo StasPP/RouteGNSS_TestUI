@@ -16,6 +16,8 @@ function DegToDMS(Deg : double; mode :shortint; sep:string) :string ; overload;
 function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint; sep:string) :string ; overload;
 function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint; HideLitera: boolean; sep:string) :string ; overload;
 
+function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint; HideLitera: boolean; psz: integer) :string ; overload;
+
 function ChangeSeps(S, sep:string):string;
 
 function StrToFloat2(s:String):Double;
@@ -292,6 +294,128 @@ begin
 
   end;
 end;
+
+function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint; HideLitera: boolean; psz: integer) :string ;   //// NEW 25.06
+
+  function MyFormat(D:Double):string;
+  begin
+    case psz of
+      0: result := IntToStr(round(D));
+      1: result := format('%.1f',[D]);
+      2: result := format('%.2f',[D]);
+      3: result := format('%.3f',[D]);
+      4: result := format('%.4f',[D]);
+      5: result := format('%.5f',[D]);
+      6: result := format('%.6f',[D]);
+      7: result := format('%.7f',[D]);
+      8: result := format('%.8f',[D]);
+      9: result := format('%.9f',[D]);
+      10: result := format('%.10f',[D]);
+      11: result := format('%.11f',[D]);
+      12: result := format('%.12f',[D]);
+      13: result := format('%.13f',[D]);
+      14: result := format('%.14f',[D]);
+      15: result := format('%.15f',[D]);
+      16: result := format('%.16f',[D]);
+    end;
+
+  end;
+
+var D,M : Integer;
+    s, Mm :Double;
+    Axis: String;
+    sD, sM, sS, SMm : String;
+begin
+
+  if psz <= -1 then
+  begin
+    result := DegToDMS(Deg, isLatitude, mode, HideLitera);
+    exit
+  end;
+
+  if Deg < 0 then
+  begin
+   if isLatitude then
+       Axis:='S '
+      else
+        Axis:='W ';
+
+   if not HideLitera then
+       Deg := -Deg;
+  end
+    else
+      if isLatitude then
+        Axis:='N '
+      else
+        Axis:='E ';
+
+  if HideLitera then
+     Axis:='';
+
+  if mode < 2 then
+  Begin
+     Result := Axis + Myformat(Deg);
+     if mode=1 then
+       Result := Result + #176;
+  End
+  else
+  Begin
+    D := trunc(Deg);
+
+    if Deg < 0 then
+      if HideLitera then
+      Begin
+        Deg := -Deg;
+
+        if D=0 then
+          Axis :='-';
+      End;
+
+    Mm := frac(Deg)*60;
+    M := trunc(Mm);
+    //    M := trunc(frac(Deg)*60);
+    s := (frac(Deg)*60-M)*60;
+    if round(S*1000) >= 60000 then
+    begin
+      S := S - 60;
+      if S < 0 then
+        S := 0;
+      inc(M);
+    end;
+    if M >=60 then
+    begin
+      M := M - 60;
+      if M < 0 then
+         M := 0;
+      inc(D);
+    end;
+
+    sD  := inttostr(trunc(D));
+    sM  := inttostr(trunc(M));
+
+
+    sMm := Myformat(Mm);
+    sS  := Myformat(s);
+
+    if M < 10 then
+    begin
+     sM := '0' + sM;
+     sMm := '0' + sMm;
+    end;
+
+    if s < 10 then
+     sS := '0' + sS;
+
+    case mode of
+       2: Result:= Axis+ sD + ' ' + sMm;
+       3: Result:= Axis+ sD + #176 + ' ' + sMm + #39;
+       4: Result:= Axis+ sD + ' '+ sM +' '+Ss;
+       5: Result:= Axis+ sD + #176+' '+ sM + #39 + ' ' + Ss + #34;
+    end;
+
+  end;
+end;
+
 
 function ChangeSeps(S, sep:string):string;
 var j: Integer;

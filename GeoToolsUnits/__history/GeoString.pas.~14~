@@ -2,26 +2,49 @@ unit GeoString;
 
 ///// Шевчук С. 2016
 
-uses DateUtils;
-
 interface
 
-function DegToDMS(Deg : double; mode : shortint) :string ; overload;
+uses SysUtils, DateUtils;
+
+procedure InitDTFormat(var FormatSettings:TFormatSettings);
+function DateTimeToStr2(DT:TDateTime; FormatSettings:TFormatSettings):String;
+
+function DegToDMS(Deg : double; mode :shortint) :string ; overload;
 function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint) :string ; overload;
 function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint; HideLitera: boolean) :string ; overload;
+function DegToDMS(Deg : double; mode :shortint; sep:string) :string ; overload;
+function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint; sep:string) :string ; overload;
+function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint; HideLitera: boolean; sep:string) :string ; overload;
+
+function ChangeSeps(S, sep:string):string;
 
 function StrToFloat2(s:String):Double;
 function StrToLatLon(s:string; IsLatitude:Boolean)  :Double ;
 
 implementation
 
-uses SysUtils;
-
 procedure InitDTFormat(var FormatSettings:TFormatSettings);
-  const TimeFText = 'hh:mm:ss.zz';
+
+  function GetSep(str: string): string;
+  const
+    n = 6;
+    seps: array [1..n] of string = (':','/','\','-','.',',');
+  var i:integer;
+  begin
+     Result:='';
+       for i:=1 to n do
+       if Pos(seps[i],str)>1 then
+       begin
+         Result:=seps[i];
+         break;
+       end;
+  end;
+
+
+  const TimeFText = 'hh:mm:ss.zzz';
         DateFText = 'YYYY/MM/DD';
   begin
-     FormatSettings.ShortDateFormat := DateFText + #$13 + TimeFText ;
+     FormatSettings.ShortDateFormat := DateFText + '&' + TimeFText ;
 
      FormatSettings.DateSeparator := GetSep(DateFText)[1];
      FormatSettings.TimeSeparator := GetSep(TimeFText)[1];
@@ -30,8 +53,18 @@ procedure InitDTFormat(var FormatSettings:TFormatSettings);
       FormatSettings.DecimalSeparator := ','
          else
            FormatSettings.DecimalSeparator := '.';
-  end;
+end;
 
+function DateTimeToStr2(DT:TDateTime; FormatSettings:TFormatSettings):String;
+var I: integer;
+    s: string;
+begin
+ Result := DateTimeToStr(DT, FormatSettings);
+
+ for I := 1 to Length(Result)-1 do
+   if Result[I] = '&' then
+      Result[I] := ' ';
+end;
 
 function DegToDMS(Deg : double; mode : shortint) :string ;
 var D,M: Integer;
@@ -40,9 +73,13 @@ var D,M: Integer;
 begin
   if mode<2 then
   Begin
+
     Result := format('%.9f',[Deg]);
     if mode=1 then
       Result := Result + #176;
+
+    if mode=-1 then
+      Result := format('%.6f',[Deg]);
   End
   else
    Begin
@@ -256,6 +293,30 @@ begin
   end;
 end;
 
+function ChangeSeps(S, sep:string):string;
+var j: Integer;
+begin
+  Result := S;
+  for j:= 1 to length(Result)+1 do
+    if ((Result[j] = '.') or (Result[j] = ','))and(Result[j]<>sep) then
+       Result[j] := sep[1];
+end;
+
+function DegToDMS(Deg : double; mode : shortint; sep:string) :string ; overload;
+begin
+  Result := ChangeSeps(DegToDMS(Deg,mode),sep);
+end;
+
+function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint; sep:string) :string ; overload;
+begin
+  Result := ChangeSeps(DegToDMS(Deg,isLatitude,mode),sep);
+end;
+
+function DegToDMS(Deg : double; isLatitude:Boolean; mode : shortint; HideLitera: boolean; sep:string) :string ; overload;
+begin
+   Result := ChangeSeps(DegToDMS(Deg,isLatitude,mode,HideLitera),sep);
+end;
+
 function StrToFloat2(s:String):Double;
 
  function IsDigit(ch:char):boolean;
@@ -276,7 +337,9 @@ begin
     if (not IsDigit(s[i]))
         and (not (s[i]='-'))
         and (not (s[i]='+'))
-        and (not (s[i]='E')) then
+        and (not (AnsiUpperCase(s[i])='E'))
+        and (not (AnsiUpperCase(s[i])='D')) then
+          Delete(s,i,1);
           Delete(s,i,1);
 
   try
@@ -311,6 +374,7 @@ var South, West: boolean;
   function GetHemisphere(s:string; var South, West : boolean): boolean;
   begin
         Result :=false;
+        s := AnsiUpperCase(s);
         if (s = 'N') or (s = 'E') then
         Begin
           Result := true;

@@ -752,7 +752,7 @@ object FGNSSSessionOptions: TFGNSSSessionOptions
     Top = 59
     Width = 519
     Height = 223
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     TabOrder = 0
     OnChange = PageControlChange
     object TabSheet1: TTabSheet

@@ -1632,13 +1632,20 @@ begin
   with GNSSPoints[PointN].SolutionId do
   begin
     SessionId := GNSSSessions[SessionNumber].SessionID;
+    SessionN  := SessionNumber;
     SolutionN := SolutionNumber;
 
     GNSSPoints[PointN].Position :=
       GNSSSessions[SessionNumber].Solutions[SolutionN].PointPos;
     GNSSPoints[PointN].Status :=
       GNSSSessions[SessionNumber].Solutions[SolutionN].SolutionQ;
+    GNSSPoints[PointN].Quality :=
+      GNSSSessions[SessionNumber].Solutions[SolutionN].StDevs;
   end;
+
+  if (SolSource = 0) or (SolSource = 4) then
+  for j := 1 to 6 do
+      GNSSPoints[PointN].Quality[j] := 0;
 
   if (SolSource <> 3) then
     DebugMSG('Assigned: ' + SolSourcesNames[SolSource])

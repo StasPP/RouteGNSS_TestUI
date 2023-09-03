@@ -1,10 +1,12 @@
 ID	Category(0 - Common; 1 - Sol; 2 - Vect; 3 - Point)	NAME	Description	ImageIdx	TXT	HTML	XLS	POS	(reserved1)	(reserved2)	CanChangeCS	CanSeparate	Set1_name	Set2_name	Set3_name	Set4_name	Set5_name	Set6_name	Set_Separator
-0	0	Common Report (full project)	Report for all the objects of the project	0	1	1	0	0	0	0	1	0	Add Header	Points	Solutions	Vectors	Adjustment	0	0
-1	1	GNSS Processor Report	RTK Lip POS file with the results of the processing	1	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0
-2	2	GNSS Processor Report	RTK Lip POS file with the results of the processing	1	1	0	0	1	0	0	0	1	0	0	0	0	0	0	0
+0	0	Common Report (full project)	Report for all the objects of the project	0	1	1	0	0	0	0	1	0	Add Header	Points	Solutions	Vectors	Adjustment	0	0	1
+1	1	GNSS Processor Report	RTK Lip POS file with the results of the processing	1	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0
+2	2	GNSS Processor Report	RTK Lip POS file with the results of the processing	1	1	0	0	1	0	0	0	1	0	0	0	0	0	0	0	0	0
 3	2	Vector Short Report 	Short report for the vector (or group of vectors) 	1	1	1	0	0	0	0	1	0	Add Header	0	0	0	0	0	0
-4	2	Vectors Catalogue (List)	Vectors Table 	1	1	1	1	0	0	0	1	0	Table Header Row	0	0	0	0	0	1
-5	3	Point Short Report	Single Point Report 	1	1	1	0	0	0	0	1	0	Add Header	0	0	0	0	0	0
-6	3	Points Catalogue (List)	Full list of points in the project	2	1	1	1	0	0	0	1	0	Coordintaes source	StDevs	0	0	0	0	1
-7	2	Vectors for Monitoring	Results of the processing for the Monitoring Software	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-7	0	Vectors for Monitoring	Results of the processing for the Monitoring Software	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+4	2	Vectors Catalogue (List)	Vectors Table 	1	1	1	1	0	0	0	1	0	Table Header Row	0	0	0	0	0	1	Vectors
+4	0	Vectors Catalogue (List)	Vectors Table 	1	1	1	1	0	0	0	1	0	Table Header Row	0	0	0	0	0	1	Vectors
+5	3	Point Short Report	Single Point Report 	1	1	1	0	0	0	0	1	0	Add Header	0	0	0	0	0	0	0
+6	3	Points Catalogue (List)	Full list of points in the project	2	1	1	1	0	0	0	1	0	Table Header Row	StDevs	Coordintaes source	0	0	0	1	Points
+6	0	Points Catalogue (List)	Full list of points in the project	2	1	1	1	0	0	0	1	0	Table Header Row	StDevs	Coordintaes source	0	0	0	1	Points
+7	2	Vectors for Monitoring	Results of the processing for the Monitoring Software	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Vectors
+7	0	Vectors for Monitoring	Results of the processing for the Monitoring Software	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	Vectors

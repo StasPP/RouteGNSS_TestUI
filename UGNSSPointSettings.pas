@@ -125,6 +125,17 @@ const
                                       'Adjusted Baselines (poor)',
                                       'Adjusted PPP',
                                       'User-Defined (Reference)');
+
+ SrcList  :Array[0..4] of String = ('RINEX header',
+                                     'Single/PPP Adjustment',
+                                     'BaseLines Adjustment',
+                                     'Solution: ',
+                                     'Entered by User');
+
+ SrcSolList :Array[0..3] of String = ('',
+                                     'Single Solution',
+                                     'BaseLine ',
+                                     'PPP');
 //  PointStatusColors: array [0..13] of TColor = (clGray, $0000FF80,
 //          $0002EAFD, clFuchsia, clPurple, $006000FF, clTeal,clGray,
 //          clRed, clOlive, $000080FF, clOlive, clYellow, clBlue);

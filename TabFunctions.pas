@@ -8,6 +8,7 @@ uses SysUtils, COMObj, Classes, Variants, Dialogs;
   function CorrectNum(s:string):string;
 
   function Dot(s:string):string;
+  function Comma(s:string):string;
 
   function GetSep(str: string): string;
 
@@ -72,6 +73,17 @@ begin
         result := result + s[I]
       else
         result := result + '.';
+end;
+
+function Comma(s:string):string;
+  var I:Integer;
+begin
+    result := '';
+    for I := 1 to length(s) do
+      if s[i]<>'.' then
+        result := result + s[I]
+      else
+        result := result + ',';
 end;
 
 function GetSep(str: string): string;

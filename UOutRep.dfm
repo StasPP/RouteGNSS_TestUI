@@ -419,15 +419,14 @@ object OutRep: TOutRep
     ItemHeight = 13
     TabOrder = 2
     OnClick = RepListClick
-    ExplicitLeft = 6
-    ExplicitTop = 56
+    OnDblClick = Button6Click
   end
   object OCS: TPageControl
     Left = 374
     Top = 57
     Width = 209
     Height = 258
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alRight
     Style = tsButtons
     TabOrder = 3
@@ -533,6 +532,7 @@ object OutRep: TOutRep
     object TabSheet2: TTabSheet
       Caption = 'Coordinates'
       ImageIndex = 1
+      OnShow = TabSheet2Show
       object Label2: TLabel
         Left = 10
         Top = 8
@@ -590,7 +590,6 @@ object OutRep: TOutRep
         object TabSheet5: TTabSheet
           Caption = 'TabSheet5'
           TabVisible = False
-          ExplicitHeight = 60
           object Label5: TLabel
             Left = -3
             Top = 10
@@ -617,33 +616,52 @@ object OutRep: TOutRep
               '%.2'
               '%.3'
               '%.4'
-              '%.5'
-              '%.6'
-              '%.7'
-              '%.8'
-              '%.9'
-              '%.10'
-              '%.11'
-              '%.12'
-              '%.13'
-              '%.14'
-              '%.15'
-              '%.16')
+              '%.5')
           end
-          object CheckBox8: TCheckBox
+          object SepMe: TCheckBox
             Left = 3
-            Top = 39
+            Top = 38
             Width = 150
             Height = 17
             Caption = 'Separate each three digits'
             TabOrder = 1
+            OnClick = SepMeClick
+          end
+          object RbSp: TRadioButton
+            Left = 110
+            Top = 59
+            Width = 57
+            Height = 17
+            Caption = 'Space'
+            Checked = True
+            TabOrder = 2
+            TabStop = True
+            Visible = False
+          end
+          object RbAp: TRadioButton
+            Left = 80
+            Top = 59
+            Width = 27
+            Height = 17
+            Caption = #39
+            TabOrder = 3
+            Visible = False
+          end
+          object RbCm: TRadioButton
+            Left = 49
+            Top = 59
+            Width = 27
+            Height = 17
+            Caption = ','
+            TabOrder = 4
+            Visible = False
+            OnClick = RbCmClick
           end
         end
         object TabSheet6: TTabSheet
           Caption = 'TabSheet6'
           ImageIndex = 1
           TabVisible = False
-          ExplicitHeight = 60
           object Label4: TLabel
             Left = 0
             Top = 31
@@ -715,15 +733,7 @@ object OutRep: TOutRep
               '%.5'
               '%.6'
               '%.7'
-              '%.8'
-              '%.9'
-              '%.10'
-              '%.11'
-              '%.12'
-              '%.13'
-              '%.14'
-              '%.15'
-              '%.16')
+              '%.8')
           end
           object MDig: TComboBox
             Left = 104
