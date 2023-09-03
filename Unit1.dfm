@@ -12,6 +12,7 @@ object Form1: TForm1
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
@@ -46,7 +47,6 @@ object Form1: TForm1
         8FFFF7DDDDDDDDD00000D7FFFFF78FFFFF7777DDDDDDDDD00000D7FFFFFF7FFF
         FF7F7DDDDDDDDDD00000D7FFFFFFFFFFFF77DDDDDDDDDDD00000D77777777777
         777DDDDDDDDDDDD00000DDDDDDDDDDDDDDDDDDDDDDDDDDD00000}
-      OnClick = Button2Click
     end
     object SPropButton: TSpeedButton
       Left = 224
@@ -55,7 +55,6 @@ object Form1: TForm1
       Height = 33
       Caption = 'Properties...'
       Enabled = False
-      OnClick = SessionBoxDblClick
     end
     object AllSessions: TSpeedButton
       Left = 224
@@ -64,7 +63,6 @@ object Form1: TForm1
       Height = 33
       Caption = 'Select All'
       Enabled = False
-      OnClick = AllSessionsClick
     end
     object Label15: TLabel
       Left = 343
@@ -87,7 +85,6 @@ object Form1: TForm1
       Height = 35
       Caption = 'Delete Session'
       Enabled = False
-      OnClick = DelSBtnClick
     end
     object Label17: TLabel
       Left = 343
@@ -103,7 +100,6 @@ object Form1: TForm1
       Height = 25
       Caption = 'Properties...'
       Enabled = False
-      OnClick = StationPropClick
     end
     object VectorProc: TSpeedButton
       Left = 559
@@ -112,7 +108,6 @@ object Form1: TForm1
       Height = 27
       Caption = 'Process'
       Enabled = False
-      OnClick = VectorProcClick
     end
     object Label18: TLabel
       Left = 8
@@ -128,7 +123,6 @@ object Form1: TForm1
       Height = 25
       Caption = 'Properties...'
       Enabled = False
-      OnClick = VectorPropClick
     end
     object Label19: TLabel
       Left = 8
@@ -146,10 +140,6 @@ object Form1: TForm1
       ItemHeight = 16
       MultiSelect = True
       TabOrder = 0
-      OnClick = SessionBoxClick
-      OnDblClick = SessionBoxDblClick
-      OnDrawItem = SessionBoxDrawItem
-      OnKeyDown = SessionBoxKeyDown
     end
     object PointBox: TListBox
       Left = 343
@@ -159,9 +149,6 @@ object Form1: TForm1
       Style = lbOwnerDrawFixed
       ItemHeight = 16
       TabOrder = 1
-      OnClick = PointBoxClick
-      OnDblClick = StationPropClick
-      OnDrawItem = PointBoxDrawItem
     end
     object BaselinesBox: TListBox
       Left = 343
@@ -173,10 +160,6 @@ object Form1: TForm1
       MultiSelect = True
       PopupMenu = VectorPopup
       TabOrder = 2
-      OnClick = BaselinesBoxClick
-      OnDblClick = BaselinesBoxDblClick
-      OnDrawItem = BaselinesBoxDrawItem
-      OnKeyDown = BaselinesBoxKeyDown
     end
     object RTKLibPathEd: TEdit
       Left = 8
@@ -185,7 +168,6 @@ object Form1: TForm1
       Height = 21
       TabOrder = 3
       Text = '..\..\RTKLIB\bin\rnx2rtkp.exe '
-      OnChange = RTKLibPathEdChange
     end
   end
   object Panel1: TPanel
@@ -222,7 +204,6 @@ object Form1: TForm1
       Cursor = crHandPoint
       AutoSize = False
       Caption = '(none)'
-      OnClick = Label3Click
     end
     object Label4: TLabel
       Left = 98
@@ -232,7 +213,6 @@ object Form1: TForm1
       Cursor = crHandPoint
       AutoSize = False
       Caption = '(none)'
-      OnClick = Label4Click
     end
     object Label5: TLabel
       Left = 98
@@ -288,7 +268,6 @@ object Form1: TForm1
       Caption = 'Open BS'
       Enabled = False
       TabOrder = 0
-      OnClick = Button1Click
     end
     object Button2: TButton
       Left = 17
@@ -297,7 +276,6 @@ object Form1: TForm1
       Height = 25
       Caption = 'Open Rover'
       TabOrder = 1
-      OnClick = Button2Click
     end
     object Button3: TButton
       Left = 17
@@ -307,7 +285,6 @@ object Form1: TForm1
       Caption = 'Open GLO'
       Enabled = False
       TabOrder = 2
-      OnClick = Button3Click
     end
     object Button4: TButton
       Left = 17
@@ -317,7 +294,6 @@ object Form1: TForm1
       Caption = 'Open NAV'
       Enabled = False
       TabOrder = 3
-      OnClick = Button4Click
     end
     object PageControl1: TPageControl
       Left = 8
@@ -328,10 +304,6 @@ object Form1: TForm1
       TabOrder = 4
       object TabSheet1: TTabSheet
         Caption = 'Single Processing'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object RadioButton1: TRadioButton
           Left = 16
           Top = 18
@@ -359,7 +331,6 @@ object Form1: TForm1
           Caption = 'SINGLE PROCESSING!'
           Enabled = False
           TabOrder = 2
-          OnClick = BitBtn2Click
         end
       end
       object TabSheet2: TTabSheet
@@ -433,7 +404,6 @@ object Form1: TForm1
           Caption = 'PROCESS'
           Enabled = False
           TabOrder = 4
-          OnClick = BitBtn1Click
           Kind = bkOK
         end
       end
@@ -448,7 +418,6 @@ object Form1: TForm1
       ItemIndex = 0
       TabOrder = 5
       Text = 'All the availble'
-      OnChange = Cb_GNSSSystemsChange
       Items.Strings = (
         'All the availble'
         'GPS only'
@@ -568,7 +537,6 @@ object Form1: TForm1
       Caption = 'RESULT SHOW'
       Enabled = False
       TabOrder = 9
-      OnClick = Button5Click
     end
     object t1: TEdit
       Left = 70
@@ -591,7 +559,7 @@ object Form1: TForm1
     Left = 0
     Top = 305
     Width = 649
-    Height = 86
+    Height = 83
     Style = lbOwnerDrawFixed
     Align = alClient
     ItemHeight = 13
@@ -600,16 +568,16 @@ object Form1: TForm1
   end
   object Panel3: TPanel
     Left = 0
-    Top = 391
+    Top = 388
     Width = 649
-    Height = 36
+    Height = 39
     Align = alBottom
     TabOrder = 3
     object ShowTree: TSpeedButton
-      Left = 38
+      Left = 86
       Top = 4
-      Width = 26
-      Height = 27
+      Width = 35
+      Height = 30
       Hint = 'Object Tree'
       Glyph.Data = {
         8A010000424D8A01000000000000760000002800000013000000170000000100
@@ -628,10 +596,10 @@ object Form1: TForm1
       OnClick = ShowTreeClick
     end
     object CSSet: TSpeedButton
-      Left = 69
+      Left = 137
       Top = 4
-      Width = 24
-      Height = 27
+      Width = 28
+      Height = 30
       Hint = 'Coordinate Systems'
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
@@ -663,10 +631,10 @@ object Form1: TForm1
       OnClick = CSSetClick
     end
     object ImprortRIN: TSpeedButton
-      Left = 97
+      Left = 49
       Top = 4
-      Width = 36
-      Height = 27
+      Width = 35
+      Height = 30
       Hint = 'Import RINEX'
       Glyph.Data = {
         D6010000424DD60100000000000076000000280000001B000000160000000100
@@ -687,10 +655,10 @@ object Form1: TForm1
       OnClick = ImprortRINClick
     end
     object ProgrSet: TSpeedButton
-      Left = 137
+      Left = 167
       Top = 4
-      Width = 29
-      Height = 27
+      Width = 33
+      Height = 30
       Hint = 'Program Settings'
       Glyph.Data = {
         26040000424D2604000000000000360000002800000012000000120000000100
@@ -730,10 +698,10 @@ object Form1: TForm1
       OnClick = ProgrSetClick
     end
     object ProjReport: TSpeedButton
-      Left = 233
-      Top = 3
-      Width = 28
-      Height = 27
+      Left = 284
+      Top = 4
+      Width = 32
+      Height = 30
       Hint = 'Project Report'
       Glyph.Data = {
         EE000000424DEE0000000000000076000000280000000E0000000F0000000100
@@ -746,68 +714,33 @@ object Form1: TForm1
         7D00D7FFFFFFFF7DDD00D7777777777DDD00}
       OnClick = ProjReportClick
     end
-    object SpeedButton5: TSpeedButton
-      Left = 7
+    object LaunchScr: TSpeedButton
+      Left = 4
       Top = 4
-      Width = 26
-      Height = 27
+      Width = 30
+      Height = 30
       Enabled = False
       Glyph.Data = {
-        FE050000424DFE05000000000000360400002800000016000000130000000100
-        080000000000C801000000000000000000000001000000000000000000000000
-        80000080000000808000800000008000800080800000C0C0C000C0DCC000F0CA
-        A6000020400000206000002080000020A0000020C0000020E000004000000040
-        20000040400000406000004080000040A0000040C0000040E000006000000060
-        20000060400000606000006080000060A0000060C0000060E000008000000080
-        20000080400000806000008080000080A0000080C0000080E00000A0000000A0
-        200000A0400000A0600000A0800000A0A00000A0C00000A0E00000C0000000C0
-        200000C0400000C0600000C0800000C0A00000C0C00000C0E00000E0000000E0
-        200000E0400000E0600000E0800000E0A00000E0C00000E0E000400000004000
-        20004000400040006000400080004000A0004000C0004000E000402000004020
-        20004020400040206000402080004020A0004020C0004020E000404000004040
-        20004040400040406000404080004040A0004040C0004040E000406000004060
-        20004060400040606000406080004060A0004060C0004060E000408000004080
-        20004080400040806000408080004080A0004080C0004080E00040A0000040A0
-        200040A0400040A0600040A0800040A0A00040A0C00040A0E00040C0000040C0
-        200040C0400040C0600040C0800040C0A00040C0C00040C0E00040E0000040E0
-        200040E0400040E0600040E0800040E0A00040E0C00040E0E000800000008000
-        20008000400080006000800080008000A0008000C0008000E000802000008020
-        20008020400080206000802080008020A0008020C0008020E000804000008040
-        20008040400080406000804080008040A0008040C0008040E000806000008060
-        20008060400080606000806080008060A0008060C0008060E000808000008080
-        20008080400080806000808080008080A0008080C0008080E00080A0000080A0
-        200080A0400080A0600080A0800080A0A00080A0C00080A0E00080C0000080C0
-        200080C0400080C0600080C0800080C0A00080C0C00080C0E00080E0000080E0
-        200080E0400080E0600080E0800080E0A00080E0C00080E0E000C0000000C000
-        2000C0004000C0006000C0008000C000A000C000C000C000E000C0200000C020
-        2000C0204000C0206000C0208000C020A000C020C000C020E000C0400000C040
-        2000C0404000C0406000C0408000C040A000C040C000C040E000C0600000C060
-        2000C0604000C0606000C0608000C060A000C060C000C060E000C0800000C080
-        2000C0804000C0806000C0808000C080A000C080C000C080E000C0A00000C0A0
-        2000C0A04000C0A06000C0A08000C0A0A000C0A0C000C0A0E000C0C00000C0C0
-        2000C0C04000C0C06000C0C08000C0C0A000F0FBFF00A4A0A000808080000000
-        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FDFDFDFDFDFD
-        FDFDFDFDFDFD7ABCFDFDFDFDFDFDFDFD0000FDA4A4A4A4A4A4A4A4A4A4BB3030
-        FDFDFDFDFDFDFDFD0000FDA4FFFFFFFFFFFFFFF6BA30303072FDFDFDFDFDFDFD
-        0000FDA4FF0000000000F67A3838783030BBFDFDFDFDFDFD0000FDA4FFFFFFFF
-        F6BC7978787808793830BCFDFDFDFDFD0000FDA4FF000000F6BB797979BAFF08
-        783830F5FDFDFDFD0000FDA4FFFFFFFFFFFF087A7908FFA47A783830F5FDFDFD
-        0000FDA4FF000000000000FF08FFFFA4FD78783030BCFDFD0000FDA4FFFFFFFF
-        FFFFFFFFFFFFFFA4FDBC7878303071FD0000FDA4FF0000000000000000FFFFA4
-        FDFDBA78783830FD0000FDA4FFFFFFFFFFFFFFFFFFFFFFA4FDFDFD79787878FD
-        0000FDA4FF0000000000000000FFFFA4FDFDFDFD797879FD0000FDA4FFFFFFFF
-        FFFFFFFFFFFFFFA4FDFDFDFDFD7978FD0000FDA4FF000000000000FFA4A4A4A4
-        FDFDFDFDFDFD7AFD0000FDA4FFFFFFFFFFFFFFFFA4FFA4FDFDFDFDFDFDFDFDFD
-        0000FDA4FFFFFFFFFFFFFFFFA4A4FDFDFDFDFDFDFDFDFDFD0000FDA4A4A4A4A4
-        A4A4A4A4A4FDFDFDFDFDFDFDFDFDFDFD0000FDFDFDFDFDFDFDFDFDFDFDFDFDFD
-        FDFDFDFDFDFDFDFD0000FDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFD
+        7E010000424D7E01000000000000760000002800000013000000160000000100
+        0400000000000801000000000000000000001000000000000000000000000000
+        8000008000000080800080000000800080008080000080808000C0C0C0000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555000000000
+        000555500000554FF8F8F8F80FF05550000054BFBFBFBFF08BFF0550000053FB
+        FBFBF808BFBFF050000054BFFFFFF808FBFBF0500000550FFFFFBFF080BF8050
+        000055504743C0780BFBF0500000555554BFBFBFBFBFF0500000555550FBFBFB
+        FBFF0550000055550F033330BFF0555000005550FBFBFBFBFF0555500000550F
+        033330BFF0555550000050FBFBFBFBFF05555550000054B033330FF055555550
+        00000FFFFFBFB8055555555000007F033330F8080000055000007FFFFFFFBF07
+        FFFFF05000003F033330F8088888F05000004BFFFFFFFBF0788F0550000050F0
+        33330FBF088055500000550BFFFBFFFBF0055550000055543737373477555550
         0000}
+      OnClick = LaunchScrClick
     end
     object ProcessAll: TSpeedButton
-      Left = 170
+      Left = 216
       Top = 4
-      Width = 28
-      Height = 27
+      Width = 32
+      Height = 30
       Hint = 'Process All Vectors'
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
@@ -839,10 +772,10 @@ object Form1: TForm1
       OnClick = ProcessAllClick
     end
     object ReProcessAll: TSpeedButton
-      Left = 202
+      Left = 250
       Top = 4
-      Width = 28
-      Height = 27
+      Width = 32
+      Height = 30
       Hint = 'Process All Vectors'
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
@@ -885,15 +818,15 @@ object Form1: TForm1
       Left = 522
       Top = 1
       Width = 126
-      Height = 34
+      Height = 37
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
       object Button6: TButton
         Left = 6
-        Top = 3
+        Top = 5
         Width = 115
-        Height = 27
+        Height = 26
         Caption = 'Close'
         TabOrder = 0
         OnClick = Button6Click
@@ -910,7 +843,7 @@ object Form1: TForm1
     Left = 224
     Top = 152
     Bitmap = {
-      494C010174008800AC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010174008800B00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000E0010000010020000000000000E0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4878,24 +4811,19 @@ object Form1: TForm1
       000000000000}
   end
   object VectorPopup: TPopupMenu
-    OnPopup = VectorPopupPopup
     Left = 600
     Top = 144
     object Settings1: TMenuItem
       Caption = 'Settings'
-      OnClick = VectorPropClick
     end
     object Invert1: TMenuItem
       Caption = 'Invert'
-      OnClick = Invert1Click
     end
     object Delete1: TMenuItem
       Caption = 'Disable'
-      OnClick = Delete1Click
     end
     object Enable1: TMenuItem
       Caption = 'Enable'
-      OnClick = Enable1Click
     end
     object Process1: TMenuItem
       Bitmap.Data = {
@@ -4949,11 +4877,51 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000}
       Caption = 'Process'
-      OnClick = VectorProcClick
     end
     object SelectAll1: TMenuItem
       Caption = 'SelectAll'
-      OnClick = SelectAll1Click
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'RinMonitor Script|*.rsc|Any *.*|*.*'
+    Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
+    Left = 224
+    Top = 216
+  end
+  object ProcPopup: TPopupMenu
+    OnPopup = ProcPopupPopup
+    Left = 568
+    Top = 144
+    object Single1: TMenuItem
+      Caption = 'Single'
+      object AllAvailable2: TMenuItem
+        Caption = 'All Available'
+        OnClick = AllAvailable2Click
+      end
+      object Customize1: TMenuItem
+        Caption = 'Customize'
+      end
+    end
+    object Baselines1: TMenuItem
+      Caption = 'Baselines'
+      object AllAvailable3: TMenuItem
+        Caption = 'All Available'
+        OnClick = AllAvailable3Click
+      end
+      object Customize2: TMenuItem
+        Caption = 'Customize'
+      end
+    end
+    object PPP1: TMenuItem
+      Caption = 'PPP'
+      Enabled = False
+      object AllAvailable4: TMenuItem
+        Caption = 'All Available'
+        OnClick = AllAvailable4Click
+      end
+      object Customize3: TMenuItem
+        Caption = 'Customize'
+      end
     end
   end
 end

@@ -70,6 +70,9 @@
     <DCCReference Include="USetPaths.pas">
       <Form>FProcSet</Form>
     </DCCReference>
+    <DCCReference Include="USplash.pas">
+      <Form>Splash</Form>
+    </DCCReference>
     <DCCReference Include="UStartProcessing.pas">
       <Form>FStartProcessing</Form>
     </DCCReference>

@@ -19,7 +19,8 @@ uses
   UProjCsys in 'UProjCsys.pas' {FProjCsys},
   CoordSysFmNew in 'CoordSysFmNew.pas' {CSFormNew},
   USetPaths in 'USetPaths.pas' {FProcSet},
-  UOutRep in 'UOutRep.pas' {OutRep};
+  UOutRep in 'UOutRep.pas' {OutRep},
+  USplash in 'USplash.pas' {Splash};
 
 {$R *.res}
 
@@ -39,5 +40,6 @@ begin
   Application.CreateForm(TCSFormNew, CSFormNew);
   Application.CreateForm(TFProcSet, FProcSet);
   Application.CreateForm(TOutRep, OutRep);
+  Application.CreateForm(TSplash, Splash);
   Application.Run;
 end.

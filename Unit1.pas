@@ -89,53 +89,64 @@ type
     ImprortRIN: TSpeedButton;
     ProgrSet: TSpeedButton;
     ProjReport: TSpeedButton;
-    SpeedButton5: TSpeedButton;
+    LaunchScr: TSpeedButton;
     ProcessAll: TSpeedButton;
     ReProcessAll: TSpeedButton;
-    procedure Button3Click(Sender: TObject);
+    OpenDialog1: TOpenDialog;
+    ProcPopup: TPopupMenu;
+    Single1: TMenuItem;
+    Baselines1: TMenuItem;
+    PPP1: TMenuItem;
+    AllAvailable2: TMenuItem;
+    Customize1: TMenuItem;
+    AllAvailable3: TMenuItem;
+    Customize2: TMenuItem;
+    AllAvailable4: TMenuItem;
+    Customize3: TMenuItem;
+(*    procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);  *)
     procedure Button6Click(Sender: TObject);
-    procedure Button7Click(Sender: TObject);
+ (*   procedure Button7Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
-    procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);    *)
     procedure FormCreate(Sender: TObject);
-    procedure Memo1Change(Sender: TObject);
-    procedure ComboBox1Change(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure Cb_GNSSSystemsChange(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
-    procedure RTKLibPathEdChange(Sender: TObject);
-    procedure Label3Click(Sender: TObject);
-    procedure Label4Click(Sender: TObject);
-    procedure SessionBoxDblClick(Sender: TObject);
-    procedure SessionBoxKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure AllSessionsClick(Sender: TObject);
-    procedure SessionBoxClick(Sender: TObject);
-    procedure BaselinesBoxClick(Sender: TObject);
-    procedure VectorProcClick(Sender: TObject);
-    procedure BaselinesBoxKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure DelSBtnClick(Sender: TObject);
-    procedure PointBoxClick(Sender: TObject);
-    procedure StationPropClick(Sender: TObject);
-    procedure VectorPopupPopup(Sender: TObject);
-    procedure Delete1Click(Sender: TObject);
-    procedure VectorPropClick(Sender: TObject);
-    procedure Invert1Click(Sender: TObject);
-    procedure Enable1Click(Sender: TObject);
-    procedure SelectAll1Click(Sender: TObject);
+//    procedure Memo1Change(Sender: TObject);
+//    procedure ComboBox1Change(Sender: TObject);
+//    procedure Button2Click(Sender: TObject);
+//    procedure Cb_GNSSSystemsChange(Sender: TObject);
+//    procedure Button1Click(Sender: TObject);
+//    procedure RTKLibPathEdChange(Sender: TObject);
+//    procedure Label3Click(Sender: TObject);
+//    procedure Label4Click(Sender: TObject);
+//    procedure SessionBoxDblClick(Sender: TObject);
+//    procedure SessionBoxKeyDown(Sender: TObject; var Key: Word;
+//      Shift: TShiftState);
+//    procedure AllSessionsClick(Sender: TObject);
+//    procedure SessionBoxClick(Sender: TObject);
+//    procedure BaselinesBoxClick(Sender: TObject);
+//    procedure VectorProcClick(Sender: TObject);
+//    procedure BaselinesBoxKeyDown(Sender: TObject; var Key: Word;
+//      Shift: TShiftState);
+//    procedure DelSBtnClick(Sender: TObject);
+//    procedure PointBoxClick(Sender: TObject);
+//    procedure StationPropClick(Sender: TObject);
+//    procedure VectorPopupPopup(Sender: TObject);
+//    procedure Delete1Click(Sender: TObject);
+//    procedure VectorPropClick(Sender: TObject);
+//    procedure Invert1Click(Sender: TObject);
+//    procedure Enable1Click(Sender: TObject);
+//    procedure SelectAll1Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Memo1DrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
       State: TOwnerDrawState);
-    procedure PointBoxDrawItem(Control: TWinControl; Index: Integer;
-      Rect: TRect; State: TOwnerDrawState);
-    procedure BaselinesBoxDrawItem(Control: TWinControl; Index: Integer;
-      Rect: TRect; State: TOwnerDrawState);
-    procedure SessionBoxDrawItem(Control: TWinControl; Index: Integer;
-      Rect: TRect; State: TOwnerDrawState);
-    procedure BaselinesBoxDblClick(Sender: TObject);
+//    procedure PointBoxDrawItem(Control: TWinControl; Index: Integer;
+//      Rect: TRect; State: TOwnerDrawState);
+//    procedure BaselinesBoxDrawItem(Control: TWinControl; Index: Integer;
+//      Rect: TRect; State: TOwnerDrawState);
+//    procedure SessionBoxDrawItem(Control: TWinControl; Index: Integer;
+//      Rect: TRect; State: TOwnerDrawState);
+//    procedure BaselinesBoxDblClick(Sender: TObject);
     procedure ShowTreeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure CSSetClick(Sender: TObject);
@@ -144,6 +155,13 @@ type
     procedure ProjReportClick(Sender: TObject);
     procedure ProcessAllClick(Sender: TObject);
     procedure ReProcessAllClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure ProcPopupPopup(Sender: TObject);
+    procedure AllAvailable3Click(Sender: TObject);
+    procedure AllAvailable2Click(Sender: TObject);
+    procedure AllAvailable4Click(Sender: TObject);
+    procedure CheckButtons;
+    procedure LaunchScrClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -153,21 +171,139 @@ type
 
 var
   Form1: TForm1;
-
-  isProc: boolean;
-  ProcInfo :TProcessInformation;
-  ProcTxt  :THandle;
-
-  Base : integer = -1;
-  Rover: integer = -1;
+//
+//  isProc: boolean;
+//  ProcInfo :TProcessInformation;
+//  ProcTxt  :THandle;
+//
+//  Base : integer = -1;
+//  Rover: integer = -1;
 
   MyDir, ResFile :string;
+  ReProcess :boolean;
+
+
+  Inited: Boolean = false;
 implementation
 
 uses FProcGNSS, UGNSSSessionOptions, FLoader, UStartProcessing,
-  UGNSSPointSettings, UVectSettings, UGNSSMainTree, USetPaths, UOutRep;
+  UGNSSPointSettings, UVectSettings, UGNSSMainTree, USetPaths, UOutRep, USplash;
 
 {$R *.dfm}
+
+procedure ProcessAllSingles;
+var I, j :Integer;
+    A :Array of Byte;
+    B :Array of Integer;
+    needProc :Boolean;
+begin
+  SetLength(A, 0);
+  SetLength(B, 0);
+
+  for I := 0 to Length(GNSSSessions) - 1 do
+  begin
+    needProc := true;
+    if ReProcess = false then
+      for j := 0 to Length(GNSSSessions[I].Solutions) - 1 do
+        if GNSSSessions[I].Solutions[j].SolutionKind = 1 then
+        begin
+           needProc := false;
+           break;
+        end;
+    if not needProc then Continue;
+
+    j := Length(A);
+    SetLength(A, j+1);
+    SetLength(B, j+1);
+    A[j] := 1;
+    B[j] := I;
+  end;
+  if length(A) > 0 then
+    FStartProcessing.ShowMultiProcOptions(A,B,B);
+
+  FMainTree.OnShow(nil);
+end;
+
+procedure ProcessAllBaselines;
+var I, j :Integer;
+    A :Array of byte; B, C :Array of Integer;
+begin
+  if Length(GNSSVectors) > 0 then
+  begin
+    I := Length(GNSSVectors);
+    SetLength(A, 0); SetLength(B, 0); SetLength(C, 0);
+    for I := 0 to Length(GNSSVectors) - 1 do
+    if (ReProcess) or
+       ((Reprocess = false) and (GNSSVectors[I].StatusQ = 0)) then
+    begin
+      j := Length(A);
+      SetLength(A, j+1);
+      SetLength(B, j+1);
+      SetLength(C, j+1);
+
+      A[j] := 2;
+      B[j] := GetGNSSSessionNumber(GNSSVectors[I].RoverID);
+      C[j] := GetGNSSSessionNumber(GNSSVectors[I].BaseID);
+    end;
+    if length(A) > 0 then
+      FStartProcessing.ShowMultiProcOptions(A,B,C);
+  end;
+  FMainTree.OnShow(nil);
+end;
+
+procedure ProcessAllPPPs;
+var I, j :Integer;
+    A :Array of Byte;
+    B :Array of Integer;
+    needProc :Boolean;
+begin
+  SetLength(A, 0);
+  SetLength(B, 0);
+
+   for I := 0 to Length(GNSSSessions) - 1 do
+  begin
+    needProc := true;
+    if ReProcess = false then
+      for j := 0 to Length(GNSSSessions[I].Solutions) - 1 do
+        if GNSSSessions[I].Solutions[j].SolutionKind = 3 then
+        begin
+           needProc := false;
+           break;
+        end;
+    if not needProc then Continue;
+
+    j := Length(A);
+    SetLength(A, j+1);
+    SetLength(B, j+1);
+    A[j] := 3;
+    B[j] := I;
+  end;
+  if length(A) > 0 then
+    FStartProcessing.ShowMultiProcOptions(A,B,B);
+
+  FMainTree.OnShow(nil);
+end;
+(*
+procedure ReProcessAllBaselines;
+var I:Integer;
+    A :Array of byte; B, C :Array of Integer;
+begin
+  if Length(GNSSVectors) > 0 then
+  begin
+    I := Length(GNSSVectors);
+    SetLength(A, I); SetLength(B, I); SetLength(C, I);
+    for I := 0 to Length(GNSSVectors) - 1 do
+    begin
+      A[I] := 2;
+      B[I] := GetGNSSSessionNumber(GNSSVectors[I].RoverID);
+      C[I] := GetGNSSSessionNumber(GNSSVectors[I].BaseID);
+    end;
+    FStartProcessing.ShowMultiProcOptions(A,B,C);
+  end;
+  FMainTree.OnShow(nil);
+end;
+
+
 
 procedure PrepareProc;
 var I  :integer;
@@ -362,8 +498,6 @@ begin
     RaiseLastOSError;
   end;
 end;
-
-
 
 
 procedure TForm1.BitBtn1Click(Sender: TObject);
@@ -768,6 +902,21 @@ begin
     WaitStatus(false);
   end;
 end;
+       *)
+procedure TForm1.AllAvailable2Click(Sender: TObject);
+begin
+  ProcessAllSingles;
+end;
+
+procedure TForm1.AllAvailable3Click(Sender: TObject);
+begin
+  ProcessAllBaselines;
+end;
+
+procedure TForm1.AllAvailable4Click(Sender: TObject);
+begin
+  ProcessAllPPPs;
+end;
 
 procedure TForm1.Button6Click(Sender: TObject);
 var s:string;
@@ -777,7 +926,7 @@ begin
   //  ExecAndCapture('C:\Users\Satellite\Desktop\Разработки\Soft\RouteGNSS\RTKLIB\bin\rnx2rtkp.exe -?', s);
   close;
 end;
-
+         (*
 procedure TForm1.Button7Click(Sender: TObject);
 var s:string;
 begin
@@ -853,29 +1002,48 @@ begin
   end;
     Gb_GNSSSystems.Visible := Cb_GNSSSystems.ItemIndex = 3;
 end;
-
+       *)
 procedure TForm1.ReProcessAllClick(Sender: TObject);
-var I:Integer;
-    A :Array of byte; B, C :Array of Integer;
 begin
-  if Length(GNSSVectors) > 0 then
-  begin
-    I := Length(GNSSVectors);
-    SetLength(A, I); SetLength(B, I); SetLength(C, I);
-    for I := 0 to Length(GNSSVectors) - 1 do
-    begin
-      A[I] := 2;
-      B[I] := GetGNSSSessionNumber(GNSSVectors[I].RoverID);
-      C[I] := GetGNSSSessionNumber(GNSSVectors[I].BaseID);
-    end;
-    FStartProcessing.ShowMultiProcOptions(A,B,C);
-  end;
-  FMainTree.OnShow(nil);
+   ReProcess := true;
+   ProcPopup.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
-
+    (*
 procedure TForm1.RTKLibPathEdChange(Sender: TObject);
 begin
   RTKLibDest := MyDir + RTKLibPathEd.Text;
+end;
+*)
+
+procedure TForm1.FormActivate(Sender: TObject);
+begin
+ 
+  if not Inited then
+  begin
+     SPLASH.show;
+     Splash.Repaint;
+     MyDir := GetCurrentDir;
+
+     if MyDir[Length(MyDir)-1] <> '\' then
+       MyDir := MyDir + '\';
+
+     RTKWorkDir := MyDir;
+
+     InitRTKLIBPaths('Data\GNSS\Paths.loc');
+
+     GeoInit('Data\Sources.loc', '', '');
+
+     PrepareNewGNSSProject;
+
+     if Fileexists(RTKLibDest )= false then
+        RTKLibPathEd.OnChange(nil)
+     else
+        RTKLibPathEd.Text := RTKLibDest;
+
+     Inited := true;
+     sleep(500);
+     Splash.close;
+  end;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -893,38 +1061,30 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
  // ComboBox1.Items.LoadFromFile('paths.txt');
  // ComboBox1.ItemIndex := 0;
- MyDir := GetCurrentDir;
-
- if MyDir[Length(MyDir)-1] <> '\' then
-     MyDir := MyDir + '\';
-
- RTKWorkDir := MyDir;
-
- InitRTKLIBPaths('Data\GNSS\Paths.loc');
-
- GeoInit('Data\Sources.loc', '', '');
-
- PrepareNewGNSSProject;
-
- if Fileexists(RTKLibDest )= false then
-   RTKLibPathEd.OnChange(nil)
- else
-   RTKLibPathEd.Text := RTKLibDest;
-
- 
+ Inited := false;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
 //  ShowTree.Click;
+  CheckButtons;
 end;
 
 procedure TForm1.ImprortRINClick(Sender: TObject);
 begin
   FMainTree.ImprortRIN.Click;
-  ShowTree.OnClick(nil);
+
+  if Length(GNSSSessions) > 0 then
+    ShowTree.OnClick(nil);
 end;
 
+procedure TForm1.LaunchScrClick(Sender: TObject);
+begin
+  if not OpenDialog1.Execute() then
+    exit;
+end;
+
+(*
 procedure TForm1.Invert1Click(Sender: TObject);
 var I :Integer;
 begin
@@ -1024,6 +1184,7 @@ begin
   if key = vk_return then
      SessionBox.OnDblClick(nil);
 end;
+    *)
 
 procedure TForm1.ShowDebugLog;
 var I:Integer;
@@ -1035,6 +1196,8 @@ begin
 
     Memo1.perform( WM_VSCROLL, SB_BOTTOM, 0 );
     Memo1.perform( WM_VSCROLL, SB_ENDSCROLL, 0 );
+
+  CheckButtons;
 end;
 
 procedure TForm1.ShowTreeClick(Sender: TObject);
@@ -1051,35 +1214,78 @@ begin
   end;
 end;
 
+procedure TForm1.CheckButtons;
+var I, j, cnt: integer;
+begin
+//
+
+    cnt := 0;
+    for I := 0 to Length(GNSSSessions)-1 do
+      for j := 0 to Length(GNSSSessions[I].Solutions) - 1 do
+        if GNSSSessions[I].Solutions[j].SolutionKind = 1 then
+          inc(cnt);
+    ProcessAll.Enabled  := Length(GNSSSessions)-cnt > 0;
+
+    cnt := 0;
+    for I := 0 to Length(GNSSVectors) - 1 do
+      if GNSSVectors[I].StatusQ = 0 then
+        inc(cnt);
+    ProcessAll.Enabled  := (cnt > 0) or (ProcessAll.Enabled);
+
+    cnt := 0;
+    for I := 0 to Length(GNSSSessions)-1 do
+      for j := 0 to Length(GNSSSessions[I].Solutions) - 1 do
+        if GNSSSessions[I].Solutions[j].SolutionKind = 3 then
+          inc(cnt);
+    ProcessAll.Enabled  := (Length(GNSSSessions)-cnt > 0) or (ProcessAll.Enabled);
+
+    ReProcessAll.Enabled := Length(GNSSSessions) > 0;
+    ProjReport.Enabled := Length(GNSSSessions) > 0;
+    ShowTree.Enabled := Length(GNSSSessions) > 0;
+end;
+
 procedure TForm1.CSSetClick(Sender: TObject);
 begin
   FProjCsys.ShowProjCsys(IcoList); 
 end;
 
 procedure TForm1.ProcessAllClick(Sender: TObject);
-var I, j :Integer;
-    A :Array of byte; B, C :Array of Integer;
 begin
-  if Length(GNSSVectors) > 0 then
+ ReProcess := false;
+ ProcPopup.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+end;
+
+procedure TForm1.ProcPopupPopup(Sender: TObject);
+var cnt, i, j :integer;
+begin
+  if ReProcess then
   begin
-    I := Length(GNSSVectors);
-    SetLength(A, 0); SetLength(B, 0); SetLength(C, 0);
+    ProcPopup.Items[0].Enabled := Length(GNSSSessions) > 0;
+    ProcPopup.Items[1].Enabled := Length(GNSSVectors) > 0;
+    ProcPopup.Items[2].Enabled := Length(GNSSSessions) > 0;
+  end
+  else
+  begin
+    cnt := 0;
+    for I := 0 to Length(GNSSSessions)-1 do
+      for j := 0 to Length(GNSSSessions[I].Solutions) - 1 do
+        if GNSSSessions[I].Solutions[j].SolutionKind = 1 then
+          inc(cnt);
+    ProcPopup.Items[0].Enabled := Length(GNSSSessions)-cnt > 0;
+
+    cnt := 0;
     for I := 0 to Length(GNSSVectors) - 1 do
-    if GNSSVectors[I].StatusQ = 0 then
-    begin
-      j := Length(A);
-      SetLength(A, j+1);
-      SetLength(B, j+1);
-      SetLength(C, j+1);
-      
-      A[j] := 2;
-      B[j] := GetGNSSSessionNumber(GNSSVectors[I].RoverID);
-      C[j] := GetGNSSSessionNumber(GNSSVectors[I].BaseID);
-    end;
-    if length(A) > 0 then
-      FStartProcessing.ShowMultiProcOptions(A,B,C);
+      if GNSSVectors[I].StatusQ = 0 then
+        inc(cnt);
+    ProcPopup.Items[1].Enabled := cnt > 0;
+
+    cnt := 0;
+    for I := 0 to Length(GNSSSessions)-1 do
+      for j := 0 to Length(GNSSSessions[I].Solutions) - 1 do
+        if GNSSSessions[I].Solutions[j].SolutionKind = 3 then
+          inc(cnt);
+    ProcPopup.Items[2].Enabled := Length(GNSSSessions)-cnt > 0;
   end;
-  FMainTree.OnShow(nil);
 end;
 
 procedure TForm1.ProgrSetClick(Sender: TObject);
@@ -1091,7 +1297,7 @@ procedure TForm1.ProjReportClick(Sender: TObject);
 begin
   OutRep.OpenRepWindow(0, 0, 0, ProjReport.Glyph);
 end;
-
+      (*
 procedure TForm1.BaselinesBoxClick(Sender: TObject);
 var I, Count, EnCount:Integer;
 begin
@@ -1194,7 +1400,7 @@ begin
 //    StatusLabel.Caption := 'Processing...'
 
 end;
-
+         *)
 procedure TForm1.Memo1DrawItem(Control: TWinControl; Index: Integer;
   Rect: TRect; State: TOwnerDrawState);
 begin
@@ -1252,7 +1458,7 @@ begin
   end;
 
 end;
-
+        (*
 procedure TForm1.PointBoxClick(Sender: TObject);
 begin
   StationProp.Enabled := PointBox.ItemIndex > -1;
@@ -1375,6 +1581,6 @@ begin
 
 
   RefreshSessionList;
-end;
+end;   *)
 
 end.

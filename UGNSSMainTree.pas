@@ -230,6 +230,7 @@ begin
   SessionPopup.Images := Treeview.Images;
   SolPopup.Images := Treeview.Images;
   VectorPopup.Images := Treeview.Images;
+  MainTreeDraw;
 end;
 
 procedure ShowNewSessions(FromI:Integer);
