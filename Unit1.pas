@@ -162,6 +162,7 @@ type
     procedure AllAvailable4Click(Sender: TObject);
     procedure CheckButtons;
     procedure LaunchScrClick(Sender: TObject);
+    procedure RTKLibPathEdChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1008,12 +1009,13 @@ begin
    ReProcess := true;
    ProcPopup.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
-    (*
+
+
 procedure TForm1.RTKLibPathEdChange(Sender: TObject);
 begin
   RTKLibDest := MyDir + RTKLibPathEd.Text;
 end;
-*)
+
 
 procedure TForm1.FormActivate(Sender: TObject);
 begin
