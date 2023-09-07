@@ -1154,7 +1154,6 @@ object FStartProcessing: TFStartProcessing
     object TabSheet1: TTabSheet
       Caption = 'Single Processing'
       TabVisible = False
-      ExplicitWidth = 564
       object Label2: TLabel
         Left = 3
         Top = 5
@@ -1191,12 +1190,22 @@ object FStartProcessing: TFStartProcessing
         WordWrap = True
         OnClick = isDGNSSClick
       end
+      object CheckBox3: TCheckBox
+        Left = 277
+        Top = 3
+        Width = 97
+        Height = 33
+        Caption = 'NEH StDevs'
+        Checked = True
+        State = cbChecked
+        TabOrder = 2
+        OnClick = CheckBox3Click
+      end
     end
     object TabSheet3: TTabSheet
       Caption = 'PPP'
       ImageIndex = 2
       TabVisible = False
-      ExplicitWidth = 564
       object Label1: TLabel
         Left = 3
         Top = 5

@@ -1038,7 +1038,13 @@ begin
      PrepareNewGNSSProject;
 
      if Fileexists(RTKLibDest )= false then
-        RTKLibPathEd.OnChange(nil)
+     begin
+        //RTKLibPathEd.OnChange(nil)
+        // ToDo: Translate
+        MessageDlg('Processor executable not found! Please choose another directory',
+           mtError, [mbOk], 0);
+        ProgrSet.OnClick(nil);
+     end
      else
         RTKLibPathEd.Text := RTKLibDest;
 

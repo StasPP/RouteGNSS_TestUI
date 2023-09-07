@@ -685,9 +685,16 @@ begin
                 j  := GetGNSSSessionNumber(GNSSVectors[I].BaseId);
                 TOrg := GetTopoOriginFromXYZ(Coord3D(GNSSSessions[j].AppliedPos),
                    false, El);
-                newXYZ := NEHToXYZ(Coord3D(GNSSVectors[I].StDevs[2],
+
+//                newXYZ := CovMatrixNEHToXYZ(Coord3D(GNSSVectors[I].StDevs[2],
+//                                           GNSSVectors[I].StDevs[1],
+//                                           GNSSVectors[I].StDevs[3]), El, TOrg)
+                newXYZ := ConvStDevsNEHToXYZ(GNSSVectors[I].StDevs[2],
                                            GNSSVectors[I].StDevs[1],
-                                           GNSSVectors[I].StDevs[3]), El, TOrg);
+                                           GNSSVectors[I].StDevs[3],
+                                           TOrg.BLH[1], TOrg.BLH[2]);
+//                for j := 1 to 3 do
+//                  newXYZ[j] := abs(TOrg.XYZ[j] - newXYZ[j]);
               end
               else
                 newXYZ := Coord3D(GNSSVectors[I].StDevs[1],

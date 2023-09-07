@@ -432,6 +432,10 @@ object OutRep: TOutRep
     TabOrder = 3
     object TabSheet1: TTabSheet
       Caption = 'Main'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label1: TLabel
         Left = 9
         Top = 8
@@ -533,6 +537,10 @@ object OutRep: TOutRep
       Caption = 'Coordinates'
       ImageIndex = 1
       OnShow = TabSheet2Show
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label2: TLabel
         Left = 10
         Top = 8
@@ -590,6 +598,10 @@ object OutRep: TOutRep
         object TabSheet5: TTabSheet
           Caption = 'TabSheet5'
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label5: TLabel
             Left = -3
             Top = 10
@@ -662,6 +674,10 @@ object OutRep: TOutRep
           Caption = 'TabSheet6'
           ImageIndex = 1
           TabVisible = False
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label4: TLabel
             Left = 0
             Top = 31
@@ -778,6 +794,10 @@ object OutRep: TOutRep
     object TabSheet3: TTabSheet
       Caption = 'Advanced'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label8: TLabel
         Left = 40
         Top = 72
@@ -806,17 +826,19 @@ object OutRep: TOutRep
       Caption = 'TabSheet4'
       ImageIndex = 3
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label7: TLabel
         Left = 0
         Top = 0
-        Width = 201
-        Height = 227
+        Width = 90
+        Height = 13
         Align = alClient
         Alignment = taCenter
         Caption = 'Nothing is choosed'
         Layout = tlCenter
-        ExplicitWidth = 90
-        ExplicitHeight = 13
       end
     end
   end

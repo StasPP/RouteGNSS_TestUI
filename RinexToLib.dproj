@@ -44,6 +44,7 @@
     </DCCReference>
     <DCCReference Include="GNSSObjects.pas" />
     <DCCReference Include="GNSSObjsTree.pas" />
+    <DCCReference Include="MATRIX.pas" />
     <DCCReference Include="RTKLibExecutor.pas" />
     <DCCReference Include="UAntProp.pas">
       <Form>FAntProp</Form>

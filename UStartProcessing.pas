@@ -42,6 +42,7 @@ type
     ProcButton: TSpeedButton;
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
+    CheckBox3: TCheckBox;
     procedure Cb_GNSSSystemsChange(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
     procedure ProcButtonClick(Sender: TObject);
@@ -49,6 +50,7 @@ type
     procedure TabSheet2Show(Sender: TObject);
     procedure isFixedModeClick(Sender: TObject);
     procedure isDGNSSClick(Sender: TObject);
+    procedure CheckBox3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -315,6 +317,11 @@ begin
      end;
   end;
     Gb_GNSSSystems.Enabled := Cb_GNSSSystems.ItemIndex = 3;
+end;
+
+procedure TFStartProcessing.CheckBox3Click(Sender: TObject);
+begin
+  DiffENU := CheckBox3.Checked;
 end;
 
 procedure TFStartProcessing.FormShow(Sender: TObject);

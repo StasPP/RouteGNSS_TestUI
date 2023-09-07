@@ -3,7 +3,7 @@ unit GNSSObjsTree;
 interface
 
 uses CommCtrl, ComCtrls, StdCtrls, GNSSObjects, GeoFunctions, GeoClasses, Geoid,
-   ExtCtrls, GeoString, Classes, SysUtils;
+   ExtCtrls, GeoString, Classes, SysUtils, MATRIX;
 
 procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
 procedure OutputGNSSVectTree(TW :TTreeView);
@@ -11,6 +11,8 @@ procedure OutputCoords(X, Y, Z : Double; CS1, CS2, WGSCS:Integer;
                 XEd, YEd, ZEd: TEdit; XLabel, YLabel, ZLabel: TLabel;
                 GeoidP:TPanel; GeoidIdx: integer);
 function ConvCoords(X, Y, Z : Double; CS1, CS2, WGSCS, GeoidIdx:Integer): TXYZ;
+
+function ConvStDevsNEHToXYZ(StN, StE, StU : Double; B, L : Double):TCoord3D;
 
 var
    RNode, FNode : TTreeNode;
@@ -429,5 +431,28 @@ begin
 
 end;
 
+
+function ConvStDevsNEHToXYZ(StN, StE, StU : Double; B, L : Double):TCoord3D;
+var RBase, RBaseTr :array[0..8] of Double;
+    StDevs :array[0..8] of Double;
+    ResMatrix :array[0..8] of Double;
+begin
+  StDevs[0] := StE;      StDevs[1] :=  0;             StDevs[2] :=  0;
+  StDevs[3] :=  0;       StDevs[4] := StN;            StDevs[5] :=  0;
+  StDevs[6] :=  0;       StDevs[7] :=  0;             StDevs[8] := StU;
+
+  RBase[0] := -sin(L);   RBase[1] := -cos(L)*sin(B);  RBase[2] := cos(L)*cos(B);
+  RBase[3] :=  cos(L);   RBase[4] := -sin(L)*sin(B);  RBase[5] := sin(L)*cos(B);
+  RBase[6] :=    0;      RBase[7] :=     cos(B);      RBase[8] :=    sin(B);
+
+  TRANSP(3, 3, RBase, RBaseTr);
+
+  MUL(3, RBase, StDevs, ResMatrix);
+  MUL(3, ResMatrix, RBaseTr, ResMatrix);
+
+  result[1] := ResMatrix[0];
+  result[2] := ResMatrix[4];
+  result[3] := ResMatrix[8];
+end;
 
 end.

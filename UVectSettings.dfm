@@ -520,7 +520,7 @@ object FVectSettings: TFVectSettings
           end
           object Label16: TLabel
             Left = 2
-            Top = 56
+            Top = 55
             Width = 34
             Height = 13
             Alignment = taRightJustify
@@ -538,7 +538,7 @@ object FVectSettings: TFVectSettings
           end
           object Label18: TLabel
             Left = 2
-            Top = 81
+            Top = 79
             Width = 34
             Height = 13
             Alignment = taRightJustify
@@ -547,7 +547,7 @@ object FVectSettings: TFVectSettings
           end
           object Label20: TLabel
             Left = 123
-            Top = 56
+            Top = 55
             Width = 34
             Height = 13
             Alignment = taRightJustify
@@ -556,7 +556,7 @@ object FVectSettings: TFVectSettings
           end
           object Label21: TLabel
             Left = 123
-            Top = 81
+            Top = 80
             Width = 34
             Height = 13
             Alignment = taRightJustify
@@ -637,7 +637,7 @@ object FVectSettings: TFVectSettings
           end
           object BdN: TEdit
             Left = 42
-            Top = 53
+            Top = 52
             Width = 75
             Height = 21
             ReadOnly = True
@@ -655,7 +655,7 @@ object FVectSettings: TFVectSettings
           end
           object BdE: TEdit
             Left = 42
-            Top = 78
+            Top = 77
             Width = 75
             Height = 21
             ReadOnly = True
@@ -664,7 +664,7 @@ object FVectSettings: TFVectSettings
           end
           object BmN: TEdit
             Left = 163
-            Top = 53
+            Top = 52
             Width = 59
             Height = 21
             ReadOnly = True
@@ -673,7 +673,7 @@ object FVectSettings: TFVectSettings
           end
           object BmE: TEdit
             Left = 163
-            Top = 78
+            Top = 77
             Width = 59
             Height = 21
             ReadOnly = True

@@ -200,6 +200,7 @@ procedure TFVectSettings.RefreshVectorSettings;
 var I, j, N:integer;
    BS, RS :string;
    StatI :integer;
+   Sol:TSolutionId;
 begin
     SetLength(VectorsN, 0);
     isInit := true;
@@ -275,6 +276,26 @@ begin
       if StatI < 0 then
         StatI := -1;
 
+      SolBtn.Glyph.Assign(nil);
+      j := 30;
+      if (StatI > 0) and (StatI < 6) then
+      begin
+        SolTypeI.Cursor := crHandPoint;
+        Sol := GetGNSSSolutionForVector(VectorN);
+        if (Sol.SessionId <> '') and (Sol.SolutionN <> -1) then
+        begin
+          j := GNSSSessions[GetGNSSSessionNumber(Sol.SessionId)].
+            Solutions[Sol.SolutionN].SolutionQ
+            + 7*GetSolutionSubStatus(GetGNSSSessionNumber(Sol.SessionId),
+            Sol.SolutionN) + 30;
+        end;
+
+      end
+      else
+        SolTypeI.Cursor := crDefault;
+
+      ImgList.GetBitmap(j, SolBtn.Glyph);
+
 //      Memo1.Clear;
 //      if (StatI > 0) and (StatI <> 8) then
 //      with GNSSVectors[VectorN] do
@@ -343,6 +364,9 @@ begin
       StatusLabel.Caption := StatList[StatI]
     else
       StatusLabel.Caption := StatList[14];
+
+
+    SolType.Caption := StatusLabel.Caption; //BEdit.Text + '->' + REdit.Text;
 
     with StatImg.Canvas do
     begin

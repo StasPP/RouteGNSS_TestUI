@@ -20,7 +20,8 @@ uses
   CoordSysFmNew in 'CoordSysFmNew.pas' {CSFormNew},
   USetPaths in 'USetPaths.pas' {FProcSet},
   UOutRep in 'UOutRep.pas' {OutRep},
-  USplash in 'USplash.pas' {Splash};
+  USplash in 'USplash.pas' {Splash},
+  MATRIX in 'MATRIX.pas';
 
 {$R *.res}
 
