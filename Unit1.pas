@@ -163,6 +163,9 @@ type
     procedure CheckButtons;
     procedure LaunchScrClick(Sender: TObject);
     procedure RTKLibPathEdChange(Sender: TObject);
+    procedure Customize1Click(Sender: TObject);
+    procedure Customize2Click(Sender: TObject);
+    procedure Customize3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -188,7 +191,8 @@ var
 implementation
 
 uses FProcGNSS, UGNSSSessionOptions, FLoader, UStartProcessing,
-  UGNSSPointSettings, UVectSettings, UGNSSMainTree, USetPaths, UOutRep, USplash;
+  UGNSSPointSettings, UVectSettings, UGNSSMainTree, USetPaths, UOutRep, USplash,
+  UChooseData;
 
 {$R *.dfm}
 
@@ -1255,6 +1259,21 @@ end;
 procedure TForm1.CSSetClick(Sender: TObject);
 begin
   FProjCsys.ShowProjCsys(IcoList); 
+end;
+
+procedure TForm1.Customize1Click(Sender: TObject);
+begin
+  FChooseData.ChooseProcData(1, not ReProcess, IcoList);
+end;
+
+procedure TForm1.Customize2Click(Sender: TObject);
+begin
+  FChooseData.ChooseProcData(2, not ReProcess, IcoList);
+end;
+
+procedure TForm1.Customize3Click(Sender: TObject);
+begin
+  FChooseData.ChooseProcData(3, not ReProcess, IcoList);
 end;
 
 procedure TForm1.ProcessAllClick(Sender: TObject);

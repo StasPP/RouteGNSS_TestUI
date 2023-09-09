@@ -21,7 +21,8 @@ uses
   USetPaths in 'USetPaths.pas' {FProcSet},
   UOutRep in 'UOutRep.pas' {OutRep},
   USplash in 'USplash.pas' {Splash},
-  MATRIX in 'MATRIX.pas';
+  MATRIX in 'MATRIX.pas',
+  UChooseData in 'UChooseData.pas' {FChooseData};
 
 {$R *.res}
 
@@ -42,5 +43,6 @@ begin
   Application.CreateForm(TFProcSet, FProcSet);
   Application.CreateForm(TOutRep, OutRep);
   Application.CreateForm(TSplash, Splash);
+  Application.CreateForm(TFChooseData, FChooseData);
   Application.Run;
 end.

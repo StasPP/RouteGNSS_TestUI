@@ -5,8 +5,12 @@ interface
 uses CommCtrl, ComCtrls, StdCtrls, GNSSObjects, GeoFunctions, GeoClasses, Geoid,
    ExtCtrls, GeoString, Classes, SysUtils, MATRIX;
 
-procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
-procedure OutputGNSSVectTree(TW :TTreeView);
+procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer); overload;
+procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer; HideArr:Array of Integer;
+            HideArrLength :integer); overload;
+procedure OutputGNSSVectTree(TW :TTreeView);  overload;
+procedure OutputGNSSVectTree(TW :TTreeView; HideArr:Array of Integer;
+            HideArrLength :integer);  overload;
 procedure OutputCoords(X, Y, Z : Double; CS1, CS2, WGSCS:Integer;
                 XEd, YEd, ZEd: TEdit; XLabel, YLabel, ZLabel: TLabel;
                 GeoidP:TPanel; GeoidIdx: integer);
@@ -30,9 +34,29 @@ type
      StatQ : integer;
    end;
 var
-   VectGroups: Array of TVectGroup;
-
+   VectGroups      : Array of TVectGroup;
+   TreeNumbersList : Array of Integer;
 implementation
+
+procedure AddNum(I, Idx:Integer);
+var j, n : integer;
+begin
+  j := Length(TreeNumbersList);
+  SetLength(TreeNumbersList, j+1);
+  for n := j Downto Idx do
+    TreeNumbersList[n] := TreeNumbersList[n-1];
+
+  TreeNumbersList[Idx] := I;
+end;
+
+procedure DelNum(I:Integer);
+var j:integer;
+begin
+  for j := I to Length(TreeNumbersList)-2 do
+    TreeNumbersList[j] := TreeNumbersList[j+1];
+
+  SetLength(TreeNumbersList, Length(TreeNumbersList)-1);
+end;
 
 function ConvCoords(X, Y, Z : Double; CS1, CS2, WGSCS, GeoidIdx:Integer): TXYZ;
 var nX, nY, nZ, B, L, H, dH, Bwgs, Lwgs, Hwgs, dEll : Double;
@@ -134,7 +158,6 @@ begin
 
     end;
 
-
 end;
 
 procedure SetNodeBoldState(Node: TTreeNode; Value: Boolean);
@@ -154,11 +177,35 @@ begin
   end;
 end;
 
-procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer);
+procedure ClearEmptyNodes(var TW :TTreeView);
+var I, j: Integer;
+begin
+  for I := TW.Items.Count-1 Downto 0 do
+  begin
+    if TW.Items[I].Level = 0 then
+     if TW.Items[I].GetLastChild = nil then
+     begin
+       TW.Items[I].Delete;
+       DelNum(I);
+     end;
+  end;
+end;
+
+procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer); overload;
+var A : array of integer;
+begin
+   SetLength(A, 0);
+   OutputGNSSObjTree(TW, StatN, A, 0);
+end;
+
+procedure OutputGNSSObjTree(TW :TTreeView; StatN :Integer; HideArr:Array of Integer;
+            HideArrLength :integer); overload;
 var I, j, k, imgN, SolI, SessI :integer;
     Str : string;
     Node1, Node2, Node3 : TTreeNode;
+    isHidden: Boolean;
 begin
+  SetLength(TreeNumbersList, 0);
   // TreeInd := TW.ItemIndex
   TW.Items.Clear;
   RNode := nil;
@@ -169,6 +216,8 @@ begin
       continue;
 
     Node1 := TW.Items.AddFirst(nil, GNSSPoints[I].PointName);
+    AddNum(I, Node1.AbsoluteIndex);
+
     RNode := Node1;
 
     try
@@ -206,13 +255,28 @@ begin
 
       if GNSSPoints[I].Active = false then   ImgN := 0;
 
+      isHidden := false;
+      if (StatN = -2) then ////  Choose Data Mode!
+        for k := 0 to HideArrLength - 1 do
+          if SessI = HideArr[k] then
+          begin
+            isHidden := true;
+            break;
+          end;
+
+      if isHidden then
+        continue;
+
       Node2 := TW.Items.AddChild(Node1, Str);
+      AddNum(SessI, Node2.AbsoluteIndex);
       with Node2 do
       begin
          ImageIndex := ImgN +22;
          SelectedIndex := ImgN +22;
       end;
 
+      if (StatN = -2) then  /// Don't output solutions!
+        continue;
 
       for k := 1 to Length(GNSSSessions[SessI].Solutions)-1 do
       with GNSSSessions[SessI].Solutions[k] do
@@ -246,6 +310,7 @@ begin
          end;
 
          Node3 := TW.Items.AddChild(Node2, Str);
+         AddNum(k, Node3.AbsoluteIndex);
          with Node3 do
          begin
            ImageIndex := ImgN +30;
@@ -255,7 +320,8 @@ begin
     end;
 
 
-    if (GNSSPoints[I].CoordSource <> 0) and (GNSSPoints[I].CoordSource <> 3) then
+    if (GNSSPoints[I].CoordSource <> 0) and (GNSSPoints[I].CoordSource <> 3)
+      and (StatN <> -2) then
     begin
       ImgN := 70;
       case GNSSPoints[I].CoordSource of
@@ -288,6 +354,7 @@ begin
         ImgN := 71;
 
       Node2 := TW.Items.AddChild(Node1, Str);
+      AddNum(-I, Node2.AbsoluteIndex);
       with Node2 do
       begin
          ImageIndex := ImgN;
@@ -297,6 +364,9 @@ begin
 
   end;
 
+
+  if HideArrLength > 0 then
+    ClearEmptyNodes(TW);
   
   for I := 0 to TW.Items.count - 1 do
   begin
@@ -340,12 +410,22 @@ begin
    end;
 end;
 
-procedure OutputGNSSVectTree(TW :TTreeView);
-var I, j, N, ImgN :Integer;
+procedure OutputGNSSVectTree(TW :TTreeView);   overload;
+var A : array of integer;
+begin
+   SetLength(A, 0);
+   OutputGNSSVectTree(TW, A, 0);
+end;
+
+procedure OutputGNSSVectTree(TW :TTreeView;  HideArr:Array of Integer;
+            HideArrLength :integer); overload;
+var I, j, k, N, ImgN :Integer;
     s : string;
     Node1, Node2: TTreeNode;
-begin
 
+    isHidden : Boolean;
+begin
+   SetLength(TreeNumbersList, 0);
    GroupVectors;
    TW.Items.Clear;
    RNode := nil;
@@ -354,6 +434,7 @@ begin
    for I := Length(VectGroups) -1 downto 0 do
    begin
     Node1 := TW.Items.AddFirst(nil, VectGroups[I].Name);
+    AddNum(I, Node1.AbsoluteIndex);
     RNode := Node1;
     VectGroups[I].StatQ := GetGNSSVectorGroupStatus(VectGroups[I].Vects);
 
@@ -412,8 +493,21 @@ begin
       except
         continue;
       end;
+      
+      isHidden := false;
+      if (HideArrLength > 0) then ////  Choose Data Mode!
+        for k := 0 to HideArrLength - 1 do
+          if VectGroups[I].Vects[j] = HideArr[k] then
+          begin
+            isHidden := true;
+            break;
+          end;
+
+      if isHidden then
+        continue;
 
       Node2 := TW.Items.AddChild(Node1, s);
+      AddNum(VectGroups[I].Vects[j], Node2.AbsoluteIndex);
       with Node2 do
       begin
          ImageIndex := ImgN;
@@ -423,6 +517,9 @@ begin
     end;
 
   end;
+
+  if HideArrLength > 0 then
+    ClearEmptyNodes(TW);
 
   for I := 0 to TW.Items.count - 1 do
   begin

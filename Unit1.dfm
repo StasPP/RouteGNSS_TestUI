@@ -305,10 +305,6 @@ object Form1: TForm1
       TabOrder = 4
       object TabSheet1: TTabSheet
         Caption = 'Single Processing'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object RadioButton1: TRadioButton
           Left = 16
           Top = 18
@@ -848,7 +844,7 @@ object Form1: TForm1
     Left = 224
     Top = 152
     Bitmap = {
-      494C010174008800B80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010174008800BC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000E0010000010020000000000000E0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4905,6 +4901,7 @@ object Form1: TForm1
       end
       object Customize1: TMenuItem
         Caption = 'Customize'
+        OnClick = Customize1Click
       end
     end
     object Baselines1: TMenuItem
@@ -4915,6 +4912,7 @@ object Form1: TForm1
       end
       object Customize2: TMenuItem
         Caption = 'Customize'
+        OnClick = Customize2Click
       end
     end
     object PPP1: TMenuItem
@@ -4926,6 +4924,7 @@ object Form1: TForm1
       end
       object Customize3: TMenuItem
         Caption = 'Customize'
+        OnClick = Customize3Click
       end
     end
   end
