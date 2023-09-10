@@ -326,7 +326,13 @@ begin
       ImgN := 70;
       case GNSSPoints[I].CoordSource of
           1: begin
-             Str  := '[Adjusted Single/PPP Solutions]';     /// ToDo: Translate
+
+             case GNSSPoints[I].AdjMethod of
+               0: Str  := '[Chosen the best Single/PPP Solution]';     /// ToDo: Translate
+               1: Str  := '[Average Single/PPP Solutions]';     /// ToDo: Translate
+               2: Str  := '[Weighted Avg. Single/PPP Solutions]';     /// ToDo: Translate
+             end;
+
              if GNSSPoints[I].Status = 9  then
                ImgN := 76
              else
@@ -334,7 +340,15 @@ begin
                ImgN := 75;
           end;
           2: begin
-             Str  := '[Adjusted Baseline Solutions]';       /// ToDo: Translate
+
+             case GNSSPoints[I].AdjMethod of
+               0: Str  := '[Chosen the best Baseline Solution]';     /// ToDo: Translate
+               1: Str  := '[Average Baseline Solutions]';     /// ToDo: Translate
+               2: Str  := '[Weighted Avg. Baseline Solutions]';     /// ToDo: Translate
+               ///
+               4: Str  := '[Adjusted Baseline Solutions]'; 
+             end;
+
              if GNSSPoints[I].Status = 10  then
                ImgN := 73
              else

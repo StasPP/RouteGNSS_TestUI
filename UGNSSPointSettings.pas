@@ -50,12 +50,23 @@ type
     Sessionsof1: TMenuItem;
     CSbox: TComboBox;
     TabSheet3: TTabSheet;
-    SpeedButton1: TSpeedButton;
     isBS: TCheckBox;
     GeoidPopup: TPopupMenu;
     GeoidP: TPanel;
     ChangeGeoid: TSpeedButton;
     VectRepI: TSpeedButton;
+    Label4: TLabel;
+    RMSEd: TEdit;
+    isSingleV: TRadioButton;
+    isNetV: TRadioButton;
+    Label5: TLabel;
+    AvgMethod: TComboBox;
+    AdjC: TPageControl;
+    TabSheet4: TTabSheet;
+    AvgMethod2: TComboBox;
+    TabSheet5: TTabSheet;
+    SpeedButton1: TSpeedButton;
+    TabSheet6: TTabSheet;
     procedure SessBoxChange(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
     procedure SolSrcBoxChange(Sender: TObject);
@@ -87,6 +98,8 @@ type
     procedure GeoidPopupPopup(Sender: TObject);
     procedure VectRepIClick(Sender: TObject);
     procedure ProcessingReport1Click(Sender: TObject);
+    procedure isSingleVClick(Sender: TObject);
+    procedure isNetVClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -245,9 +258,10 @@ begin
     end;
 
     case GNSSPoints[StationN].CoordSource of
-      3: SolPC.ActivePageIndex := 1;
-      1, 2 : SolPC.ActivePageIndex := 2;
-      else SolPC.ActivePageIndex := 0;
+      3 : SolPC.ActivePageIndex := 1;
+      2 : SolPC.ActivePageIndex := 2;
+      1 : SolPC.ActivePageIndex := 0;
+      else SolPC.ActivePageIndex := 3;
     end;
 
     RefreshCSBox;
@@ -263,6 +277,20 @@ begin
       StatusLabel.Caption := StatList[7]
     else
       StatusLabel.Caption := StatList[GNSSPoints[StationN].Status];
+
+    if GNSSPoints[StationN].CoordSource = 1 then
+      AvgMethod.ItemIndex :=  GNSSPoints[StationN].AdjMethod;
+    if GNSSPoints[StationN].CoordSource = 2 then
+    begin
+      if  GNSSPoints[StationN].AdjMethod > 3 then
+        isNetV.Checked := true
+      else
+      begin
+        isSingleV.Checked    := true;
+        AvgMethod2.ItemIndex :=  GNSSPoints[StationN].AdjMethod;
+      end;
+    end;
+
 
     with StatImg.Canvas do
     begin
@@ -318,6 +346,7 @@ begin
 end;
 
 procedure TFGNSSPointSettings.OutputCoordinates;
+var RMS: Double;
 begin
   OutputCoords(GNSSPoints[StationN].Position.X,
               GNSSPoints[StationN].Position.Y,
@@ -332,7 +361,20 @@ begin
       ImgList.GetBitmap(113,ChangeGeoid.Glyph)
     else
       ImgList.GetBitmap(115,ChangeGeoid.Glyph);
-  
+
+      
+  RMS := Sqrt(sqr(GNSSPoints[StationN].Quality[1]) +
+              sqr(GNSSPoints[StationN].Quality[2]) +
+              sqr(GNSSPoints[StationN].Quality[3]) );
+
+  if (GNSSPoints[StationN].CoordSource = 0) or
+     (GNSSPoints[StationN].CoordSource = 4) or
+     (GNSSPoints[StationN].Status = 8) or
+     (GNSSPoints[StationN].CoordSource = 3) and (SolBox.ItemIndex < 0)
+  then
+    RMSEd.Text := '-'
+  else
+    RMSEd.Text := FormatFloat('0.0000', RMS);
 end;
 
 procedure TFGNSSPointSettings.Processagain1Click(Sender: TObject);
@@ -644,6 +686,18 @@ begin
   RefreshPointSettings;
 end;
 
+procedure TFGNSSPointSettings.isNetVClick(Sender: TObject);
+begin
+  AdjC.ActivePageIndex := 1;
+  SolSrcBox.OnChange(nil);
+end;
+
+procedure TFGNSSPointSettings.isSingleVClick(Sender: TObject);
+begin
+  AdjC.ActivePageIndex := 0;
+  SolSrcBox.OnChange(nil);
+end;
+
 procedure TFGNSSPointSettings.SessBoxChange(Sender: TObject);
 var I, j:Integer; s:string;
 begin
@@ -666,7 +720,7 @@ begin
         end;
         SolBox.Items.Add(s);
      end;
-  //SolBox.ItemIndex := 0;
+//  SolBox.ItemIndex := 0;
 end;
 
 procedure TFGNSSPointSettings.Sessionsof1Click(Sender: TObject);
@@ -747,16 +801,28 @@ end;
 
 procedure TFGNSSPointSettings.SolSrcBoxChange(Sender: TObject);
 var I, j, N :Integer; WarnMe:boolean;
-    MySolId: TSolutionId;  SessN:integer;
+    MySolId: TSolutionId;  SessN, AvgM:integer;
 begin
   if isInit then
     exit;
 
+  AvgM := 0;
+  if (SolSrcBox.ItemIndex = 1) then
+    AvgM := AvgMethod.ItemIndex
+  else
+  if (SolSrcBox.ItemIndex = 2) then
+    case isSingleV.Checked of
+      true:  AvgM := AvgMethod2.ItemIndex;
+      false: AvgM := 4;
+    end;
+
   if (SolSrcBox.ItemIndex = GNSSPoints[StationN].CoordSource) and
-     (SolSrcBox.ItemIndex <> 3) then
+     (SolSrcBox.ItemIndex <> 3) and
+     (AvgM = GNSSPoints[StationN].AdjMethod)
+  then
     exit;
 
-  WarnMe := false;
+  WarnMe := false;   
 
   for I := 0 to Length(GNSSPoints[StationN].Sessions)- 1 do
   begin
@@ -780,14 +846,16 @@ begin
     if GNSSPoints[StationN].CoordSource = 3 then
     begin
         SessBox.ItemIndex := GetGNSSSessionNumber(GNSSPoints[StationN].SolutionId.SessionId);
-        SolBox.ItemIndex  :=  GNSSPoints[StationN].SolutionId.SolutionN-1;
+        SolBox.ItemIndex  := GNSSPoints[StationN].SolutionId.SolutionN-1;
     end;
+
     isInit := false;
 
     case GNSSPoints[StationN].CoordSource of
       3: SolPC.ActivePageIndex := 1;
-      1, 2 : SolPC.ActivePageIndex := 2;
-      else SolPC.ActivePageIndex := 0;
+      1: SolPC.ActivePageIndex := 0;
+      2: SolPC.ActivePageIndex := 2;
+      else SolPC.ActivePageIndex := 3;
     end;
 
     exit;
@@ -813,16 +881,49 @@ begin
   if (SolSrcBox.ItemIndex = 3) and  (SessN = -1) then
     exit;
 
+  if (SolSrcBox.ItemIndex = 3) and (GNSSPoints[StationN].CoordSource<> 3) then
+  begin
+       N := -1;
+       for I := 0 to length(GNSSPoints[StationN].Sessions)-1 do
+       begin
+         j := GetGNSSSessionNumber(GNSSPoints[StationN].Sessions[I]);
+         if j >= 0 then
+           if length(GNSSSessions[j].Solutions) > 1 then
+           begin
+             N := I;
+             break;
+           end;
+         if N >= 0 then
+           break;
+       end;
+       if N >= 0 then
+       begin
+         SessBox.ItemIndex := N;
+         SessBox.OnChange(nil);
+         SolBox.ItemIndex  := 0;
+         MySolId.SessionId := GNSSPoints[StationN].Sessions[SessBox.ItemIndex];
+         MySolId.SolutionN := SolBox.ItemIndex + 1;
+         SessN := GetGNSSSessionNumber(MySolId.SessionId)
+       end;
+  end;
+
+
   if (GNSSPoints[StationN].CoordSource <> SolSrcBox.ItemIndex) or
      (GNSSPoints[StationN].CoordSource = 3) and (SolSrcBox.ItemIndex = 3) and
      ( (GNSSPoints[StationN].SolutionId.SessionId <> MySolId.SessionId) or
-       (GNSSPoints[StationN].SolutionId.SolutionN <> MySolId.SolutionN) ) then
-    SetGNSSPointSource(StationN, SolSrcBox.ItemIndex, SessN, MySolId.SolutionN);
+       (GNSSPoints[StationN].SolutionId.SolutionN <> MySolId.SolutionN) ) or
+
+     ((GNSSPoints[StationN].CoordSource = 2) or (GNSSPoints[StationN].CoordSource = 1)
+      and (AvgM <> GNSSPoints[StationN].AdjMethod) )
+  then
+    SetGNSSPointSource(StationN, SolSrcBox.ItemIndex, SessN, MySolId.SolutionN,
+      0, AvgM);
 
   case GNSSPoints[StationN].CoordSource of
-    3: SolPC.ActivePageIndex := 1;
-    1, 2 : SolPC.ActivePageIndex := 2;
-    else SolPC.ActivePageIndex := 0;
+    3 : SolPC.ActivePageIndex := 1;
+    2 : SolPC.ActivePageIndex := 2;
+    1 : SolPC.ActivePageIndex := 0;
+    else SolPC.ActivePageIndex := 3;
   end;
 
   XEd.ReadOnly := SolSrcBox.ItemIndex <> 4;

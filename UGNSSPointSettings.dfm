@@ -3,7 +3,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Point/Track settings'
-  ClientHeight = 339
+  ClientHeight = 377
   ClientWidth = 569
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -940,7 +940,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   end
   object VectRepI: TSpeedButton
     Left = 120
-    Top = 306
+    Top = 338
     Width = 146
     Height = 25
     Caption = 'Report'
@@ -977,7 +977,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     Left = 301
     Top = 48
     Width = 252
-    Height = 241
+    Height = 273
     Indent = 19
     ReadOnly = True
     TabOrder = 1
@@ -996,7 +996,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
   end
   object OKButton: TButton
     Left = 272
-    Top = 306
+    Top = 338
     Width = 217
     Height = 25
     Caption = 'Apply'
@@ -1004,10 +1004,10 @@ object FGNSSPointSettings: TFGNSSPointSettings
     OnClick = OKButtonClick
   end
   object CoordPan: TPanel
-    Left = 0
+    Left = 4
     Top = 178
     Width = 291
-    Height = 112
+    Height = 143
     BevelOuter = bvNone
     TabOrder = 4
     Visible = False
@@ -1038,10 +1038,19 @@ object FGNSSPointSettings: TFGNSSPointSettings
       AutoSize = False
       Caption = 'Z, m:'
     end
+    object Label4: TLabel
+      Left = 8
+      Top = 115
+      Width = 135
+      Height = 13
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'RMS, m:'
+    end
     object XEd: TEdit
       Left = 147
       Top = 31
-      Width = 134
+      Width = 133
       Height = 21
       ReadOnly = True
       TabOrder = 0
@@ -1050,7 +1059,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     object YEd: TEdit
       Left = 147
       Top = 58
-      Width = 134
+      Width = 133
       Height = 21
       ReadOnly = True
       TabOrder = 1
@@ -1059,7 +1068,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     object ZEd: TEdit
       Left = 147
       Top = 85
-      Width = 134
+      Width = 133
       Height = 21
       ReadOnly = True
       TabOrder = 2
@@ -1068,7 +1077,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
     object CSbox: TComboBox
       Left = 16
       Top = 3
-      Width = 265
+      Width = 264
       Height = 22
       Style = csOwnerDrawFixed
       ItemHeight = 16
@@ -1079,7 +1088,7 @@ object FGNSSPointSettings: TFGNSSPointSettings
       OnDrawItem = CSboxDrawItem
     end
     object GeoidP: TPanel
-      Left = 261
+      Left = 260
       Top = 86
       Width = 19
       Height = 19
@@ -1093,8 +1102,17 @@ object FGNSSPointSettings: TFGNSSPointSettings
         Align = alClient
         Flat = True
         OnClick = ChangeGeoidClick
-        ExplicitTop = -1
+        ExplicitLeft = 1
       end
+    end
+    object RMSEd: TEdit
+      Left = 147
+      Top = 112
+      Width = 133
+      Height = 21
+      ReadOnly = True
+      TabOrder = 5
+      Text = '0'
     end
   end
   object SolPC: TPageControl
@@ -1102,16 +1120,37 @@ object FGNSSPointSettings: TFGNSSPointSettings
     Top = 120
     Width = 295
     Height = 59
-    ActivePage = TabSheet2
+    ActivePage = TabSheet3
     Style = tsButtons
     TabOrder = 5
     object TabSheet1: TTabSheet
       Caption = '0'
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      object Label5: TLabel
+        Left = 16
+        Top = 19
+        Width = 127
+        Height = 13
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Averaging method:'
+      end
+      object AvgMethod: TComboBox
+        Left = 147
+        Top = 16
+        Width = 133
+        Height = 22
+        Style = csOwnerDrawFixed
+        ItemHeight = 16
+        ItemIndex = 0
+        TabOrder = 0
+        Text = 'Choose the best solution'
+        OnChange = SolSrcBoxChange
+        Items.Strings = (
+          'Choose the best solution'
+          'Average coordinates'
+          'Weighted average')
+      end
     end
     object TabSheet2: TTabSheet
       Caption = '1'
@@ -1169,52 +1208,84 @@ object FGNSSPointSettings: TFGNSSPointSettings
       Caption = '2'
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object SpeedButton1: TSpeedButton
-        Left = 87
-        Top = 3
-        Width = 134
-        Height = 30
-        Caption = 'Adjustment settings'
-        Glyph.Data = {
-          26040000424D2604000000000000360000002800000012000000120000000100
-          180000000000F0030000120B0000120B00000000000000000000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D5D5D5454544C4C4CFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFF4B4B4B676767565656FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFF4B4B4B7C7C7CFFFFFFFFFFFF6D
-          6D6D7575756A6A6AFFFFFFFFFFFFFFFFFF5C5C5C4B4B4BFFFFFFFFFFFFFFFFFF
-          0000FFFFFFFFFFFF4B4B4B9090908585855252528080808C8C8C8383837A7A7A
-          6C6C6C5858585151515050504848484B4B4BFFFFFFFFFFFF0000FFFFFFFFFFFF
-          535353929292ABABABA6A6A69E9E9E9797978C8C8C8585857E7E7E7474746A6A
-          6A606060535353686868FFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFF4B4B4B9F9F
-          9FAAAAAA9A9A9A7171715353534E4E4E7676768282827878786F6F6F4B4B4BFF
-          FFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFF585858959595A2A2A2616161AD
-          ADADB2B2B2B1B1B18383837979798585857C7C7C4B4B4BFFFFFFFFFFFFFFFFFF
-          00004B4B4B6F6F6F6C6C6C909090939393585858C6C6C6888888525252616161
-          AEAEAE8383837B7B7B8989897A7A7A5757578686864B4B4B00005B5B5B696969
-          7B7B7B848484767676888888AAAAAA747474A4A4A49E9E9E575757ADADAD4E4E
-          4E9494948D8D8D8080806B6B6B5A5A5A00005858586363636D6D6D7777776969
-          69959595969696787878A0A0A0A4A4A44E4E4EADADAD5353539A9A9A98989890
-          90908686866F6F6F00005353535050505C5C5C6969696B6B6B6E6E6EC8C8C858
-          5858757575717171898989ABABAB777777A7A7A7A2A2A27C7C7C4D4D4D6C6C6C
-          0000FFFFFFFFFFFFFFFFFF5B5B5B6565655F5F5F969696CACACA999999ACACAC
-          C5C5C56262629B9B9BABABAB8F8F8FFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFF
-          FFFFFF4C4C4C5656566161615C5C5C6C6C6C9292928181815555558383839E9E
-          9EA4A4A47C7C7CFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFF5757574040404848
-          485252525C5C5C6161616060606C6C6C7F7F7F8C8C8C9494949B9B9B9D9D9D53
-          5353FFFFFFFFFFFF0000FFFFFFFFFFFF3333333030303B3B3B4444444D4D4D58
-          58586262626C6C6C7575757B7B7B6F6F6F828282989898808080FFFFFFFFFFFF
-          0000FFFFFFFFFFFFFFFFFF323232595959FFFFFFFFFFFF4949495353535D5D5D
-          FFFFFFFFFFFFFFFFFF6D6D6D676767FFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4343434545454F4F4FFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFF4B4B4B3A3A3A454545FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFFFF0000}
+      object isSingleV: TRadioButton
+        Left = 16
+        Top = 4
+        Width = 89
+        Height = 17
+        Caption = 'Single Vector'
+        Checked = True
+        TabOrder = 0
+        TabStop = True
+        OnClick = isSingleVClick
       end
+      object isNetV: TRadioButton
+        Left = 16
+        Top = 26
+        Width = 125
+        Height = 17
+        Caption = 'Network Adjustment'
+        Enabled = False
+        TabOrder = 1
+        OnClick = isNetVClick
+      end
+      object AdjC: TPageControl
+        Left = 136
+        Top = 0
+        Width = 151
+        Height = 49
+        ActivePage = TabSheet4
+        Align = alRight
+        Style = tsButtons
+        TabOrder = 2
+        object TabSheet4: TTabSheet
+          Caption = 'TabSheet4'
+          TabVisible = False
+          object AvgMethod2: TComboBox
+            Left = 7
+            Top = 0
+            Width = 133
+            Height = 22
+            Style = csOwnerDrawFixed
+            ItemHeight = 16
+            ItemIndex = 2
+            TabOrder = 0
+            Text = 'Weighted average'
+            OnChange = SolSrcBoxChange
+            Items.Strings = (
+              'Choose the best solution'
+              'Average coordinates'
+              'Weighted average')
+          end
+        end
+        object TabSheet5: TTabSheet
+          Caption = 'TabSheet5'
+          ImageIndex = 1
+          TabVisible = False
+          object SpeedButton1: TSpeedButton
+            Left = 2
+            Top = 6
+            Width = 138
+            Height = 28
+            Caption = 'Adjustment Report'
+            Glyph.Data = {
+              EE000000424DEE0000000000000076000000280000000E0000000F0000000100
+              0400000000007800000000000000000000001000000000000000000000000000
+              8000008000000080800080000000800080008080000080808000C0C0C0000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
+              DD00DDDDDDDDDDDDDD00DDDDD7777777DD00DDDD77888887DD00DDD7F7FFFF87
+              DD00DD7777F77787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFF87
+              DD00DD7F77777787DD00DD7FFFFFFF87DD00DD7F77777787DD00DD7FFFFFFFF7
+              DD00DD7777777777DD00DDDDDDDDDDDDDD00}
+            OnClick = VectRepIClick
+          end
+        end
+      end
+    end
+    object TabSheet6: TTabSheet
+      Caption = 'TabSheet6'
+      ImageIndex = 3
+      TabVisible = False
     end
   end
   object isBS: TCheckBox

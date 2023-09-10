@@ -29,7 +29,6 @@ object FChooseData: TFChooseData
     Padding.Top = 10
     Padding.Bottom = 10
     TabOrder = 0
-    ExplicitHeight = 302
     object Label1: TLabel
       Left = 10
       Top = 10
@@ -52,8 +51,6 @@ object FChooseData: TFChooseData
       OnClick = TreeViewClick
       OnDblClick = AddCurClick
       OnMouseUp = TreeViewMouseUp
-      ExplicitWidth = 175
-      ExplicitHeight = 269
     end
   end
   object Panel2: TPanel
@@ -64,9 +61,6 @@ object FChooseData: TFChooseData
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 185
-    ExplicitWidth = 50
-    ExplicitHeight = 302
     object AddCur: TSpeedButton
       Left = 5
       Top = 32
@@ -168,8 +162,6 @@ object FChooseData: TFChooseData
     Padding.Right = 10
     Padding.Bottom = 10
     TabOrder = 2
-    ExplicitLeft = 262
-    ExplicitHeight = 302
     object Label2: TLabel
       Left = 0
       Top = 10
@@ -177,7 +169,7 @@ object FChooseData: TFChooseData
       Height = 13
       Align = alTop
       Caption = 'Processing List:'
-      ExplicitWidth = 200
+      ExplicitWidth = 74
     end
     object ProcBox: TListBox
       Left = 0
@@ -189,9 +181,8 @@ object FChooseData: TFChooseData
       ItemHeight = 16
       TabOrder = 0
       OnClick = ProcBoxClick
+      OnDblClick = DelCurClick
       OnDrawItem = ProcBoxDrawItem
-      ExplicitWidth = 175
-      ExplicitHeight = 269
     end
   end
   object Panel4: TPanel
@@ -202,8 +193,6 @@ object FChooseData: TFChooseData
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 302
-    ExplicitWidth = 420
     object SpeedButton3: TSpeedButton
       Left = 10
       Top = 6
@@ -220,7 +209,6 @@ object FChooseData: TFChooseData
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 219
       object SpeedButton1: TSpeedButton
         Left = 0
         Top = 6

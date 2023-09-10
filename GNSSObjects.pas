@@ -120,23 +120,25 @@ type
   end;
 
   TGNSSPoint = record
-     PointName   :string;
-     HasErrors   :array[0..5] of Boolean; // 1 - Bad sessions, 2 - ...
-     Active      :boolean;
-     IsBase      :boolean;
-     Sessions    :array of string; // SessionIDs
+     PointName    :string;
+     HasErrors    :array[0..5] of Boolean; // 1 - Bad sessions, 2 - ...
+     Active       :boolean;
+     IsBase       :boolean;
+     Sessions     :array of string; // SessionIDs
 
-     CoordSource :byte; // 0 - Average from RINEX Headers
+     CoordSource  :byte; // 0 - Average from RINEX Headers
                         // 1 - Single/PPP Average
                         // 2 - BaseLines Adjustment
                         // 3 - Choosed Solution (from one of the sessions)
                         // 4 - Definded by User
 
-     Status      :byte; // as for Session + 8 Error, 9 - Adjustment: OK, 10 -Adjustment:Bad
+     Status       :byte; // as for Session + 8 Error, 9 - Adjustment: OK, 10 -Adjustment:Bad
 
-     SolutionId :TSolutionId; // if Source = 2
-     Position   :TXYZ;        // Accepted Coordinates
-     Quality    :TStDevs;     // StDevs
+     SolutionId   :TSolutionId; // if Source = 2
+     Position     :TXYZ;        // Accepted Coordinates
+     Quality      :TStDevs;     // StDevs
+     AdjustmentId :integer;
+     AdjMethod    :integer;
   end;
 
   function OpenRINEX (FileName:string; ProgressBar: TProgressBar):Boolean;
@@ -168,7 +170,7 @@ type
 
   procedure SetGNSSPointUserCoords(PointN: integer; X, Y, Z :Double);
   procedure SetGNSSPointSource(PointN, SolSource, SessionNumber,
-        SolutionNumber:integer; UpdN:integer = 0);
+        SolutionNumber:integer; UpdN:integer = 0; AdjMethod:integer = 2);
 
   function GetSolutionSubStatus(SessionN, SolutionN:integer):byte;
   function GetGNSSSolutionForVector(VectorN:integer):TSolutionId; overload;
@@ -1457,11 +1459,11 @@ begin
 end;
 
 function GetAvgPos(Sol :Array of TGNSSSolution; SolSource:integer;
-    FilterSigma, Weighted:Boolean; var Q:TStDevs; var StatQ:integer;
-    HasPPP:Boolean): TXYZ;
+    var Q:TStDevs; var StatQ:integer; HasPPP:Boolean; AdjMethod :byte): TXYZ;
 var I, j, Num :Integer;
     P :Array of Double;
     NewSol  :Array of TGNSSSolution;
+    BestQ, CurQ : Double;
 begin
 
   Num := 0; StatQ := 0;
@@ -1470,36 +1472,78 @@ begin
   result.Z := 0;
   for j := 1 to 6 do Q[j] := 0;
 
-  /// Simple Average
-  if not Weighted then
-  Begin
-    for I := 0 to Length(Sol) - 1 do
-    begin
-      if (SolSource = 1) and (HasPPP) then          /// PPP better than Single
-        if Sol[I].SolutionQ <> 6 then continue;
 
-      inc(Num);
-      result.X := result.X + Sol[I].PointPos.X;
-      result.Y := result.Y + Sol[I].PointPos.Y;
-      result.Z := result.Z + Sol[I].PointPos.Z;
+//  днаюбхрэ лерндш!!!!
+
+
+  case AdjMethod of
+    0: /// The best one
+    Begin
+      Num := 0;
+      BestQ := sqrt( sqr(Sol[0].StDevs[1])
+                   + sqr(Sol[0].StDevs[2])
+                   + sqr(Sol[0].StDevs[3]));
+
+      for I := 1 to Length(Sol) - 1 do
+      begin
+        CurQ := sqrt( sqr(Sol[I].StDevs[1])
+                    + sqr(Sol[I].StDevs[2])
+                    + sqr(Sol[I].StDevs[3]));
+        if CurQ < BestQ then
+        begin
+          Num   := I;
+          BestQ := CurQ;
+        end;
+
+      end;
+
+      result.X := Sol[Num].PointPos.X;
+      result.Y := Sol[Num].PointPos.Y;
+      result.Z := Sol[Num].PointPos.Z;
+      StatQ := Sol[Num].SolutionQ;
       for j := 1 to 6 do
-        Q[j] := Q[j] + Sol[I].StDevs[j];
-      StatQ := StatQ + Sol[I].SolutionQ;
-    end;
+        Q[j] := Sol[Num].StDevs[j];
+    End;
+    
+    1,2: /// Simple Average
+    Begin
+      for I := 0 to Length(Sol) - 1 do
+      begin
+        if (SolSource = 1) and (HasPPP) then          /// PPP better than Single
+          if Sol[I].SolutionQ <> 6 then continue;
 
-    if Num = 0 then
-    begin
-      DebugMSG('ERROR! No data for average solution!');
-      exit;
-    end;
+        inc(Num);
+        result.X := result.X + Sol[I].PointPos.X;
+        result.Y := result.Y + Sol[I].PointPos.Y;
+        result.Z := result.Z + Sol[I].PointPos.Z;
+        for j := 1 to 6 do
+          Q[j] := Q[j] + Sol[I].StDevs[j];
+        StatQ := StatQ + Sol[I].SolutionQ;
+      end;
 
-    result.X := result.X / Num;
-    result.Y := result.Y / Num;
-    result.Z := result.Z / Num;
-    StatQ := round(StatQ / Num);
-    for j := 1 to 6 do
-      Q[j] := Q[j] / Num;
-  End;
+      if Num = 0 then
+      begin
+        DebugMSG('ERROR! No data for average solution!');
+        exit;
+      end;
+
+      result.X := result.X / Num;
+      result.Y := result.Y / Num;
+      result.Z := result.Z / Num;
+      StatQ := round(StatQ / Num);
+      for j := 1 to 6 do
+        Q[j] := Q[j] / Num;
+    End;
+
+//    2: //// Weigthted
+//    Begin
+//
+//    End;
+
+  end;
+
+
+
 
 end;
 
@@ -1534,7 +1578,7 @@ begin
 end;
 
 procedure SetGNSSPointSource(PointN, SolSource, SessionNumber,
-        SolutionNumber:integer; UpdN:integer = 0);
+        SolutionNumber:integer; UpdN:integer = 0; AdjMethod:integer = 2);
 
 var I, j, N: Integer;
     Sol :Array of TGNSSSolution;
@@ -1544,6 +1588,9 @@ var I, j, N: Integer;
 begin
   DebugMSG('Setting Coordinates for Point: '+ GNSSPoints[PointN].PointName +
            ' ' +SolSourcesNames[SolSource]);
+
+  GNSSPoints[PointN].AdjMethod    := 0;
+  GNSSPoints[PointN].AdjustmentId := -1;   ///!!!
 
   PPPCount := 0;
   Stat := 0;
@@ -1617,13 +1664,26 @@ begin
   end
   else
   case SolSource of    /// Average
-    0: GNSSPoints[PointN].Position := GetAvgPos(Sol, SolSource, false,
-        false, GNSSPoints[PointN].Quality, Stat, PPPCount > 0);
-    1: GNSSPoints[PointN].Position := GetAvgPos(Sol, SolSource, false,
-        false, GNSSPoints[PointN].Quality, Stat, PPPCount > 0);
-    2: GNSSPoints[PointN].Position := GetAvgPos(Sol, SolSource, false,
-        false, GNSSPoints[PointN].Quality, Stat, PPPCount > 0);
+    0: GNSSPoints[PointN].Position := GetAvgPos(Sol, SolSource,
+        GNSSPoints[PointN].Quality, Stat, PPPCount > 0, 2);
+    1: GNSSPoints[PointN].Position := GetAvgPos(Sol, SolSource,             
+        GNSSPoints[PointN].Quality, Stat, PPPCount > 0, AdjMethod);
+    2: GNSSPoints[PointN].Position := GetAvgPos(Sol, SolSource,
+        GNSSPoints[PointN].Quality, Stat, PPPCount > 0, AdjMethod);
   end;
+
+  if (SolSource = 2) and (AdjMethod > 3) then
+  begin
+    //// ADJUSTMENT OF THE NET!!!!
+    ///
+    ///
+    /// if Success then GNSSPoints[PointN].AdjustmentId := Length(Adjustments)-1
+  end;
+
+  if (SolSource = 1) or (SolSource = 2) then
+    GNSSPoints[PointN].AdjMethod := AdjMethod;
+
+
   GNSSPoints[PointN].Status := Stat;
 
   /// Single Solution
