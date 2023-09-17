@@ -103,6 +103,7 @@ type
     Customize2: TMenuItem;
     AllAvailable4: TMenuItem;
     Customize3: TMenuItem;
+    SpeedButton2: TSpeedButton;
 (*    procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);  *)
@@ -166,6 +167,7 @@ type
     procedure Customize1Click(Sender: TObject);
     procedure Customize2Click(Sender: TObject);
     procedure Customize3Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1224,6 +1226,25 @@ begin
       FMainTree.Left := Screen.Width - FMainTree.Width;
     FMainTree.Show;
   end;
+end;
+
+procedure TForm1.SpeedButton2Click(Sender: TObject);
+var I, j: Integer;
+    s: string;
+begin
+  FindGNSSNets(true);
+  for I := 0 to Length(GNSSNets) - 1 do
+  begin
+    s := '';
+    for j := 0 to length(GNSSNets[I].Points) - 1 do
+    begin
+      if j > 0 then
+         s :=  s + ', ';
+      s := s + GNSSNets[I].Points[j]
+    end;
+    Showmessage(s);
+  end;
+
 end;
 
 procedure TForm1.CheckButtons;

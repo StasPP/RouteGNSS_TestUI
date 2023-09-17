@@ -305,6 +305,10 @@ object Form1: TForm1
       TabOrder = 4
       object TabSheet1: TTabSheet
         Caption = 'Single Processing'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object RadioButton1: TRadioButton
           Left = 16
           Top = 18
@@ -699,7 +703,7 @@ object Form1: TForm1
       OnClick = ProgrSetClick
     end
     object ProjReport: TSpeedButton
-      Left = 284
+      Left = 328
       Top = 4
       Width = 32
       Height = 30
@@ -815,6 +819,14 @@ object Form1: TForm1
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       OnClick = ReProcessAllClick
     end
+    object SpeedButton2: TSpeedButton
+      Left = 284
+      Top = 4
+      Width = 30
+      Height = 30
+      Caption = 'Adj'
+      OnClick = SpeedButton2Click
+    end
     object Panel4: TPanel
       Left = 522
       Top = 1
@@ -825,9 +837,9 @@ object Form1: TForm1
       TabOrder = 0
       object Button6: TButton
         Left = 6
-        Top = 5
+        Top = 3
         Width = 115
-        Height = 26
+        Height = 30
         Caption = 'Close'
         TabOrder = 0
         OnClick = Button6Click
@@ -844,7 +856,7 @@ object Form1: TForm1
     Left = 224
     Top = 152
     Bitmap = {
-      494C010174008800BC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010174008800C40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000E0010000010020000000000000E0
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

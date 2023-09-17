@@ -27,14 +27,7 @@ const
                                   'Ellipsoidal Height, m:',
                                   'Northing, m:', 'Easting, m:',
                                   'Orthometric Height, m:');
-type
-   TVectGroup = record
-     Name  : String;
-     Vects : array of Integer;
-     StatQ : integer;
-   end;
 var
-   VectGroups      : Array of TVectGroup;
    TreeNumbersList : Array of Integer;
 implementation
 
@@ -392,38 +385,6 @@ begin
 
 end;
 
-procedure GroupVectors;
-var I, j, k :Integer;
-    s : string;
-    NeedNew: boolean;
-begin
-   SetLength(VectGroups, 0);
-   for I := 0 to Length(GNSSVectors) - 1 do
-   begin
-     s := GetGNSSVectorPoint(I, true) + '-'+ GetGNSSVectorPoint(I, false);
-
-     NeedNew := True;
-     for j := 0 to Length(VectGroups) - 1 do
-       if VectGroups[j].Name = s then
-       begin
-         NeedNew := false;
-         break;
-       end;
-
-     if NeedNew then
-     begin
-       j := Length(VectGroups);
-       SetLength(VectGroups, j+1);
-       VectGroups[j].Name := s;
-     end;
-
-     k := Length(VectGroups[j].Vects);
-     SetLength(VectGroups[j].Vects, k+1);
-
-     VectGroups[j].Vects[k] := I;
-   end;
-end;
-
 procedure OutputGNSSVectTree(TW :TTreeView);   overload;
 var A : array of integer;
 begin
@@ -440,20 +401,19 @@ var I, j, k, N, ImgN :Integer;
     isHidden : Boolean;
 begin
    SetLength(TreeNumbersList, 0);
-   GroupVectors;
+   GroupGNSSVectors;
    TW.Items.Clear;
    RNode := nil;
    FNode := nil;
 
-   for I := Length(VectGroups) -1 downto 0 do
+   for I := Length(GNSSVectGroups) -1 downto 0 do
    begin
-    Node1 := TW.Items.AddFirst(nil, VectGroups[I].Name);
+    Node1 := TW.Items.AddFirst(nil, GNSSVectGroups[I].Name);
     AddNum(I, Node1.AbsoluteIndex);
     RNode := Node1;
-    VectGroups[I].StatQ := GetGNSSVectorGroupStatus(VectGroups[I].Vects);
 
     try
-        ImgN := VectGroups[I].StatQ;
+        ImgN := GNSSVectGroups[I].StatQ;
         if ImgN < 0 then ImgN := -1;
         case ImgN of
            -1..2 : ImgN := 15 + ImgN;
@@ -481,10 +441,10 @@ begin
     end;
     SetNodeBoldState(Node1, True);
 
-    for j := 0 to Length(VectGroups[I].Vects) - 1 do
+    for j := 0 to Length(GNSSVectGroups[I].Vects) - 1 do
     begin
       try
-        ImgN := GNSSVectors[VectGroups[I].Vects[j]].StatusQ;
+        ImgN := GNSSVectors[GNSSVectGroups[I].Vects[j]].StatusQ;
         if ImgN < 0 then ImgN := -1;
         case ImgN of
            -1..2 : ImgN := 15 + ImgN;
@@ -495,12 +455,12 @@ begin
            else ImgN := 15;
         end;
 
-        N := GetGNSSSessionNumber(GNSSVectors[VectGroups[I].Vects[j]].BaseID);
+        N := GetGNSSSessionNumber(GNSSVectors[GNSSVectGroups[I].Vects[j]].BaseID);
         if N = -1 then
           continue;
         s:= GNSSSessions[N].MaskName;
 
-        N := GetGNSSSessionNumber(GNSSVectors[VectGroups[I].Vects[j]].RoverID);
+        N := GetGNSSSessionNumber(GNSSVectors[GNSSVectGroups[I].Vects[j]].RoverID);
         if N = -1 then
           continue;
         s:= s + ' -> '+GNSSSessions[N].MaskName;
@@ -511,7 +471,7 @@ begin
       isHidden := false;
       if (HideArrLength > 0) then ////  Choose Data Mode!
         for k := 0 to HideArrLength - 1 do
-          if VectGroups[I].Vects[j] = HideArr[k] then
+          if GNSSVectGroups[I].Vects[j] = HideArr[k] then
           begin
             isHidden := true;
             break;
@@ -521,7 +481,7 @@ begin
         continue;
 
       Node2 := TW.Items.AddChild(Node1, s);
-      AddNum(VectGroups[I].Vects[j], Node2.AbsoluteIndex);
+      AddNum(GNSSVectGroups[I].Vects[j], Node2.AbsoluteIndex);
       with Node2 do
       begin
          ImageIndex := ImgN;

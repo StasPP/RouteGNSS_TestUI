@@ -111,7 +111,22 @@ type
 
      dX, dY, dZ :Double;
      StDevs     :TStDevs;
+
+     /// Adjustment!!!
+     dXa, dYa, dZa :Double;
+     StDevsA       :TStDevs;
+     AdjustmentId  :Integer;
   end;
+
+  TGNSSVectGroup = record
+     Name  : String;
+     Vects : array of Integer;
+     StatQ : integer;
+
+     /// Adjustment!!!
+     dXa, dYa, dZa :Double;
+     StDevsA       :TStDevs;
+   end;
 
   TSolutionId = record
       SessionId :String;
@@ -139,6 +154,17 @@ type
      Quality      :TStDevs;     // StDevs
      AdjustmentId :integer;
      AdjMethod    :integer;
+  end;
+
+  TGNSSAdjustment = record
+     Active : boolean;
+     Stations: array of String;
+//     Xi2Test:
+  end;
+
+  TGNSSAdjustmentNet = record
+     VectGroups: array of integer;
+     Points: array of String;
   end;
 
   function OpenRINEX (FileName:string; ProgressBar: TProgressBar):Boolean;
@@ -196,6 +222,15 @@ type
   procedure EnableGNSSVector(VectorN:integer);
   procedure DisableGNSSVector(VectorN:integer);
   procedure InvertGNSSVector(VectorN:integer; GroupInv:Boolean = true);
+  procedure GroupGNSSVectors;
+
+  procedure FindGNSSNets(ProcessedOnly:Boolean);
+//  procedure AdjustGNSSNet(Idx:integer);
+//  procedure ApplyAdjustment(Idx:integer);
+//  procedure CheckGNSSAdjustments;
+  procedure ResetAdjustment(Idx:integer);
+
+
 
   //procedure LoadMessagesFromFile;
 
@@ -209,10 +244,16 @@ type
   procedure DebugMSG(s:string);
 
   procedure DestroyGNSSObjs;
+   
 var
-  GNSSSessions  :array of TGNSSSession;
-  GNSSVectors   :array of TGNSSVector;
-  GNSSPoints    :array of TGNSSPoint;
+  GNSSSessions   :array of TGNSSSession;
+  GNSSVectors    :array of TGNSSVector;
+  GNSSVectGroups :array of TGNSSVectGroup;
+  GNSSPoints     :array of TGNSSPoint;
+
+  GNSSAdjustments:array of TGNSSAdjustment;
+  GNSSNets       :array of TGNSSAdjustmentNet;
+  
 
   PCVFile, ARFile :TStringList;
   PCVFilePath     :string = 'Data\GNSS\ngs_abs.pcv';
@@ -958,11 +999,11 @@ begin
                GNSSSessions[SessionN].MaskName);
 
             GNSSSessions[N].Solutions[j].PointPos.X := Coords.X +
-                                                       GNSSVectors[I].dX;
+                                                       GNSSVectors[I].dXa;
             GNSSSessions[N].Solutions[j].PointPos.Y := Coords.Y +
-                                                       GNSSVectors[I].dY;
+                                                       GNSSVectors[I].dYa;
             GNSSSessions[N].Solutions[j].PointPos.Z := Coords.Z +
-                                                       GNSSVectors[I].dZ;
+                                                       GNSSVectors[I].dZa;
          end;
 
        /// Refresh the Point connected to the solution
@@ -1112,7 +1153,18 @@ begin
         GNSSVectors[I].dX := PointPos.X - GNSSSessions[j].AppliedPos.X;
         GNSSVectors[I].dY := PointPos.Y - GNSSSessions[j].AppliedPos.Y;
         GNSSVectors[I].dZ := PointPos.Z - GNSSSessions[j].AppliedPos.Z;
-        GNSSVectors[I].StDevs := StDevs;
+
+        GNSSVectors[I].dXa := GNSSVectors[I].dX;
+        GNSSVectors[I].dYa := GNSSVectors[I].dY;
+        GNSSVectors[I].dZa := GNSSVectors[I].dZ;
+
+        if GNSSVectors[I].AdjustmentId <> -1 then
+          ResetAdjustment(GNSSVectors[I].AdjustmentId);
+
+        GNSSVectors[I].AdjustmentId := -1;
+
+        GNSSVectors[I].StDevs  := StDevs;
+        GNSSVectors[I].StDevsA := StDevs;
 
         DebugMSG('Applying Solution to the Vector: ' + BareId(GNSSVectors[I].BaseID) +
             ' -> ' + BareId(GNSSVectors[I].RoverID));
@@ -1852,10 +1904,12 @@ begin
        GNSSVectors[j].RoverID := GNSSSessions[SessionN].SessionID;
        GNSSVectors[j].BaseID := GNSSSessions[I].SessionID;
 
-       GNSSVectors[j].dX := 0;
-       GNSSVectors[j].dY := 0;
-       GNSSVectors[j].dZ := 0;
+       GNSSVectors[j].dX := 0;  GNSSVectors[j].dXa := 0;
+       GNSSVectors[j].dY := 0;  GNSSVectors[j].dYa := 0;
+       GNSSVectors[j].dZ := 0;  GNSSVectors[j].dZa := 0;
 
+       GNSSVectors[j].AdjustmentId := -1;
+       
        GNSSVectors[j].StDevs[1] := 0;     GNSSVectors[j].StDevs[4] := 0;
        GNSSVectors[j].StDevs[2] := 0;     GNSSVectors[j].StDevs[5] := 0;
        GNSSVectors[j].StDevs[3] := 0;     GNSSVectors[j].StDevs[6] := 0;
@@ -1972,9 +2026,9 @@ begin
      begin
        SolutionKind := 2;
        BaseID := GNSSSessions[SessBaseN].SessionID;
-       PointPos.X := GNSSSessions[SessBaseN].AppliedPos.X + GNSSVectors[VectorN].dX;
-       PointPos.Y := GNSSSessions[SessBaseN].AppliedPos.Y + GNSSVectors[VectorN].dY;
-       PointPos.Z := GNSSSessions[SessBaseN].AppliedPos.Z + GNSSVectors[VectorN].dZ;
+       PointPos.X := GNSSSessions[SessBaseN].AppliedPos.X + GNSSVectors[VectorN].dXa;
+       PointPos.Y := GNSSSessions[SessBaseN].AppliedPos.Y + GNSSVectors[VectorN].dYa;
+       PointPos.Z := GNSSSessions[SessBaseN].AppliedPos.Z + GNSSVectors[VectorN].dZa;
        SolutionQ  := GNSSVectors[VectorN].StatusQ;
 
        for j := 1 to 6 do
@@ -2147,9 +2201,17 @@ procedure InvertGNSSVector(VectorN:integer; GroupInv:Boolean = true);
     s := GNSSVectors[N].BaseID;
     GNSSVectors[N].BaseID  := GNSSVectors[N].RoverID;
     GNSSVectors[N].RoverID := s;
-    GNSSVectors[N].dX := -GNSSVectors[N].dX;
-    GNSSVectors[N].dY := -GNSSVectors[N].dY;
-    GNSSVectors[N].dZ := -GNSSVectors[N].dZ;
+    GNSSVectors[N].dX  := -GNSSVectors[N].dX;
+    GNSSVectors[N].dY  := -GNSSVectors[N].dY;
+    GNSSVectors[N].dZ  := -GNSSVectors[N].dZ;
+    GNSSVectors[N].dXa := -GNSSVectors[N].dXa;
+    GNSSVectors[N].dYa := -GNSSVectors[N].dYa;
+    GNSSVectors[N].dZa := -GNSSVectors[N].dZa;
+
+    if GNSSVectors[N].AdjustmentId <> -1 then
+      ResetAdjustment(GNSSVectors[N].AdjustmentId);
+
+    GNSSVectors[N].AdjustmentId := -1;
 
     /// ToDo: Invert Matrix with errs
 
@@ -2259,8 +2321,6 @@ begin
    end;
 
 
-
-
 end;
 
 procedure CheckGNSSVectorsForSession(SessionN:integer);  overload
@@ -2269,6 +2329,43 @@ begin
     CheckGNSSVectorsForSession(GNSSSessions[SessionN].SessionID);
   except
   end;
+end;
+
+procedure GroupGNSSVectors;
+var I, j, k :Integer;
+    s : string;
+    NeedNew: boolean;
+begin
+   SetLength(GNSSVectGroups, 0);
+   for I := 0 to Length(GNSSVectors) - 1 do
+   begin
+     s := GetGNSSVectorPoint(I, true) + '-'+ GetGNSSVectorPoint(I, false);
+
+     NeedNew := True;
+     for j := 0 to Length(GNSSVectGroups) - 1 do
+       if GNSSVectGroups[j].Name = s then
+       begin
+         NeedNew := false;
+         break;
+       end;
+
+     if NeedNew then
+     begin
+       j := Length(GNSSVectGroups);
+       SetLength(GNSSVectGroups, j+1);
+       GNSSVectGroups[j].Name := s;
+     end;
+
+     k := Length(GNSSVectGroups[j].Vects);
+     SetLength(GNSSVectGroups[j].Vects, k+1);
+
+     GNSSVectGroups[j].Vects[k] := I;
+   end;
+
+   for I := 0 to Length(GNSSVectGroups) - 1 do
+     GNSSVectGroups[I].StatQ :=
+        GetGNSSVectorGroupStatus(GNSSVectGroups[I].Vects);
+     
 end;
 
 function GetAntParams(AntName:string):TGNSSAntennaPCV;
@@ -2561,6 +2658,139 @@ begin
   end;
 
   ARFile.LoadFromFile(ARFilePath);
+end;
+
+////////////////////////////////////////////////////////////////////////////////
+
+type TNetVector = record
+    VGIndex    :integer;
+    Base, Rover:string;
+    isReady    : boolean;
+end;
+
+var NetVectors : array of TNetVector;
+    CurNet:array of Integer;
+
+function FindConnections(N, CurrentNet: integer):boolean;
+
+  procedure AddToList(I: integer);
+  var j:Integer;
+  begin
+     j := Length(CurNet);
+     SetLength(CurNet, j+1);
+     CurNet[j] := I;
+     NetVectors[I].isReady := true;
+  end;
+
+var I:Integer;
+begin
+   result := false;
+
+   if NetVectors[N].isReady then
+     exit
+   else
+     AddToList(N);
+
+   for I := 0 to Length(NetVectors) - 1 do
+   begin
+     if (I = N) or (NetVectors[I].isReady) then
+       continue;
+
+     if (NetVectors[I].Base  = NetVectors[N].Base) or
+        (NetVectors[I].Rover = NetVectors[N].Rover) or
+        (NetVectors[I].Rover = NetVectors[N].Base) or
+        (NetVectors[I].Base  = NetVectors[N].Rover)
+        then
+        begin
+           FindConnections(I, CurrentNet);
+           result := true;
+        end;
+
+   end;
+end;
+
+procedure AddGNSSNet;
+  procedure AddPointToGNSSNet(NetN: Integer; PointName:String);
+  var I, j: integer; CanAdd: boolean;
+  begin
+    CanAdd := true;
+    for I := 0 to length(GNSSNets[NetN].Points) - 1 do
+    if GNSSNets[NetN].Points[I] = PointName then
+      CanAdd := false;
+
+    if CanAdd then
+    begin
+      I := Length(GNSSNets[NetN].Points);
+      SetLength(GNSSNets[NetN].Points, I+1);
+      GNSSNets[NetN].Points[I] := PointName;
+    end;
+  end;
+
+var I, j:integer;
+begin
+  I := Length(GNSSNets);
+  SetLength(GNSSNets, I+1);
+
+  SetLength(GNSSNets[I].VectGroups, length(CurNet));
+  for j := 0 to length(CurNet) - 1 do
+  begin
+     GNSSNets[I].VectGroups[j] := CurNet[j];
+     AddPointToGNSSNet(I, NetVectors[CurNet[j]].Base);
+     AddPointToGNSSNet(I, NetVectors[CurNet[j]].Rover);
+  end;
+
+end;
+
+procedure FindGNSSNets(ProcessedOnly:Boolean);
+var I, j :integer;
+begin
+ GroupGNSSVectors;
+ SetLength(GNSSNets, 0);
+
+ // Create an Array NetVectors
+ if ProcessedOnly then
+   SetLength(NetVectors, 0)
+ else
+   SetLength(NetVectors, Length(GNSSVectGroups));
+
+ for I := 0 to Length(GNSSVectGroups) - 1 do
+ begin
+   if ProcessedOnly then
+     if (GNSSVectGroups[I].StatQ <= 0) or (GNSSVectGroups[I].StatQ = 8) then
+       continue;
+
+   if ProcessedOnly then
+   begin
+     j := Length(NetVectors);
+     SetLength(NetVectors, j+1);
+   end
+   else
+     j := I;
+
+   NetVectors[j].VGIndex := I;
+   NetVectors[j].Base  := GetGNSSVectorPoint(GNSSVectGroups[I].Vects[0], true);
+   NetVectors[j].Rover := GetGNSSVectorPoint(GNSSVectGroups[I].Vects[0], false);
+   NetVectors[j].isReady := false;
+ end;
+
+ j := 0; // Net I
+ if Length(NetVectors) > 0 then
+   for I := 0 to Length(NetVectors) - 1 do
+   begin
+      SetLength(CurNet, 0);
+      if NetVectors[I].isReady = false then
+      begin
+        if (FindConnections(I, j)) and (length(CurNet) > 1) then
+          AddGNSSNet;
+      end;
+   end;
+
+end;
+
+procedure ResetAdjustment(Idx:integer);
+begin
+  ///  All points with this AdjId
+  ///  All Vectors with this AdjId
 end;
 
 procedure DestroyGNSSObjs;

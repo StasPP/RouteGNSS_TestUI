@@ -165,11 +165,10 @@ object FChooseData: TFChooseData
     object Label2: TLabel
       Left = 0
       Top = 10
-      Width = 190
+      Width = 74
       Height = 13
       Align = alTop
       Caption = 'Processing List:'
-      ExplicitWidth = 74
     end
     object ProcBox: TListBox
       Left = 0

@@ -257,8 +257,8 @@ begin
       2:  if BaseLineRTKProcess(GNSSSessions[pRover], GNSSSessions[pBase],
             ProcGNSS.Progress, ProcGNSS.Memo,
             isFixedMode.Checked, isDGNSS.Checked)
-       then ProcGNSS.ShowModal2(GNSSSessions[pRover].MaskName + '-' +
-            GNSSSessions[pBase].MaskName, 0);
+       then ProcGNSS.ShowModal2(GNSSSessions[pBase].MaskName + '-' +
+            GNSSSessions[pRover].MaskName, 0);
       3:  if PPPRTKProcess(GNSSSessions[pRover], ProcGNSS.Progress, ProcGNSS.Memo)
        then  ProcGNSS.ShowModal2(GNSSSessions[pRover].MaskName, 0);
 
@@ -275,8 +275,8 @@ begin
              2:  if BaseLineRTKProcess(GNSSSessions[mRover[I]],
                       GNSSSessions[mBase[I]], ProcGNSS.Progress, ProcGNSS.Memo,
                       isFixedMode.Checked, isDGNSS.Checked)
-               then ProcGNSS.ShowModal2(GNSSSessions[mRover[I]].MaskName+'-'+
-                      GNSSSessions[mBase[I]].MaskName,
+               then ProcGNSS.ShowModal2(GNSSSessions[mBase[I]].MaskName+'-'+
+                      GNSSSessions[mRover[I]].MaskName,
                       Length(ProcMethods)-1 - I);
              3:  if PPPRTKProcess(GNSSSessions[mRover[I]],
                       ProcGNSS.Progress, ProcGNSS.Memo)

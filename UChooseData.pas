@@ -136,11 +136,11 @@ begin
      case TreeView.Items[TreeView.Selected.AbsoluteIndex].Level of
         0: try
           VGN :=  TreeNumbersList[TreeView.Selected.AbsoluteIndex];
-          for I := 0 to Length(VectGroups[VGN].Vects) - 1 do
+          for I := 0 to Length(GNSSVectGroups[VGN].Vects) - 1 do
           begin
             SkipIt := false;
             for j := 0 to Length(ProcList)-1 do
-               if ProcList[j] = VectGroups[VGN].Vects[I]  then
+               if ProcList[j] = GNSSVectGroups[VGN].Vects[I]  then
                   SkipIt := true;
 
             if SkipIt then
@@ -148,7 +148,7 @@ begin
 
             j := Length(ProcList);
             SetLength(ProcList, j+1);
-            ProcList[j] := VectGroups[VGN].Vects[I];
+            ProcList[j] := GNSSVectGroups[VGN].Vects[I];
           end;
         except
         end;

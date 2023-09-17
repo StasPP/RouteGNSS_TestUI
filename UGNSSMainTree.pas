@@ -299,16 +299,16 @@ begin
      exit;
   end
   else
-  For I := 0 To Length(VectGroups[ChosenVG].Vects) -1 Do
+  For I := 0 To Length(GNSSVectGroups[ChosenVG].Vects) -1 Do
   begin
-    if GNSSVectors[VectGroups[ChosenVG].Vects[I]].StatusQ < 0 then
+    if GNSSVectors[GNSSVectGroups[ChosenVG].Vects[I]].StatusQ < 0 then
       continue;  // disabled vector
 
     j := Length(A);
     SetLength(A, j+1); SetLength(B, j+1);   SetLength(C, j+1);
     A[j] := 2;
-    B[j] := GetGNSSSessionNumber(GNSSVectors[VectGroups[ChosenVG].Vects[I]].RoverId);
-    C[j] := GetGNSSSessionNumber(GNSSVectors[VectGroups[ChosenVG].Vects[I]].BaseId);
+    B[j] := GetGNSSSessionNumber(GNSSVectors[GNSSVectGroups[ChosenVG].Vects[I]].RoverId);
+    C[j] := GetGNSSSessionNumber(GNSSVectors[GNSSVectGroups[ChosenVG].Vects[I]].BaseId);
   end;
 
   if Length(A) = 0 then
@@ -359,8 +359,8 @@ begin
   B.TransparentColor := clwhite;
   if ChosenVG <> -1 then
   begin
-    BaseId  := GetGNSSVectorPoint(VectGroups[ChosenVG].Vects[0], true);
-    RoverId := GetGNSSVectorPoint(VectGroups[ChosenVG].Vects[0], false);
+    BaseId  := GetGNSSVectorPoint(GNSSVectGroups[ChosenVG].Vects[0], true);
+    RoverId := GetGNSSVectorPoint(GNSSVectGroups[ChosenVG].Vects[0], false);
     OutRep.OpenRepWindow(2,  GetGNSSPointNumber(BaseId),
                              GetGNSSPointNumber(RoverId), B);
   end
@@ -554,7 +554,7 @@ begin
     0: begin
       ChosenVG := TreeNode.Index;
       try
-        ChosenVect := VectGroups[ChosenVG].Vects[0];
+        ChosenVect := GNSSVectGroups[ChosenVG].Vects[0];
       except
         ChosenVect := -1;
       end;
@@ -563,7 +563,7 @@ begin
     begin
       try
         ParentNode  := TreeNode.Parent;
-        ChosenVect := VectGroups[ParentNode.Index].Vects[TreeNode.Index];
+        ChosenVect := GNSSVectGroups[ParentNode.Index].Vects[TreeNode.Index];
       except
         ChosenVect := -1;
       end;
@@ -626,13 +626,13 @@ begin
         VectorPopup.Items[5].Visible := (ChosenVG = -1) and
               (GNSSVectors[ChosenVect].StatusQ < 0);
 
-        if (ChosenVG > -1) and (VectGroups[ChosenVG].StatQ > 0)
+        if (ChosenVG > -1) and (GNSSVectGroups[ChosenVG].StatQ > 0)
           or (ChosenVG = -1) and (GNSSVectors[ChosenVect].StatusQ > 0) then
           VectorPopup.Items[1].ImageIndex := 92
         else
           VectorPopup.Items[1].ImageIndex := 93;
 
-        if (ChosenVG > -1) and (VectGroups[ChosenVG].StatQ < 0)
+        if (ChosenVG > -1) and (GNSSVectGroups[ChosenVG].StatQ < 0)
           or (ChosenVG = -1) and (GNSSVectors[ChosenVect].StatusQ < 0) then
           VectorPopup.Items[1].Visible := false
         else
@@ -642,8 +642,8 @@ begin
               (GNSSVectors[ChosenVect].StatusQ > 0) and
               (GNSSVectors[ChosenVect].StatusQ <> 8)) or
               ((ChosenVG > -1) and
-              (VectGroups[ChosenVG].StatQ > 0) and
-              (VectGroups[ChosenVG].StatQ <> 8));
+              (GNSSVectGroups[ChosenVG].StatQ > 0) and
+              (GNSSVectGroups[ChosenVG].StatQ <> 8));
 
         VectorPopup.Popup(P.x, P.y);
       end;
